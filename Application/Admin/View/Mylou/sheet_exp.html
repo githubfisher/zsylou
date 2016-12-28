@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>{$title}</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/font-awesome.css" />
+        <link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery-ui.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/icheck/flat/blue.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/select2.css" />		
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/unicorn.css" />
+		<!--[if lt IE 9]>
+		<script type="text/javascript" src="__PUBLIC__/Admin/js/respond.min.js"></script>
+		<![endif]-->
+		<style> 
+			#content {
+				border-bottom-left-radius: 0px;
+			}
+			td{text-align: center;} 
+			.tools{padding-left: 25px;}
+			.tip{
+				display:none;
+			}
+			.add{
+				display:block;
+				width:50px;
+				height:30px;
+				line-height: 30px;
+				text-align: center;
+				float: left;
+			}
+			.export{
+				display:block;
+				width:50px;
+				height:30px;
+				line-height: 30px;
+				text-align: center;
+				float: left;
+			}
+			/*tip*/
+  			.tip{
+  				width:485px;
+  				height:300px; 
+  				position:absolute;top:10%; 
+  				left:30%;
+  				background:#fcfdfd;
+  				box-shadow:1px 8px 10px 1px #9b9b9b;
+  				border-radius:1px;
+  				behavior:url(js/pie.htc); 
+  				display:none; z-index:111111;
+  				text-align: center;
+  				margin-top:15px;
+  				padding-top:20px;
+  			}
+  			.tip b{
+  				font-size:18px;
+  			}
+  			.lip{
+  				height:10px;
+  			}
+  			.row a{
+  				padding:3px 15px;
+  				background-color:#292929;
+  				border:1px solid #292929;
+  				border-radius:3px;
+  				color:#fff;
+  				font-size:12px;
+  				margin-left:10px;
+  			}
+  			.row a:hover{
+  				border:1px solid #292929;
+  				background-color:#f2f2f2;
+  				border-radius:3px;
+  				color:#292929;
+  			}
+  			.row p{
+  				font-size:12px;
+  				color:#666;
+  			}
+  			input[type="text"]{
+  				width: 222px;
+  			}
+		</style>
+			
+	<script>
+		function datepicker(){
+			$( "#from" ).datepicker({
+		      defaultDate: "-3D",
+		      minDate: "-1M", 
+		      maxDate: "-1D",
+		      changeMonth: true,
+		      numberOfMonths: 1,
+		      onClose: function( selectedDate ) {
+		        $( "#to" ).datepicker( "option", "minDate", selectedDate );
+		      }
+		    });
+		    $( "#to" ).datepicker({
+		    	defaultDate: "-1D",
+		    	minDate: "-1M", 
+		    	maxDate: "-1D",
+		      changeMonth: true,
+		      numberOfMonths: 1,
+		      onClose: function( selectedDate ) {
+		        $( "#from" ).datepicker( "option", "maxDate", selectedDate );
+		      }
+		    });
+		}	  
+
+	  function show(){
+	  	$(".tip").fadeIn(200);
+	  }
+	  function cancel(){
+	  	$(".tip").fadeOut(100);
+	  }
+	  function sumit(){
+	  	$(".tip").fadeOut(100);
+	  	$("#exportform").submit();
+	  }
+	  function exp(){
+	  	var name = '123';
+	  	var company = '上海乐丰摄影俱乐部';
+	  	var position = '上海';
+	  	var province = '上海';
+	  	var address = '上海徐佳汇区';
+	  	var mobile = '13011981716';
+	  	var email = 'go@126.com';
+	  	var yanzheng = '5563';
+	  	var qq = '2289910';
+	  	var tag = Math.random();
+	  	var check = '';
+	  	var eng = '';
+	  	alert('go'); //debug
+	  	$.post("http://reg.chinaweddingexpo.com.cn/ajax/AudienceAdd.ashx",{Name:name,CompanyName:company,Position:position,Province:province,Address:address,Mobile:mobile,Email:email,Yanzheng:yanzheng,QQ:qq,Check1:check,Check2:check,Check3:check,Check4:check,Check5:check,Eng:eng,tag:tag},function(data){
+	  		if(data.status == 1){
+	  			alert('发送成功!');
+	  		}else{
+	  			alert('发送失败!');
+	  		}
+	  	});
+	  }
+	  //考勤明细表导出
+	  function detail_export(){
+	  	var from = document.getElementById("from").value;
+	  	var to = document.getElementById("to").value;
+	  	if(!from){
+	  		alert('请选择开始日期!');
+	  		return false;
+	  	}
+	  	if(!to){
+	  		alert('请选择结束日期!');
+	  		return false;
+	  	}
+	  	document.getElementById("type").value = 'detail';
+	  	// document.expform.action ="{:U('Home/alipay/index')}";
+	  	$("#expform").submit();
+	  }
+	  //考勤汇总表导出
+	  function gather_export(){
+	  	var from = document.getElementById("from").value;
+	  	var to = document.getElementById("to").value;
+	  	if(!from){
+	  		alert('请选择开始日期!');
+	  		return false;
+	  	}
+	  	if(!to){
+	  		alert('请选择结束日期!');
+	  		return false;
+	  	}
+	  	document.getElementById("type").value = 'gather';
+	  	// document.expform.action ="{:U('Home/alipay/index')}";
+	  	$("#expform").submit();
+	  }
+	</script>
+	</head>	
+	<body data-color="grey" class="flat" onload="datepicker();">
+	<div id="wrapper">
+       <div id="switcher">
+            <div id="switcher-inner">
+                <h3>Theme Options</h3>
+                <h4>Colors</h4>
+                <p id="color-style">
+                    <a data-color="orange" title="Orange" class="button-square orange-switcher" href="#"></a>
+                    <a data-color="turquoise" title="Turquoise" class="button-square turquoise-switcher" href="#"></a>
+                    <a data-color="blue" title="Blue" class="button-square blue-switcher" href="#"></a>
+                    <a data-color="green" title="Green" class="button-square green-switcher" href="#"></a>
+                    <a data-color="red" title="Red" class="button-square red-switcher" href="#"></a>
+                    <a data-color="purple" title="Purple" class="button-square purple-switcher" href="#"></a>
+                    <a href="#" data-color="grey" title="Grey" class="button-square grey-switcher"></a>
+                </p>
+                <h4 class="visible-lg">Layout Type</h4>
+                <p id="layout-type">
+                	<a data-option="flat" class="button" href="#">Flat</a>
+                    <a data-option="old" class="button" href="#">Old</a>                    
+                </p>
+            </div>
+            <div id="switcher-button">
+                <i class="fa fa-cogs"></i>
+            </div>
+        </div>
+		
+		<div id="content">
+			<div id="content-header">
+				<h1>考勤报表</h1>
+				<div class="btn-group">
+					<a class="btn btn-large" title="Manage Files"><i class="fa fa-file"></i></a>
+					<a class="btn btn-large" title="Manage Users"><i class="fa fa-user"></i></a>
+					<a class="btn btn-large" title="Manage Comments"><i class="fa fa-comment"></i><span class="label label-danger">5</span></a>
+					<a class="btn btn-large" title="Manage Orders"><i class="fa fa-shopping-cart"></i></a>
+				</div>
+			</div>
+			<div id="breadcrumb">
+				<a href="#" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> 首页</a>
+				<a href="#" class="current">考勤报表</a>
+			</div>
+
+				<form id="expform" name="expform" action="{:U('Admin/mylou/export_attence_csv')}" method="post">
+				 <div class="row">
+				 	开始日期:<input type="text" id="from" name="from" readonly> 结束日期: <input type="text" id="to" name="to" readonly> <a href="javascript:void(0);" onclick="gather_export();">汇总表-导出</a><a href="javascript:void(0);" onclick="detail_export();">明细表-导出</a>
+				 	<br/>
+				 	<p></p>
+				 	<p>
+				 	提示:<br/>
+				 	1.导出最大周期为一个月<br/>
+				 	2.导出后,会生成Excel文件,分为考勤汇总表和考勤明细表<br/>
+				 	3.建议使用Chrome浏览器进行下载,如使用搜狗浏览器,下载时请选择IE下载.</p>
+				 	<p></p>
+				 	<p><img src="__PUBLIC__/Admin/img/sheet1.png"</p>
+				 </div>
+				 <input type="hidden" name="type" id="type" value="">
+				</form>
+				<!--	<div class="col-xs-12">
+						
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="fa fa-th"></i>
+								</span>
+								<h5>考勤组列表</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<table class="table table-bordered table-striped table-hover data-table">
+									<thead>
+									<tr>
+									<th>ID</th>
+									<th>人数</th>
+									<th>考勤类型</th>
+									<th>考勤时间</th>
+									<th>操作</th>
+									</tr>
+									</thead>
+									<tbody>
+										<!-- 循环输出  -->
+								        <!-- <foreach name="ylou" item="vo">
+								           <tr>								        
+								              <td>{$vo.id}</td>
+								              <td>标题</td>
+								              <td>image</td>
+								              <td>{$vo.time|date='Y-m-d H:i:s',###}</td>
+								              <td>{$vo.modifytime|date='Y-m-d H:i:s',###}</td>
+								              <td>{$vo.status}status</td>							              
+								              <td><a href="#" onclick="show({$vo.id});">编辑</a> / <a href="#">删除</a></td>
+								           </tr>  
+								        </foreach>
+									</tbody>
+									</table>  
+							</div>
+						</div>
+					</div>
+				</div> --> 
+		</div>
+
+		<form id="exportform" action="{:U('Admin/manage/add_storeadmin')}" method="post">
+		<div class="tip">
+			<p><b>添加工作人员</b></p>
+			会员名：<input name="username" type="text" value="">
+			<div class="lip"></div>
+			昵&nbsp;&nbsp;&nbsp;称：<input name="nickname" type="text" value="">
+			<div class="lip"></div>
+			密&nbsp;&nbsp;&nbsp;码：<input name="password" type="password" value="">
+			<div class="lip"></div>
+			影楼ID：<input name="sid" type="text" value="">
+			<div class="lip"></div>
+			职&nbsp;&nbsp;&nbsp;务：<input type="radio" name="type" value="0" checked>店员  <input type="radio" name="type" value="1">店长&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<!-- <select name="type">
+				<option value="0">店员</option>
+				<option value="1">店长</option>
+			</select> -->
+			<div class="lip"></div>
+			<input name="tijiao" type="button"  onclick="sumit();" value="确定" />&nbsp;
+        	<input name="quxiao" type="button"  onclick="cancel();" value="取消" />
+		</div>
+		</form>
+            
+            <script src="__PUBLIC__/Admin/js/jquery.min.js"></script>
+            <script src="__PUBLIC__/Admin/js/jquery-ui.custom.js"></script>
+            <script src="__PUBLIC__/Admin/js/bootstrap.min.js"></script>
+            <script src="__PUBLIC__/Admin/js/jquery.icheck.min.js"></script>
+            <script src="__PUBLIC__/Admin/js/select2.min.js"></script>
+            <script src="__PUBLIC__/Admin/js/jquery.dataTables.min.js"></script>
+            
+            <script src="__PUBLIC__/Admin/js/jquery.nicescroll.min.js"></script>
+            <script src="__PUBLIC__/Admin/js/unicorn.js"></script>
+            <script src="__PUBLIC__/Admin/js/unicorn.tables.js"></script>
+	</body>
+</html>
+

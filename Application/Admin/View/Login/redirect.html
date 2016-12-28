@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{$title}</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="__PUBLIC__/Admin/css/font-awesome.css" />
+        <link rel="stylesheet" href="__PUBLIC__/Admin/css/unicorn-login.css" />
+    	<script type="text/javascript" src="__PUBLIC__/Admin/js/respond.min.js"></script>
+	<script>
+        setTimeout(function(){
+            window.location.href="{:U('Admin/login/index')}";
+
+        },2000); 
+		</script>
+    </head>    
+<body >
+        <div id="container" style="padding-top:240px;">
+            <!-- <div id="logo">
+                <img src="__PUBLIC__/Admin/img/logo.png" alt="" />
+            </div> -->
+            <div id="loginbox">            
+                <p style="height:200px;line-height:200px;font-size:20px;"><b>请先登录！3秒后自动跳转！</b></p>  
+            </div>
+        </div>
+
+    </body>
+</html>

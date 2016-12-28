@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>掌上影楼系统后台</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/font-awesome.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/fullcalendar.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery.jscrollpane.css" />	
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/unicorn.css" />
+		<!--[if lt IE 9]>
+		<script type="text/javascript" src="__PUBLIC__/Admin/js/respond.min.js"></script>
+		<![endif]-->
+	</head>	
+	<frameset rows="60,*,40" cols="*" frameborder="no" border="0" framespacing="0">
+		<frame style="z-index:1;" src="{:U('Admin/mylou/top')}" name="topFrame" scrolling="No" noresize="noresize" id="topFrame" title="topFrame" />
+	  	<frameset cols="200,*" frameborder="no" border="0" framespacing="0">
+		    <frame style="z-index:1;" src="{:U('Admin/mylou/left')}" name="leftFrame" scrolling="No" noresize="noresize" id="leftFrame" title="leftFrame" />
+			<frame style="z-index:1;" src="{:U('Admin/mylou/manage')}" name="rightFrame" id="rightFrame" title="rightFrame" />
+	  </frameset>
+	  <frame style="z-index:1;" src="{:U('Admin/mylou/footer')}" name="footFrame" scrolling="No" noresize="noresize" id="footFrame" title="footFrame" />
+	</frameset>
+	<noframes>
+		<body>
+		</body>
+	</noframes>
+</html>

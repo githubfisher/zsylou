@@ -1,0 +1,337 @@
+<?php
+namespace Admin\Controller;
+use Think\Controller;
+class MylouController extends Controller {
+    public function _initialize(){
+        if(!session('?name')){
+            $this->redirect('Admin/login/redirect',array(),0.1,'请登录。。。');
+            // redirect("/index.php/home/login",1,'请登录！');
+        }
+        header("content-type:text/html; charset=utf-8;");
+    }
+    //首页
+    public function index(){
+        // $this->show('<style type="text/css">*{ padding: 0; margin: 0; } div{ padding: 4px 48px;} 
+        //  body{ background: #fff; font-family: "微软雅黑"; color: #333;font-size:24px} 
+        //  h1{ font-size: 100px; font-weight: normal; margin-bottom: 12px; } 
+        //  p{ line-height: 1.8em; font-size: 36px } a,a:hover{color:blue;}</style><div style="padding: 24px 48px;"> <h1>:)</h1><p>欢迎使用 <b>影楼管理系统！</b>！</p><br/>ThinkPHP 版本 V{$Think.version}</div><script type="text/javascript" src="http://ad.topthink.com/Public/static/client.js"></script><thinkad id="ad_55e75dfae343f5a1"></thinkad><script type="text/javascript" src="http://tajs.qq.com/stats?sId=9347272" charset="UTF-8"></script>','utf-8');
+        $this->assign('user',session('name'));
+        $this->assign('title','首页--掌上影楼');
+        $this->display();
+    }
+    public function top(){
+        $this->assign('user',session('name'));
+        $this->display();
+    }
+    public function left(){
+        $this->display();
+    }
+    public function footer(){
+        $this->display();
+    }
+    // 影楼管理 dogid 服务器ip地址等 一般不需要特别管理，一次配置就好
+    public function manage(){
+        $sid = session('sid');
+        // logger('店铺ID：'.$sid); //debug
+        if($sid){
+            $store = D('store');
+            $where = array(
+                'id' => $sid
+            );
+            $result = $store->where($where)->select();
+            // logger('影楼查询结果：'.var_export($result,TRUE)); //debug
+            if($result){
+                $app_user = D('app_user');
+                $admin_num = $app_user->where(array('sid'=>$sid,'type'=>1))->count();
+                $user_num = $app_user->where(array('sid'=>$sid,'type'=>0))->count();
+                $this->assign('admin',$admin_num);
+                $this->assign('users',$user_num);
+                $this->assign('ylou',$result);
+                $this->assign('user',session('name'));
+                $this->display('store');
+            }else{
+                $this->error('未获取店铺的正确信息，请重新登录！');
+            }
+        }else{
+            $this->error('未获取用户信息，请重新登录！');
+        }
+    }
+    public function users(){
+        $app_user = D('app_user');
+        $where = array(
+            'sid' => session('sid'),
+            'username' => array(array('neq',''),array('neq',NULL),'OR')  //显示有用户名的员工账号
+        );
+        $result = $app_user->where($where)->field('password',TRUE)->order('type desc')->select();
+        // $sql = $app_user->getLastsql(); //debug
+        // logger('查询语句：'.$sql); //debug
+        $this->assign('users',$result);
+        $this->display();
+    }
+    //我的员工 同步
+    public function my_user(){
+        logger('同步影楼员工联系人-->开始');
+        $get_ylou_contacts = A('Home/GetYLouContacts');
+        //链接远程服务器，获取员工数据
+        $admin = array(
+            'operation' => 9,
+            'dogid' => session('dogid')
+        );
+        $xml = transXML($admin);
+        $xml = strchr($xml,'<uu>',TRUE);
+        //强制转码 由utf8转成gbk
+        $xml = mb_convert_encoding($xml,'gbk','utf8');
+        $url = session('url');
+        logger('查询xml:'.$url.$xml."--->"); //debug
+        $getxml = getXML($url,$xml);
+        $result = mb_convert_encoding($getxml, 'UTF-8', 'GB2312');
+        logger('XML:'.$result);//debug 
+        if(strlen($result) < 38){
+            logger("该影楼无联系人信息");
+            logger("&&&>>> 该影楼“无”联系人信息 ----完毕---- <<<&&&\n");
+            $user = array();
+            $message = '无联系人信息！';
+            $this->assign('user',$user);
+            $this->assign('msg',$message);
+            $this->display('user');
+        }else{
+            logger("处理该影楼联系人信息-->开始");
+            $str_xml = substr(rtrim($result,'></recipe>'),32);
+            $tra_arr = explode('><l>',$str_xml);
+            // logger('xml转数组：'.var_export($tra_arr,TRUE)); //debug
+            $tra_arr2 = $get_ylou_contacts->contact_arr2($tra_arr);
+            // logger('新同步联系人情况：'.var_export($tra_arr2,TRUE)); //debug
+            logger("处理该影楼联系人信息-->更新或增加");
+            $app_user = D('app_user');
+            // 第一步先查询是否已存在该店铺的联系人信息，如果存在则更新，如果不存在则直接导
+            $where = array(
+                'sid' => session('sid')
+            );
+            $num_app_user= $app_user->where($where)->count();
+            // $sql = $app_user->getLastsql(); //debug
+            // logger('查询语句：'.$sql); //debug
+            logger('原有影楼联系人数量：'.$num_app_user); //debug
+            if($num_app_user == 1){
+                logger('只存在管理员联系人信息！');
+                //若当前只有管理员一人，则添加全部联系人到app_user表中
+                $result = $app_user->addAll($tra_arr2);
+                if($result){
+                    logger('员工联系人添加成功！');
+                    $user = $app_user->where(array('sid'=>session('sid')))->select();
+                    //注册环信
+                    $register_easemob_result = $get_ylou_contacts->create_easemob_user();
+                    if($register_easemob_result){
+                        logger('注册环信成功！');
+                    }else{
+                        logger('注册环信失败！');
+                    }
+                    $message = '联系人添加成功！';
+                    $this->assign('user',$user);
+                    $this->assign('msg',$message);
+                    $this->display('user');
+                }else{
+                    logger('员工联系人添加失败！');
+                    $user = array();
+                    $message = '联系人导入失败！';
+                    $this->assign('user',$user);
+                    $this->assign('msg',$message);
+                    $this->display('user');
+                }
+            }else{ //循环判断是否有变化，如果有则更新。无变化则丢弃! 废弃该思路，删除原有的员工联系人（除管理员外），将新联系人新增到员工联系人中
+                //如果已有员工账户存在，则全部删除，重新导入。
+                logger('已存在员工联系人信息！');
+                logger('先删除注册的环信账号！');
+                // die;
+                $del_easemob_result = $get_ylou_contacts->delete_easemob_user($num_app_user);
+                if($del_easemob_result){
+                    logger('删除环信注册账号成功！');
+                    $delete_where = array(
+                        'sid' => session('sid'),
+                        'type' => 0
+                    );
+                    $result = $app_user->where($delete_where)->delete();
+                    if($result){
+                        logger('删除员工联系人添加成功！之后重新导入-->DELETE--->OK-->');
+                        $add_result = $app_user->addAll($tra_arr2);
+                        if($add_result){
+                            logger('员工联系人添加成功！');
+                            $user = $app_user->where(array('sid'=>session('sid')))->select();
+                             //注册环信
+                            $register_easemob_result = $get_ylou_contacts->create_easemob_user($user);
+                            if($register_easemob_result){
+                                logger('注册环信成功！');
+                            }else{
+                                logger('注册环信失败！');
+                            }
+                            $message = '联系人添加成功！';
+                            $this->assign('user',$user);
+                            $this->assign('msg',$message);
+                            $this->display('user');
+                        }else{
+                            logger('员工联系人添加失败！');
+                            $user = array();
+                            $message = '联系人添加失败！';
+                            $this->assign('user',$user);
+                            $this->assign('msg',$message);
+                            $this->display('user');
+                        }
+                    }else{
+                        logger('删除员工联系人失败！暂停导入！-->DELETE--->FAILED-->');
+                        $user = array();
+                        $message = '删除原有联系人失败，添加新联系人暂停！';
+                        $this->assign('user',$user);
+                        $this->assign('msg',$message);
+                        $this->display('user');
+                    }
+                }else{
+                    logger('删除环信注册用户失败！');
+                    $this->error('删除环信注册用户失败！');
+                }
+            }
+        }
+    }
+    //为员工账号注册环信 重新注册
+    public function my_user_easemob(){
+        // 先删除原来的环信账号
+        $get_ylou_contacts = A('Home/GetYLouContacts');
+        logger('删除原环信账号');
+        $del_easemob_result = $get_ylou_contacts->delete_easemob_user();
+        // 再重新注册
+        logger('重新注册环信账号');
+        $register_easemob_result = $get_ylou_contacts->create_easemob_user();
+    }
+    //修改密码，登录密码和环信密码
+    public function modify_user_pwd(){
+        logger('修改用户密码-->开始');
+        $post = I();
+        logger('传入参数：'.var_export($post,TRUE));die; //debug
+        $new_pwd = $post['pwd'];
+        $uid = $post['uid'];
+        $user = $post['user'];
+        if($new_pwd && $uid && $user){
+            $app_user = D('app_user');
+            $where = array(
+                'uid' => $uid
+            );
+            $update_data = array(
+                'password' => $new_pwd,
+                'modify_time' => time()
+            );
+            $update = $app_user->where($where)->save($update_data);
+            if($update){
+                logger('修改app用户密码成功！');
+                // 更新环信密码
+                //修改成功，下一步修改环信的密码
+                $user = session('store_simple_name').'_'.$user;
+                $modify_result = modify_easemob_pwd($user,$new_pwd);
+                logger('修改环信密码返回值：'.var_export($modify_result,TRUE));
+                //判断修改情况  需要进一步完善环信的返回值识别
+                if($modify_result){
+                    logger('app，环信密码都修改成功！'); 
+                     $return_data = array(
+                        'code' => 1,
+                        'message' => '修改密码成功！'
+                    );
+                }else{
+                    logger('app密码修改成功，环信密码修改失败！'); 
+                     $return_data = array(
+                        'code' => 1,
+                        'message' => '修改密码成功！'
+                    );
+                }
+                $this->ajaxReturn($return_data);
+            }else{
+                logger('修改app用户密码失败！');
+                $return_data = array(
+                    'code' => 0,
+                    'message' => '修改密码失败！'
+                );
+                $this->ajaxReturn($return_data);
+            }
+        }else{
+            logger('提交信息不全');
+            $return_data = array(
+                'code' => 2,
+                'message' => '提交数据不全！'
+            );
+            $this->ajaxReturn($return_data);
+        }
+    }
+    // 我的影楼介绍，H5页面。列表
+    public function my_ylou_list(){
+        $my_ylou = D('my_ylou');
+        $where = array(
+            'sid' => session('sid')
+        );
+        $my_ylou_result = $my_ylou->where($where)->select();
+        $this->assign('ylou',$my_ylou_result);
+        $this->display('mylou');
+    }
+
+    // 我的影楼介绍，H5页面。添加
+    public function my_ylou_add(){
+        logger('我的影楼-->');
+        $my_ylou = D('my_ylou');
+        $post = I();
+        $content = $post['content'];
+        $id = $post['id'];
+        $open = $post['is_open'];
+        //先查询是否已存在影楼页面
+        $where = array(
+            'sid' => session('sid')
+        );
+        if($content){
+            logger('我的影楼-->修改或增加');
+            if($id){
+                //修改页面
+                logger('修改-->');
+                $data = array(
+                    'content' => $content,
+                    'modify_time' => time(),
+                    'is_open' => $open
+                );
+                $result = $my_ylou->where(array('id'=>$id))->save($data);
+                if($result){
+                    logger('修改成功！');
+                }else{
+                    logger('修改失败！');
+                }
+            }else{
+                // 新增页面
+                logger('增加-->');
+                $data = array(
+                    'content' => $content,
+                    'time' => time(),
+                    'is_open' => $open,
+                    'sid' => session('sid')
+                );
+                $result = $my_ylou->add($data);
+                if($result){
+                    logger('增加成功！');
+                }else{
+                    logger('增加失败！');
+                }
+            }
+        }else{
+            logger('我的影楼-->展示');
+            $result = $my_ylou->where($where)->select();
+        }
+    }
+    // APP封面图片
+    public function my_coverimg_list(){
+        $my_coverimg = D('cover_img');
+        $where = array(
+            'sid' => session('sid')
+        );
+        $my_coverimg_result = $my_coverimg->where($where)->select();
+        $this->assign('cover',$my_coverimg_result);
+        $this->display('coverimg');
+    }
+    //意见反馈
+    public function feedback_show(){
+        $this->display('feedback');
+    }
+    public function feedback_in(){
+
+    }
+}

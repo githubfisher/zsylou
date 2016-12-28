@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Unicorn Admin</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/font-awesome.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/fullcalendar.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery.jscrollpane.css" />	
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/unicorn.css" />
+		<!--[if lt IE 9]>
+		<script type="text/javascript" src="__PUBLIC__/Admin/js/respond.min.js"></script>
+		<![endif]-->
+	</head>	
+<body data-color="grey" class="flat" style="background:#3c3c3c;">
+	<div id="wrapper">
+		<div id="sidebar">
+			<div id="search">
+				<input type="text" placeholder="Search here..." readOnly="ture"/><button type="submit" class="tip-right" title="Search"><i class="fa fa-search"></i></button>
+			</div>	
+			<ul>
+				<li class="submenu">
+					<a href="#"><i class="fa fa-mail-forward"></i> <span>九宫格</span> <span class="label label-important">2</span></a>
+					<ul>
+						<li><a href="{:U('Admin/manage/list_wei_category')}" target="rightFrame">模板分类</a></li>
+						<li><a href="{:U('Admin/manage/list_wei_templet')}" target="rightFrame">模板列表</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<script src="__PUBLIC__/Admin/js/excanvas.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/jquery-ui.custom.js"></script>
+    <script src="__PUBLIC__/Admin/js/bootstrap.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/jquery.flot.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/jquery.flot.resize.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/jquery.sparkline.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/fullcalendar.min.js"></script>
+    
+    <script src="__PUBLIC__/Admin/js/jquery.nicescroll.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/unicorn.js"></script>
+    <script src="__PUBLIC__/Admin/js/unicorn.dashboard.js"></script>
+</body>
+</html>

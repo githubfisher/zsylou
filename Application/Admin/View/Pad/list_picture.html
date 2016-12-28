@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Unicorn Admin</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/font-awesome.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/unicorn.css" />
+		<!--[if lt IE 9]>
+		<script type="text/javascript" src="__PUBLIC__/Admin/js/respond.min.js"></script>
+		<![endif]-->
+		<style>
+		#content{
+			border-bottom-left-radius:0;
+		}
+			input[type=file]{
+			  width:0px;
+			  height:0px;
+			  opacity: 0;
+			}
+			.coverlabel{
+				padding:143px 120px;
+			}
+			#bar{
+			  margin-top:-25px;
+			  line-height: 4px;
+			  width:0%;
+			  height:5px;
+			  background: #19A97B;
+			  text-align: center;
+			}
+			#add{
+				width:100%;
+				height:auto;
+				background: url("__PUBLIC__/Admin/img/demo/add.jpg");
+				background-size:100%;
+			}
+			#content{
+				border-bottom-left-radius:0;
+				margin-bottom: -39px;
+			}
+			td{text-align: center;} 
+			/*.tools{padding-left: 25px;}*/
+			.tools ul{
+				margin-left:-5px;
+			}
+			.add{
+				display:block;
+				width:50px;
+				height:30px;
+				line-height: 30px;
+				text-align: center;
+				float: left;
+			}
+			.export{
+				display:block;
+				width:50px;
+				height:30px;
+				line-height: 30px;
+				text-align: center;
+				float: left;
+			}
+			/*tip*/
+  			.tip{
+  				width:485px;
+  				height:300px; 
+  				position:absolute;
+  				top:10%; 
+  				left:30%;
+  				background:#fcfdfd;
+  				box-shadow:1px 8px 10px 1px #9b9b9b;
+  				border-radius:1px;
+  				display:none;
+  				z-index:111111;
+  				text-align: center;
+  				margin-top:15px;
+  				padding-top:20px;
+  			}
+  			.tip b{
+  				font-size:18px;
+  			}
+  			.lip{
+  				height:10px;
+  			}
+  			.export {
+			    width: 60px;
+			}
+			/* new theme category */
+			.tools a {
+				color:#333;
+			}
+			.tools a:hover{
+				color:#428bca;
+			}
+			.add-border{
+			    width: 100px;
+				border: 1px solid rgb(204, 204, 204);
+			}
+			.add-ml{
+				margin-left:15px;
+			}
+			.th-fr{
+				float: right;
+			}
+			.th-mr{
+				margin-right:35px;
+			}
+			.meg{
+			  display: none;
+			  background: rgba(0,0,0,.35);
+			  width: 100%;
+			  height: 100%;
+			  position: fixed;
+			  top: 0;
+			  left: 0;
+			  z-index: 102;
+			}
+			.meginfo{
+			  width:15%;
+			  /*height:6%;*/
+			  margin: 0 auto;
+			  padding: 1%;
+			  background: #f8f8f8;
+			  margin-top: 16%;
+			  border-radius: 5px;
+			  text-align: center;
+			}
+			#megbtn{
+			  width: 50px;
+			  height: 50px;
+			  border: 2px solid #67c1a5;
+			  border-radius: 100%;
+			  float: left;
+			  margin-left: 5%;
+			}
+			h6{
+			  color:#67c1a5;
+			  font-size: 30px;
+			  margin-top:0.1em;
+			  margin-left: -0.06em;
+			}
+			#megmeg{
+			    line-height: 2em;
+			    font-size: 1.9em;
+			    margin-left: 15px;
+			    position:relative;
+			    right:-10px;
+			    
+			}
+			.btns{
+				border-radius: 3px;
+				padding:2px 15px;
+			}
+			#btns-r{
+  				margin-left:5px;
+  			}
+			.btns:hover{
+				border-color:#05a1ea;
+				background-color:#05a1ea;
+				color:white;
+			}
+			#folder_name{
+				margin-bottom:15px;
+			}
+			.prolist-bg{
+			  position: fixed;
+			  top:104px;
+			  right:35px;
+			  width:100px;
+			 	display:none;
+			}
+			.prolist{
+			  padding:20px;
+			  background:#f0f0f0;
+			}
+			.prolist li{
+			  line-height: 20px;
+			  font-size:12px;
+			  list-style-type: none;
+			}
+			.prolist li a{
+				color:#333;
+			}
+			.prolist li a:hover{
+			  color:#428bca;
+			}
+			#new-tab{
+				width:60%;
+				margin-left: 16%;
+			}
+			#new-tab input[type="text"]{
+				width:100%;
+			}
+			#new-tab td{
+				padding:5px 10px;
+			}
+			#th-type{
+				width: 100%;
+				padding: 2px;
+			}
+			.no-border{
+				box-shadow: 0 0 1px #ffffff;
+				border-top: 1px solid #d6d6d6;
+				border-bottom: 1px solid #d6d6d6;
+				padding-left: 10px;
+				margin-bottom: 20px;
+				border:none;
+				background-color: rgba(234, 234, 234, 0);
+			}
+			.no-border a.current {
+			    font-weight: bold;
+			    color: #444444;
+			}
+			.no-border a:last-child {
+			    background-image: none;
+			}
+			.no-border a:hover {
+			    color: #333333;
+			}
+			.no-border a {
+			    padding: 8px 20px 8px 10px;
+			    display: inline-block;
+			    background-image: url('/Public/Admin/img/breadcrumb.png');
+			    background-position: center right;
+			    background-repeat: no-repeat;
+			    font-size: 11px;
+			    color: #666666;
+			}
+			#label-file{
+				padding: 0px 21px;
+			}
+			.gallery-masonry .item {
+				width:160px;
+			}
+			.item img{
+				width:150px;
+				height:160px;
+			}
+			#widget-content-2{
+				min-height: 400px;
+			}
+			.bg-green{
+				background-color:#11f554;
+			}
+		</style>
+		<script>
+			// show create folder page
+			  function new_folder_show(){
+			  	$("#newfolder").fadeIn();
+			  }
+			// cancel create type
+			  function new_cancel(){
+			  	$("#newfolder").fadeOut();
+			  }
+			// create ney theme type
+			  function new_folder(){
+			  	$("#newfolder").fadeOut();
+			  	var name = document.getElementById('folder_name').value;
+			  	var folder = document.getElementById('folder').value;
+			  	var level = document.getElementById('level').value;
+			  	$.post("/index.php/Admin/pad/new_folder",{name:name,folder:folder,level:level},function(data){
+	                if(data.status == 1){
+	                    document.getElementById("megmeg").innerHTML="创建成功！";
+	                    $("#tongbu").fadeIn();
+	                    setTimeout(function(){
+	                       $("#tongbu").fadeOut();
+	                       window.location.reload();
+	                    },800);
+	                    return true;
+	                }else{
+	                    document.getElementById("megimg").innerHTML="X";
+	                    document.getElementById("megmeg").innerHTML="创建失败！";
+	                    $("#tongbu").fadeIn();
+	                    setTimeout(function(){
+	                       $("#tongbu").fadeOut();
+	                    },1000);
+	                    return false;
+	                }
+	            });
+			  }
+			function removeimg(id,type,level,path,name){
+			 	var dfile = 'true';
+			 	$.post("remove_files",{id:id,type:type,level:level,dfile:dfile,path:path,name:name},function(data){
+			 		if(data.status == 1){
+			 			alert('删除成功!');
+			 			window.location.reload();
+			 		}else{
+			 			alert('删除失败!');
+			 		}
+			 	});
+			}
+		</script>
+	</head>	
+	<body data-color="grey" class="flat">
+		<div id="wrapper">
+			<div id="content">
+				<div id="content-header">
+					<h1>Gallery</h1>
+					<div class="btn-group">
+						<a class="btn" title="Manage Files"><i class="fa fa-file"></i></a>
+						<a class="btn" title="Manage Users"><i class="fa fa-user"></i></a>
+						<a class="btn" title="Manage Comments"><i class="fa fa-comment"></i><span class="label label-danger">5</span></a>
+						<a class="btn" title="Manage Orders"><i class="fa fa-shopping-cart"></i></a>
+					</div>
+				</div>
+				<div id="breadcrumb">
+					<a href="#" class="tip-bottom"><i class="fa fa-home"></i>首页</a>
+					<a href="#" class="current">图片管理</a>
+				</div>
+				<div class="tools">
+					<ul>
+						<li class="export add-border"><label id="label-file" for="file">上传图片</label><input type="file" name="file" id="file" vlaue="" onchange="ajaxFileUpload();" multiple/></li>   <!-- <a href="javascript:void(0);" onclick="ajaxFileUpload();">-->
+						<li class="add th-fr th-mr add-border add-ml" id="pickpro"><a href="javascript:void(0);" onclick="showlist();">全部图片</a></li>
+						<li class="add th-fr add-border add-ml"><a href="javascript:void(0);" onclick="new_folder_show()">新建文件夹</a></li>
+					</ul> 
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="fa fa-picture-o"></i>
+								</span>
+								<!-- <h5>图片列表</h5> -->
+								<div id="" class="no-border">
+									<volist name="path" id="p">
+										<if condition="$p.level eq '0'">
+												<if condition="$level eq $p['level']"><a href="{:U('Admin/Pad/list_picture',array('folder'=>$p['folder'],'level'=>$p['level']))}" class="tip-bottom current">图片空间</a>
+													<else /><a href="{:U('Admin/Pad/list_picture',array('folder'=>$p['folder'],'level'=>$p['level']))}" class="tip-bottom">图片空间</a>
+												</if>
+											<else />
+												<if condition="$level eq $p['level']"><a href="{:U('Admin/Pad/list_picture',array('folder'=>$p['folder'],'level'=>$p['level']))}" class="tip-bottom current">{$p.folder}</a>
+													<else /><a href="{:U('Admin/Pad/list_picture',array('folder'=>$p['folder'],'level'=>$p['level']))}" class="tip-bottom">{$p.folder}</a>
+												</if>
+										</if>
+									</volist>
+								</div>
+							</div>
+							<div class="widget-content" id="widget-content-2">
+								<div class="gallery-masonry">
+									<volist name="files" id="v">
+										<if condition="$v.type eq '1'"> <!-- 文件夹 -->
+											<div class="item">
+												<a href="#" class="thumbnail">
+													<img src="__PUBLIC__/Admin/img/d2.jpg" alt="">
+												</a>
+												<div class="actions">
+													<div class="actions-inner">
+														<a title="打开" href="{$v.url}" class="tip-top"><i class="fa fa-pencil"></i></a>
+														<a title="删除" href="javascript:void(0)" onclick="removeimg('{$v.id}','{$v.type}','{$v.level}','{$v.path}','{$v.name}')" class="tip-top"><i class="fa fa-trash-o"></i></a>
+													</div>
+												</div>
+												<span>{$v.name}</span>
+									    	</div>
+								    	<elseif condition="($v.type eq '2') OR ($v.type eq '3')" /> <!-- 图片或logo -->
+								    		<div class="item">
+												<if condition="$v.status eq '1'"><a href="#" class="thumbnail bg-green">
+													<img src="{$v.path}" alt="">
+												</a>
+													<else /><a href="#" class="thumbnail">
+													<img src="{$v.path}" alt="">
+												</a>
+												</if>
+												<div class="actions">
+													<div class="actions-inner">
+														<a title="" href="#" class="tip-top"><i class="fa fa-pencil"></i></a>
+														<a title="删除" href="javascript:void(0)" onclick="removeimg('{$v.id}','{$v.type}','{$v.level}','{$v.path}','{$v.name}')" class="tip-top"><i class="fa fa-trash-o"></i></a>
+													</div>
+												</div>
+												<span>{$v.name}</span>
+									    	</div>
+								    	<else /> <!-- 其他文件 -->
+								    		<div class="item">
+												<a href="#" class="thumbnail">
+													<img src="__PUBLIC__/Admin/img/f2.jpg" alt="">
+												</a>
+												<div class="actions">
+													<div class="actions-inner">
+														<a title="" href="#" class="tip-top"><i class="fa fa-pencil"></i></a>
+														<a title="删除" href="javascript:void(0)" onclick="removeimg('{$v.id}','{$v.type}','{$v.level}','{$v.path}','{$v.name}')" class="tip-top"><i class="fa fa-trash-o"></i></a>
+													</div>
+												</div>
+												<span>{$v.name}</span>
+									    	</div>
+								    	</if>
+									</volist>
+								</div>
+                            </div>
+						</div>
+					</div>  
+				</div>
+			</div>
+		</div>
+		<!-- 图片附带参数信息 -->
+		<form method="post" action="#" name="ajaxfileupload">
+			<input type="hidden" name="folder" id="folder" value="{$folder}">
+			<input type="hidden" name="level" id="level" value="{$level}">
+			<input type="hidden" name="status" id="status" value="0">
+			<input type="hidden" name="savepath" id="savepath" value="{$savepath}">
+			<!-- <label for="file">上传图片：</label><input type="file"  name="file" id="file" vlaue=""/></td> -->
+		</form>
+		<section class="meg" id="newfolder">
+	        <div class="meginfo">
+	          <form>
+	          	<input type="text" name="folder_name" id="folder_name" value="" placeholder="新文件夹名称">
+	          	<input type="button" value="提交" name="sub" id="sub" class="btns" onclick="new_folder();">
+	          	<input type="button" value="取消" name="cancel" id="btns-r" class="btns" onclick="new_cancel();">
+	          </form>
+	       </div>
+   		 </section>
+   		 <!-- show all types -->
+   		 <section>
+		  <div class="prolist-bg" id="prolist-bg">
+		    <ul class="prolist">
+		      <li><a href="{:U('Admin/Pad/list_ct','type=theme')}">全部类型</a></li>
+		      <volist name="type" id="t">
+		        <li><a href="{:U('Admin/Pad/list_ct',array('id'=>$t['id'],'type'=>'theme'))}" title="{$t.type}"><span style="color:red">{$t.id}</span>{$t.type|substr=0,50}</a></li>
+		      </volist>
+		    </ul>
+		  </div>
+		</section>
+		<section class="meg" id="tongbu">
+			<div class="meginfo">
+			  <div id="megbtn"><h6 id="megimg">√</h6></div>
+			  <div id="megmeg">同步成功！</div>
+			</div>
+		</section>	
+            
+	    <script src="__PUBLIC__/Admin/js/jquery.min.js"></script>
+	    <script src="__PUBLIC__/Admin/js/jquery-ui.custom.js"></script>
+	    <script src="__PUBLIC__/Admin/js/bootstrap.min.js"></script>
+	    
+	    <script src="__PUBLIC__/Admin/js/jquery.nicescroll.min.js"></script>
+	    <script src="__PUBLIC__/Admin/js/jquery.masonry.min.js"></script>
+	    <script src="__PUBLIC__/Admin/js/unicorn.js"></script>
+	    <!-- // <script src="__PUBLIC__/Admin/js/jquery-1.9.1.min.js"></script> -->
+	    <script src="__PUBLIC__/Admin/js/ajaxfileupload.js"></script>
+	    <script>
+	        $(function(){
+	            $('.gallery-masonry').masonry({
+	              itemSelector: '.item',
+	              isAnimated: true,
+	              isFitWidth: true
+	            });                    
+	        });
+	        //ajax 图片上传
+	        function ajaxFileUpload(){
+			   	var data = {  
+						     'folder':$("input[name='folder']").val(),
+							 'level':$("input[name='level']").val(),
+							 'status':$("input[name='status']").val(),
+							 'savepath':$("input[name='savepath']").val()
+						  } 
+		    	$.ajaxFileUpload({
+			      	url:"/index.php/Admin/Pad/upload_img", //这里是关键，这里地址必须和必须和本地地址一样，不然违反同源策略，  这样写的url:"http://www.baidu.com/mobilechat"是不行的。如果确实需要跨域提交，需要加一个中间层。 也可以用jsonp
+			      	secureuri:false,
+				  	data:data,	//参数这里不能这样写$('.registerform').serialize(), 因为我传递的是JSON格式的数据。$('#form1').serialize()传递的参数不是这样的格式。
+			      	fileElementId:'file', //文件选择框的id属性
+			      	dataType: 'jsonp',   //服务器返回的格式，可以是json ,也可以是jsonp
+				  	success:function(data,msg){
+				   		//dosomething----------------经测试是没问题的，不过既然需要图片提交，我想大多数都是跨域提交。
+				   		document.getElementById("megmeg").innerHTML="上传成功！";
+		                $("#tongbu").fadeIn();
+		                setTimeout(function(){
+		                    $("#tongbu").fadeOut();
+		                    window.location.reload();
+		                },800);
+		                return true;
+					},
+					error:function(data){
+						document.getElementById("megimg").innerHTML="X";
+		                document.getElementById("megmeg").innerHTML="上传失败！";
+		                $("#tongbu").fadeIn();
+		                setTimeout(function(){
+		                    $("#tongbu").fadeOut();
+		                },1000);
+		                return false;
+					}
+		    	});
+			}
+	    </script>
+	</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{$title}</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="__PUBLIC__/Admin/css/font-awesome.css" />
+        <link rel="stylesheet" href="__PUBLIC__/Admin/css/unicorn-login.css" />
+    	<script type="text/javascript" src="__PUBLIC__/Admin/js/respond.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/Admin/js/analytics.js"></script>
+	<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		  ga('create', 'UA-44987299-1', 'bootstrap-hunter.com');
+		  ga('send', 'pageview');
+          var url = "{:U('Admin/index/index')}";
+          var uurl = "{:U('Admin/mylou/index')}";
+          var weitrans = "{:U('Admin/weitrans/index')}";
+            document.onkeydown = function (e) {
+                var theEvent = window.event || e;
+                var code = theEvent.keyCode || theEvent.which;
+                if (code == 13) {
+                $("#loginbtn").click();
+                }
+            } 
+		</script></head>    <body>
+        <div id="container">
+            <!-- <div id="logo">
+                <img src="__PUBLIC__/Admin/img/logo.png" alt="" />
+            </div> -->
+            <div id="user">
+                <div class="avatar">
+                    <div class="inner"></div>
+                    <img src="__PUBLIC__/Admin/img/demo/av1_1.jpg" />
+                </div>
+                <div class="text">
+                    <h4>Hello,<span class="user_name"></span></h4>
+                </div>
+            </div>
+            <div id="loginbox">            
+                <form id="loginform" action="#">
+    				<!-- <p>Enter username and password to continue.</p> -->
+                    <p style="height:50px;line-height:50px;font-size:25px;"><b>掌上影楼</b></p>
+                    <div class="input-group input-sm">
+                        <span class="input-group-addon"><i class="fa fa-user"></i></span><input class="form-control" type="text" id="username" placeholder="用户名" />
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lock"></i></span><input class="form-control" type="password" id="password" placeholder="密码" />
+                    </div>
+                    <div class="form-actions clearfix">
+                        <!-- <div class="pull-left">
+                            <a href="#" class="flip-link to-register blue">Create new account</a>
+                        </div> -->
+                        <div class="pull-right">
+                            <a href="#" class="flip-link to-recover grey">忘记密码？</a>
+                        </div>
+                        <input type="submit" class="btn btn-block btn-primary btn-default" id="loginbtn" value="登录" />
+                    </div>
+                   <!--  <div class="footer-login">
+                        <div class="pull-left text">
+                            第三方账号登录
+                        </div>
+                        <div class="pull-right btn-social">
+                            <a class="btn btn-facebook" href="#"><i class="fa fa-facebook"></i></a>
+                            <a class="btn btn-twitter" href="#"><i class="fa fa-twitter"></i></a>
+                            <a class="btn btn-google-plus" href="#"><i class="fa fa-google-plus"></i></a>
+                        </div>
+                    </div>
+ -->
+                </form>
+                <form id="recoverform" action="#">
+    				<p>提供一个电子邮箱地址来接收修改密码的链接</p>
+    				<div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-envelope"></i></span><input class="form-control" type="text" placeholder="电子邮箱地址" />
+                    </div>
+                    <div class="form-actions clearfix">
+                        <div class="pull-left">
+                            <a href="#" class="grey flip-link to-login">点击登录</a>
+                        </div>
+                        <div class="pull-right">
+                            <a href="#" class="blue flip-link to-register">这次可要记住了！</a>
+                        </div>
+                        <input type="submit" class="btn btn-block btn-inverse" value="提交" />
+                    </div>
+                </form>
+                <form id="registerform" action="#">
+                    <p>登记注册</p>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-user"></i></span><input class="form-control" type="text" placeholder="用户名" />
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lock"></i></span><input class="form-control" type="password" placeholder="密码" />
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lock"></i></span><input class="form-control" type="password" placeholder="确认密码" />
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-envelope"></i></span><input class="form-control" type="text" placeholder="电子邮箱" />
+                    </div>
+                    <div class="form-actions clearfix">
+                        <div class="pull-left">
+                            <a href="#" class="grey flip-link to-login">点击登录</a>
+                        </div>
+                        <div class="pull-right">
+                            <a href="#" class="grey flip-link to-recover">新账号新开始</a>
+                        </div>
+                        <input type="submit" class="btn btn-block btn-success" value="注册" />
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <script src="__PUBLIC__/Admin/js/jquery.min.js"></script>  
+        <script src="__PUBLIC__/Admin/js/jquery-ui.custom.min.js"></script>
+        <script src="__PUBLIC__/Admin/js/unicorn.login.js"></script> 
+    </body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Unicorn Admin</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/font-awesome.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/fullcalendar.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery.jscrollpane.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/unicorn.css" />
+		<!--[if lt IE 9]>
+		<script type="text/javascript" src="__PUBLIC__/Admin/js/respond.min.js"></script>
+		<![endif]-->
+	</head>	
+<body data-color="grey" class="flat" style="background:#3c3c3c;">
+	<div id="wrapper">
+		<div id="sidebar">
+			<div id="search">
+				<input type="text" placeholder="Search here..." readOnly="ture"/><button type="submit" class="tip-right" title="Search"><i class="fa fa-search"></i></button>
+			</div>	
+			<ul>
+				<li class="submenu active">
+					<a href="#"><i class="fa fa-home"></i> <span>影楼管理</span> <span class="label label-important">5</span></a>
+					<ul>
+						<li><a href="{:U('Admin/manage/ylou')}" target="rightFrame">影楼列表</a></li>
+						<li><a href="{:U('Admin/manage/account_search')}" target="rightFrame">店铺搜索</a></li>
+						<li><a href="{:U('Admin/manage/new_account')}" target="rightFrame">开通店铺</a></li>
+						<li class="active"><a href="{:U('Admin/manage/count_info')}" target="rightFrame">统计数据</a></li>
+						<li><a href="{:U('Admin/manage/ylou_excel')}" target="rightFrame">导出报表</a></li>
+					</ul>
+				</li>
+				<li class="submenu">
+					<a href="#"><i class="fa fa-th-list"></i> <span>账号管理</span> <span class="label label-important">3</span></a>
+					<ul>
+						<li><a href="{:U('Admin/manage/user')}" target="rightFrame">APP账号</a></li>
+						<li><a href="{:U('Admin/manage/user_search')}" target="rightFrame">账号搜索</a></li>
+						<li><a href="{:U('Admin/Manage/export_user')}" target="rightFrame">导出报表</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="{:U('Admin/manage/coverimg')}" target="rightFrame"><i class="fa fa-signal"></i> <span>封面图片</span></a>
+				</li>
+				<li><a href="{:U('Admin/manage/list_manager')}" target="rightFrame"><i class="fa fa-user-md"></i> <span>区域主管经理</span></a></li>
+				<li><a href="{:U('Admin/manage/list_area')}" target="rightFrame"><i class="fa fa-globe"></i> <span>区域管理</span></a></li>
+				<li><a href="#" target="rightFrame"><i class="fa fa-wrench"></i> <span>营销工具</span></a></li>
+				<li class="submenu">
+					<a href="#"><i class="fa fa-mail-forward"></i> <span>九宫格</span> <span class="label label-important">2</span></a>
+					<ul>
+						<li><a href="{:U('Admin/manage/list_wei_category')}" target="rightFrame">模板分类</a></li>
+						<li><a href="{:U('Admin/manage/list_wei_templet')}" target="rightFrame">模板列表</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="{:U('Admin/manage/version')}" target="rightFrame"><i class="fa fa-flask"></i> <span>版本控制</span></a>
+				</li>
+				<li class="submenu">
+					<a href="#"><i class="fa fa-file"></i> <span>全局H5影楼</span> <span class="label label-important">2</span></a>
+					<ul>
+						<li><a href="{:U('Admin/manage/my_ylou_list')}" target="rightFrame">H5页面管理</a></li>
+						<li><a href="{:U('Admin/manage/new_redius')}" target="rightFrame">新建H5页面</a></li>
+					</ul>
+				</li>
+				<li><a href="{:U('Admin/manage/all_opinis')}" target="rightFrame"><i class="fa fa-inbox"></i> <span>意见反馈</span></a></li>
+			</ul>
+		</div>
+	</div>
+	<script src="__PUBLIC__/Admin/js/excanvas.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/jquery-ui.custom.js"></script>
+    <script src="__PUBLIC__/Admin/js/bootstrap.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/jquery.flot.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/jquery.flot.resize.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/jquery.sparkline.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/fullcalendar.min.js"></script>
+    
+    <script src="__PUBLIC__/Admin/js/jquery.nicescroll.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/unicorn.js"></script>
+    <script src="__PUBLIC__/Admin/js/unicorn.dashboard.js"></script>
+</body>
+</html>

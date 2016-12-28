@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Unicorn Admin</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/font-awesome.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/unicorn.css" />
+		<!--[if lt IE 9]>
+		<script type="text/javascript" src="__PUBLIC__/Admin/js/respond.min.js"></script>
+		<![endif]-->
+		<style>
+		#content{
+			border-bottom-left-radius:0;
+		}
+			input[type=file]{
+			  width:0px;
+			  height:0px;
+			  opacity: 0;
+			}
+			.coverlabel{
+				padding:143px 120px;
+			}
+			#bar{
+			  margin-top:-25px;
+			  line-height: 4px;
+			  width:0%;
+			  height:5px;
+			  background: #19A97B;
+			  text-align: center;
+			}
+			#add{
+				width:100%;
+				height:auto;
+				background: url("__PUBLIC__/Admin/img/demo/add.jpg");
+				background-size:100%;
+			}
+			#th-type{
+				width: 30%;
+				height: 34px;
+				min-width: 300px;
+			}
+			.col-lg-10 {
+			    width: 49%;
+			}
+			.meg{
+			  display: none;
+			  background: rgba(0,0,0,.35);
+			  width: 100%;
+			  height: 100%;
+			  position: fixed;
+			  top: 0;
+			  left: 0;
+			  z-index: 102;
+			}
+			.meginfo{
+			  width:15%;
+			  /*height:6%;*/
+			  margin: 0 auto;
+			  padding: 1%;
+			  background: #f8f8f8;
+			  margin-top: 16%;
+			  border-radius: 5px;
+			  text-align: center;
+			}
+			#megbtn{
+			  width: 50px;
+			  height: 50px;
+			  border: 2px solid #67c1a5;
+			  border-radius: 100%;
+			  float: left;
+			  margin-left: 5%;
+			}
+			h6{
+			  color:#67c1a5;
+			  font-size: 30px;
+			  margin-top:0.1em;
+			  margin-left: -0.06em;
+			}
+			#megmeg{
+			    line-height: 2em;
+			    font-size: 1.9em;
+			    margin-left: 15px;
+			    position:relative;
+			    right:-10px;
+			    
+			}
+			select {
+  				/*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+			  	border: solid 1px #ccc;
+			  	background: #fff;
+			  	/*很关键：将默认的select选择框样式清除*/
+				  appearance:none;
+				  -moz-appearance:none;
+				  -webkit-appearance:none;
+				  /*在选择框的最右侧中间显示小箭头图片*/
+				  background: url("http://ourjs.github.io/static/2015/arrow.png") no-repeat scroll right center rgb(255,255,255);
+				  /*为下拉小箭头留出一点位置，避免被文字覆盖*/
+				  padding-right: 14px;
+			}
+			/*清除ie的默认选择框样式清除，隐藏下拉箭头*/
+			select::-ms-expand { display: none; }
+			#save-btn{
+				padding: 10px 40px 10px 200px;
+				background: #F4F4F4;
+
+			}
+			.clear-both{
+				clear:both;
+			}
+			#widget-content-2{
+				min-height: 400px;
+			}
+			#up-label{
+				border: 1px solid #34495e;
+				padding: 6px 12px;
+				border-radius: 3px;
+				background:#34495e;
+				color:#fff;
+				font-weight: normal;
+			}
+			#up-label:hover{
+				background: #253544;
+			}
+			.btn{
+				vertical-align: initial;
+			}
+			/*图片空间*/
+			#z-bg{
+				width: 100%;
+    			height: auto;
+				border: 1px solid #CDCDCD;
+				box-shadow: none;
+				border-radius: 0;
+				background: none repeat scroll 0 0 #fafafa;
+			}
+			#image_space{
+				display: none;
+				padding: 100px 20% 200px 20%;
+				position: fixed;
+				top: 0;
+				left: 0;
+				z-index: 102;
+				width: 100%;
+				background: rgba(154,154,154,0.2);
+			}
+			.image-bg{
+    			width: 100%;
+    			height: 400px;
+				padding-left: 15px;
+				padding-top: 10px;
+				overflow: auto;
+			}
+			.item{
+				float:left;
+			}
+			.imgitem img{
+				width:100px;
+				height:100px;
+			}
+			#div-path{
+				height: 36px;
+				border-bottom: 1px solid rgb(204, 204, 204);
+				box-shadow: 0 1px 0 #ffffff inset;
+				border-top-right-radius: 6px;
+				border-top-left-radius: 6px;
+				border-bottom-right-radius: 0;
+				border-bottom-left-radius: 0;
+			}
+			.icon{
+				float: left;
+				border-right: 1px solid rgb(204, 204, 204);
+				padding: 8px 10px 8px 11px;
+				opacity: 0.7;
+			}
+			#z-bg .form-actions{
+			    border-bottom-right-radius: 6px;
+			    border-bottom-left-radius: 6px;
+			    background-color: #f4f4f4;
+			    padding: 10px 40px 10px 46%;
+			}
+			#z-cancel{
+				margin-left: 10px;
+			}
+			.tip-bottom{
+				/*line-height: 36px;*/
+				font-size: 11px;
+				color: rgb(102, 102, 102);
+				padding-left: 10px;
+				padding: 9px 20px 8px 10px;
+				display: inline-block;
+				background-image: url('/Public/Admin/img/breadcrumb.png');
+				background-position: center right;
+				background-repeat: no-repeat;
+			}
+			.current{
+				font-weight: bold;
+				background-image: none;
+			}
+			.picked{
+				background-color: #428bca;
+			}
+			/*图片空间END*/
+		</style>
+		<script>
+		//图片上传 
+			
+		  function uploadimg(){
+		    //创建formdata对象
+		    var fd=new FormData();
+		    //获取文件对象
+		    // var pic=document.getElementById('cover').files[0];
+		    //把文件内容追加到表单数据
+		    var max = document.getElementById('cover').files.length;
+		    for(var i=0;i<max;i++){
+		    	var pic=document.getElementById('cover').files[i];
+		    	fd.append(pic.name,pic); 
+		    } 
+		    //发送数据
+		    var xhr=new XMLHttpRequest();
+		    xhr.onreadystatechange=function(data)
+		      {
+		      if (xhr.readyState==4 && xhr.status==200){
+		            var json_obj = eval('('+xhr.responseText+')');//把JSON字符串转换成JSON对象
+		            // var img = document.getElementById("ercodeurl"); //返回的二维码图片存放地址赋值给变量
+		            // img.value = json_obj.content;
+		            // alert(json_obj.content);
+		            // alert(json_obj.url.length);//debug
+		            var obj = json_obj.url;
+		            var imgnum = obj.length;
+		            var sum = document.getElementById("sum").value;
+		            var max = parseInt(sum) + imgnum;
+		    		document.getElementById("sum").value = max;
+		    		var i = 0;
+		            for(var num = parseInt(sum)+1;num <= max;num++){
+		            	var img_obj = obj[i];
+		            	var img = '<div class="item" id="item'+num+'"><a href="#" class="thumbnail" id="pic'+num+'"><img src="'+ img_obj.path +'" alt=""></a><div class="actions"><div class="actions-inner"><a title="设为预览" href="javascript:void(0)" onclick="set_preview('+num+')" class="tip-top"><i class="fa fa-pencil"></i></a><a title="删除" href="javascript:void(0)" onclick="del_img('+num+')" class="tip-top"><i class="fa fa-trash-o"></i></a></div></div></div>';
+			            // $("#theme-imgs").html(img);
+			            $("#theme-imgs2").append(img);
+			            var img_url = '<input type="hidden" name="img'+num+'" id="img'+num+'" value="'+img_obj.path+'">'
+			            $("#img-urls").append(img_url); 
+			            i++;
+		            }
+		            //开启保存按钮
+			        $("#btn-save").removeAttr("disabled");	        
+			    }
+		      }
+		    xhr.open('POST','{:U('/Admin/Pad/upload_img')}',true);
+		    xhr.upload.onprogress=function (ev){
+		      if(ev.lengthComputable){
+		        $("#bar").addClass('addc-bar');
+		        // $("#upimg").addClass('addc-upimg');
+		        var percent=100*ev.loaded/ev.total;
+		        // document.getElementById('bar').style.width=percent+'%';
+		        // var uptd = document.getElementById('add');
+		        // var paddingwidth = eval(33);
+		        // var totalwidth = 100 + paddingwidth / uptd.scrollWidth * 100;
+		        document.getElementById('bar').style.width = percent + '%';
+		        document.getElementById('bar').innerHTML=parseInt(percent)+'%';
+		      }
+		    }
+		    xhr.send(fd);
+		    //演示显示在浏览器的效果
+		    // var debug=document.getElementById('debug');
+		    // var tempimg=document.createElement('img');
+		    // tempimg.src=window.URL.createObjectURL(pic);//把二进制对象编程浏览器的资源
+		    // document.getElementsByTagName('body')[0].appendChild(tempimg);
+		 }
+			 function select_change_color(type){
+			 	if(type == 'up'){
+			 		document.getElementById("th-type").style.border="1px solid #34495E";
+			 	}else{
+			 		document.getElementById("th-type").style.border="1px solid #ccc";
+			 	}
+			 }
+			//修改提交
+			function ajax_submit(){
+				var id = document.getElementById('th-id').value;
+				var name = document.getElementById('th-name').value;
+		  		var type = document.getElementById('th-type').value;
+		  		var remark = document.getElementById('th-remark').value;
+		  		var style = 'clothes';
+				$.post("edit_ct_edit",{id:id,name:name,type:type,remark:remark,style:style},function(data){
+					if(data.status == 1){
+						document.getElementById("megmeg").innerHTML="修改成功！";
+	                    $("#tongbu").fadeIn();
+	                    setTimeout(function(){
+	                       $("#tongbu").fadeOut();
+	                       window.location.reload();
+	                    },800);
+	                    return true;
+					}else{
+						document.getElementById("megimg").innerHTML="X";
+	                    document.getElementById("megmeg").innerHTML="修改失败！";
+	                    $("#tongbu").fadeIn();
+	                    setTimeout(function(){
+	                       $("#tongbu").fadeOut();
+	                    },1000);
+	                    return false;
+					}
+				});
+			}
+			//cancel upload imgs
+			function imgs_cancel(){
+				window.location.href="{:U('Admin/Pad/list_ct','type=clothes')}";
+			}
+			//save uploaded imgs
+			function imgs_sub(){
+				var id = document.getElementById('th-id').value;
+				var sum = document.getElementById("sum").value;
+				var unuse = document.getElementById('img-unuse').value;
+				if(sum == 0){
+					alert('请上传图片！');
+					return false;
+				}
+				var urls = '';
+				var str = '';
+				for(var i=1;i<=sum;i++){
+					var url = document.getElementById("img"+i).value;
+					urls += url + ' ';
+					str += ' ';
+				}
+				// alert('"'+urls+'" "'+str+'"');
+				if(str != urls){ //图片被清空
+					var pre = document.getElementById("preview").value;
+					if(pre == '' || pre == 0 || pre == null){
+						alert('请设置预览图片！');
+						return false;
+					}
+				}else{
+					var pre = ' ';
+				}
+				var type = "clothes"; 
+				$.post("/index.php/admin/pad/edit_img",{id:id,img:urls,preview:pre,type:type,unuse:unuse},function(data){
+					if(data.status == 1){
+						document.getElementById("megmeg").innerHTML="保存成功！";
+	                    $("#tongbu").fadeIn();
+	                    setTimeout(function(){
+	                       $("#tongbu").fadeOut();
+	                       window.location.reload();
+	                       //关闭保存按钮
+						   $("#btn-save").attr("disabled","disabled");
+	                    },800);
+	                    return true;
+					}else{
+						document.getElementById("megimg").innerHTML="X";
+	                    document.getElementById("megmeg").innerHTML="保存失败！";
+	                    $("#tongbu").fadeIn();
+	                    setTimeout(function(){
+	                       $("#tongbu").fadeOut();
+	                    },1000);
+	                    return false;
+					}
+				});
+			}
+			// set img as preview picture
+			function set_preview(n){
+				var pre = document.getElementById("img"+n).value;
+				document.getElementById("preview").value = pre;
+				document.getElementById("pic"+n).style.border="1px solid #f94514";
+				// clear others imgs's border
+				var sum = document.getElementById("sum").value;
+				for(var i=1;i<=sum;i++){
+					if(i != n){
+						document.getElementById("pic"+i).style.border="1px solid #DDD";
+					}
+				}
+				//开启保存按钮
+				$("#btn-save").removeAttr("disabled");
+			}
+			//del img 
+			function del_img(n,path){
+				// 删除图片元素
+				$("#item"+n).remove();
+				// 判断删除的是否是预览图
+				var picture = document.getElementById("img"+n).value;
+				var preview = document.getElementById("preview").value;
+				if(picture == preview){
+					document.getElementById("preview").value = "";
+				}
+				//对应图片input清空
+				document.getElementById("img"+n).value = '';
+				//开启保存按钮
+				$("#btn-save").removeAttr("disabled");
+				//弃用图片信息
+				var sum = document.getElementById("sum").value;
+				if(n <= sum){
+					document.getElementById("img-unuse").value += ' ' + path;
+				}
+			}
+			//设置类型 加载时执行
+			function select_dpicker(){ 
+				var type = document.getElementById("the-type").value;
+				$("#th-type").val(type);
+			}
+			//图片空间
+			//show images zone
+			function zone_show(){
+				$("#image_space").fadeIn(100);
+			}
+			//hide images zone
+			function zone_hide(){
+				$("#image_space").fadeOut(100);
+				//关闭保存按钮
+		        $("#add_image").attr("disabled","disabled");
+		        //清除添加了class的图片
+		        $(".picked").removeClass("picked");
+		        //清除所有已添加的图片input
+		        $(".pick_img").remove();
+		        document.getElementById("pick_id").value = '';
+		        document.getElementById("pick_num").value = '0';
+			}
+			//open dir
+			function open_dir(name,level){
+				// alert(name+" "+level); //debug
+				var way = "ajax";
+				$.post("/index.php/admin/pad/list_picture",{folder:name,level:level,way:way},function(data){
+					if(data.status == 1){
+						$(".tip-bottom").remove();
+						var path = data.path;
+						var max = path.length;
+						for(var i=0;i<max;i++){
+							var apath = path[i];
+							if(i == 0){
+								var url = '<a href="javascript:void(0);" class="tip-bottom" onclick="open_dir('+apath.folder+","+apath.level+')">图片空间</a>';
+							}else if((i+1) == max){
+								var url = '<a href="javascript:void(0);" class="tip-bottom current" onclick="open_dir('+apath.folder+","+apath.level+')">'+apath.folder+'</a>';
+							}else{
+								var url = '<a href="javascript:void(0);" class="tip-bottom" onclick="open_dir('+apath.folder+","+apath.level+')">'+apath.folder+'</a>';
+							}
+							$("#dir-path").append(url);
+						}
+						var obj = data.files;
+						$(".imgitem").remove();
+						var max = obj.length;
+						for(var i=0;i<max;i++){
+							var image = obj[i];
+							// alert(image.type);
+							switch(image.type){
+								case '1': //文件夹
+									var img = '<div class="item imgitem"><a href="#" class="thumbnail" title="'+image.name+'" ondblclick="open_dir('+image.name+","+image.level+')"><img src="__PUBLIC__/Admin/img/d2.jpg" alt=""></a></div>';
+									break;
+								case '2': //图片
+								case '3': //logo
+									var img = '<div class="item imgitem"><a href="#" class="thumbnail" title="'+image.name+'" id="image'+image.id+'" onclick="img_click("'+image.id+'","'+image.path+'")"><img src="'+image.path+'" alt=""></a></div>';
+									break;
+								default: //其他文件
+									var img = '<div class="item imgitem"><a href="#" class="thumbnail" title="'+image.name+'"><img src="__PUBLIC__/Admin/img/f2.jpg" alt=""></a></div>';
+									break;
+							}
+		         			$("#image-bg").append(img);
+						}
+					}else{
+						alert('很遗憾，打不开！');
+						return false;
+					}
+				});
+			}
+			//onclick image where in zone
+			function img_click(id,path){
+				if(id<10){
+					var dd = '0000'+id;
+				}else if(id<100){
+					var dd = '000'+id;
+				}else if(id<1000){
+					var dd = '00'+id;
+				}else if(id<10000){
+					var dd = '0'+id;
+				}else{
+					var dd = id;
+				}
+				//判断是否有class
+				if($("#image"+id).hasClass("picked")){
+					$("#image"+id).removeClass("picked");
+					$("#add"+dd).remove();
+					var num = document.getElementById("pick_num").value;
+		          	document.getElementById("pick_num").value = parseInt(num) - 1;
+		          	var idstr = document.getElementById("pick_id").value;
+		          	document.getElementById("pick_id").value = idstr.replace(' '+dd,'')
+				}else{
+					$("#image"+id).addClass("picked");
+					var add_img = '<input type="hidden" name="add'+dd+'" id="add'+dd+'" value="'+path+'" class="pick_img">';
+		          	$("#zone-img-pick").append(add_img);
+		          	var num = document.getElementById("pick_num").value;
+		          	document.getElementById("pick_num").value = parseInt(num) + 1;
+		          	document.getElementById("pick_id").value += ' ' + dd; 
+				}
+				//开启保存按钮
+		        $("#add_image").removeAttr("disabled");
+			} 
+			//put img
+			function append_img(n,url,div){
+				var img = '<div class="item" id="item'+n+'"><a href="#" class="thumbnail" id="pic'+n+'"><img src="'+url+'" alt=""></a><div class="actions"><div class="actions-inner"><a title="设为预览" href="javascript:void(0)" onclick="set_preview('+n+')" class="tip-top"><i class="fa fa-pencil"></i></a><a title="删除" href="javascript:void(0)" onclick="del_img('+n+')" class="tip-top"><i class="fa fa-trash-o"></i></a></div></div></div>';
+		          $(div).append(img);
+		          var img_url = '<input type="hidden" name="img'+n+'" id="img'+n+'" value="'+url+'">'
+		          $("#img-urls").append(img_url); 
+			}
+			//save added images from zone
+			function add_image(){
+				$("#image_space").fadeOut(100);
+				//将选择的图片就位
+				var sum = document.getElementById("sum").value;
+				var pick_num = document.getElementById("pick_num").value;
+		    	document.getElementById("sum").value = parseInt(sum) + parseInt(pick_num);
+		    	var max = parseInt(sum) + parseInt(pick_num);
+		    	var idstr = document.getElementById("pick_id").value;
+		    	var n = 0;
+		    	for(var num = parseInt(sum) + 1;num<=max;num++){
+		    		// alert(idstr);
+		    		// alert(num+' '+max);
+		    		var start = 1+n*6; //起始位
+		    		// alert(start);
+		    		n++;
+		    		var id = idstr.substr(start,5);
+		    		// alert(id);
+		    		var path = document.getElementById("add"+id).value;
+		  			var img = '<div class="item" id="item'+num+'"><a href="#" class="thumbnail" id="pic'+num+'"><img src="'+path+'" alt=""></a><div class="actions"><div class="actions-inner"><a title="设为预览" href="javascript:void(0)" onclick="set_preview('+num+')" class="tip-top"><i class="fa fa-pencil"></i></a><a title="删除" href="javascript:void(0)" onclick="del_img('+num+')" class="tip-top"><i class="fa fa-trash-o"></i></a></div></div></div>';
+		        	$("#theme-imgs2").append(img);
+		        	var img_url = '<input type="hidden" name="img'+num+'" id="img'+num+'" value="'+path+'">'
+		        	$("#img-urls").append(img_url); 
+		        }
+		        //开启保存按钮
+		        $("#btn-save").removeAttr("disabled");
+		        //关闭保存按钮
+		        $("#add_image").attr("disabled","disabled");
+		        //清除添加了class的图片
+		        $(".picked").removeClass("picked");
+		        //清除所有已添加的图片input
+		        $(".pick_img").remove();
+		        document.getElementById("pick_id").value = '';
+		        document.getElementById("pick_num").value = '0';
+			}
+			//图片空间END
+		</script>
+	</head>	
+	<body data-color="grey" class="flat" onload="select_dpicker()">
+		<div id="wrapper">
+
+		<div id="content">
+			<div id="content-header">
+				<h1>服装编辑</h1>
+				<div class="btn-group">
+					<a class="btn" title="Manage Files"><i class="fa fa-file"></i></a>
+					<a class="btn" title="Manage Users"><i class="fa fa-user"></i></a>
+					<a class="btn" title="Manage Comments"><i class="fa fa-comment"></i><span class="label label-danger">5</span></a>
+					<a class="btn" title="Manage Orders"><i class="fa fa-shopping-cart"></i></a>
+				</div>
+			</div>
+			<div id="breadcrumb">
+				<a href="#" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i>首页</a>
+				<a href="#" class="current">服装编辑</a>
+			</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="fa fa-align-justify"></i>									
+								</span>
+								<h5>服装信息编辑</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<form class="form-horizontal" method="post" action="#" name="number_validate" id="number_validate" novalidate="novalidate">
+									<div class="form-group">
+										<label class="col-sm-3 col-md-3 col-lg-2 control-label">服装名称</label>
+										<div class="row">
+											<div class="col-md-6"><input type="text" class="form-control" value="{$ct.name}" id="th-name"/></div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 col-md-3 col-lg-2 control-label">服装类型</label>
+										<div class="col-sm-9 col-md-9 col-lg-10">
+											<select name="th-type" id="th-type" onclick="select_change_color('up');" onblur="select_change_color('down');">
+												<volist name="type" id="t">
+													<option value="{$t.id}" >{$t.type}</option>
+												</volist>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 col-md-3 col-lg-2 control-label">备注说明</label>
+										<div class="col-sm-9 col-md-9 col-lg-10">
+											<textarea rows="5" class="form-control" id="th-remark">{$ct.remark}</textarea>
+										</div>
+									</div>
+									<div class="form-actions">
+										<input type="hidden" value="{$ct.style}" id="the-type">
+										<input type="hidden" value="{$ct.id}" id="th-id">
+										<input type="hidden" name="sum" id="sum" value="{$num}">
+										<input type="button" value="提交" class="btn btn-primary" onclick="ajax_submit();">
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>	
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="fa fa-picture-o"></i>
+								</span>
+								<h5>服装图片管理 &nbsp;&nbsp;(建议图片尺寸:640px X 960px)</h5>
+							</div>
+							<div class="widget-content" id="widget-content-2">
+								<div class="gallery-masonry" id="theme-imgs">
+									<volist name="imgs" id="v">
+										<div class="item" id="item{$num}">
+											<if condition="$v neq $ct['preview']"><a href="#" class="thumbnail" id="pic{$num}">
+													<img src="{$v}" alt="">
+												</a>
+											<else /><a href="#" class="thumbnail" id="pic{$num}" style="border:1px solid #f94514"><img src="{$v}" alt=""></a>
+											</if>
+											<div class="actions">
+												<div class="actions-inner">
+													<a title="设为预览图" href="javascript:void(0)" onclick="set_preview({$num})" class="tip-top"><i class="fa fa-pencil"></i></a>
+													<a title="删除" href="javascript:void(0)" onclick="del_img('{$num--}','{$v}')" class="tip-top"><i class="fa fa-trash-o"></i></a>
+												</div>
+											</div>
+								    	</div>
+									</volist>
+								</div>
+								<div class="gallery-masonry" id="theme-imgs2">
+								</div>
+                            </div>
+                            <div class="clear-both"></div>
+                            <div class="form-actions" id="save-btn">
+								<input type="button" value="取消" class="btn btn-primary" onclick="imgs_cancel();"> 
+								<input type="button" value="保存" class="btn btn-primary" id="btn-save" disabled="disabled" onclick="imgs_sub();">
+								<label for="cover" id="up-label"><input type="file" id="cover" name="cover" onchange="uploadimg();" multiple>上传新图片</label>
+								<input type="button" value="图片空间" class="btn btn-primary" id="zone-open" onclick="zone_show();">
+							</div>
+							<div id="img-urls">
+								<input type="hidden" name="preview" id="preview" value="{$ct.preview}">
+								<input type="hidden" name="img-unuse" id="img-unuse" value=""> <!--//图片弃用 -->
+								<input type="hidden" name="img-add" id="img-add" value=""> <!-- //图片添加 -->
+								<volist name="imgs" id="vo">
+									<input type="hidden" name="img{$sum}" id="img{$sum--}" value="{$vo}">
+								</volist>
+							</div>
+						</div>
+					</div>     
+				</div>
+			</div>
+		</div>
+		<section class="meg" id="tongbu">
+			<div class="meginfo">
+			  <div id="megbtn"><h6 id="megimg">√</h6></div>
+			  <div id="megmeg">同步成功！</div>
+			</div>
+		</section>	
+		<!-- 图片附带参数信息 -->
+		<form method="post" action="#" name="ajaxfileupload">
+			<input type="hidden" name="folder" id="folder" value="9">
+			<input type="hidden" name="level" id="level" value="0">
+			<input type="hidden" name="status" id="status" value="1">
+			<input type="hidden" name="savepath" id="savepath" value="9/">
+			<!-- <label for="file">上传图片：</label><input type="file"  name="file" id="file" vlaue=""/></td> -->
+		</form>
+		<!-- 图片空间 -->
+		<section id="image_space">
+			<div id="z-bg">
+				<div id="div-path">
+					<span class="icon">
+						<i class="fa fa-picture-o"></i>
+					</span>
+					<div id="dir-path">
+						<volist name="path" id="p">
+							<if condition="$p.level eq '0'">
+									<if condition="$level eq $p['level']"><a href="javascript:void(0);" class="tip-bottom current" onclick="open_dir('{$p.folder}','{$p.level}')">图片空间</a>
+										<else /><a href="javascript:void(0);" class="tip-bottom" onclick="open_dir('{$p.folder}','{$p.level}')">图片空间</a>
+									</if>
+								<else />
+									<if condition="$level eq $p['level']"><a href="javascript:void(0);" class="tip-bottom current" onclick="open_dir('{$p.folder}','{$p.level}')">{$p.folder}</a>
+										<else /><a href="javascript:void(0);" class="tip-bottom" onclick="open_dir('{$p.folder}','{$p.level}')">{$p.folder}</a>
+									</if>
+							</if>
+						</volist>
+					</div>
+				</div>
+				<div class="image-bg" id="image-bg">
+					<volist name="files" id="v">
+						<if condition="$v.type eq '1'"> <!-- 文件夹 -->
+							<div class="item imgitem">
+								<a href="#" class="thumbnail" title="{$v.name}">
+									<img src="__PUBLIC__/Admin/img/d2.jpg" alt="" ondblclick="open_dir('{$v.name}','{$v.level}')">
+								</a>
+					    	</div>
+				    	<elseif condition="($v.type eq '2') OR ($v.type eq '3')" /> <!-- 图片或logo -->
+				    		<div class="item imgitem">
+								<a href="#" class="thumbnail" id="image{$v.id}" title="{$v.name}" onclick="img_click('{$v.id}','{$v.path}')">
+									<img src="{$v.path}" alt="">
+								</a>
+					    	</div>
+				    	<else /> <!-- 其他文件 -->
+				    		<div class="item imgitem">
+								<a href="#" class="thumbnail" title="{$v.name}">
+									<img src="__PUBLIC__/Admin/img/f2.jpg" alt="">
+								</a>
+					    	</div>
+				    	</if>
+					</volist>
+				</div>
+				<div class="form-actions">
+					<input type="button" value="确定" class="btn btn-primary" onclick="add_image()" id="add_image" disabled="disabled">
+					<input type="button" value="取消" class="btn btn-primary" onclick="zone_hide()" id="z-cancel">
+				</div>
+			</div>
+		</section>	
+		<!-- 图片空间选择图片信息 -->	
+		<div id="zone-img-pick">
+			<input type="hidden" id="pick_num" value="0">
+			<input type="hidden" id="pick_id" value="">
+		</div>
+		<!-- 图片空间选择图片信息 END -->	
+
+        <script src="__PUBLIC__/Admin/js/jquery.min.js"></script>
+        <script src="__PUBLIC__/Admin/js/jquery-ui.custom.js"></script>
+        <script src="__PUBLIC__/Admin/js/bootstrap.min.js"></script>
+        
+        <script src="__PUBLIC__/Admin/js/jquery.nicescroll.min.js"></script>
+        <script src="__PUBLIC__/Admin/js/jquery.masonry.min.js"></script>
+        <script src="__PUBLIC__/Admin/js/unicorn.js"></script>        <script>
+            $(function(){
+                $('.gallery-masonry').masonry({
+                  itemSelector: '.item',
+                  isAnimated: true,
+                  isFitWidth: true
+                });                    
+            });
+        </script>
+	</body>
+</html>

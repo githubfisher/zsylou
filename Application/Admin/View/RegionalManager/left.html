@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Unicorn Admin</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/font-awesome.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/fullcalendar.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery.jscrollpane.css" />	
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/unicorn.css" />
+		<style>
+			.active{
+				background-color: #434343;
+			}
+		</style>
+	</head>	
+<body data-color="grey" class="flat" style="background:#3c3c3c;">
+	<div id="wrapper">
+		<div id="sidebar">
+			<div id="search">
+				<input type="text" placeholder="搜索..." readOnly="ture"/><button type="submit" class="tip-right" title="Search"><i class="fa fa-search"></i></button>
+			</div>	
+			<ul>
+				<li class="active"><a href="{:U('Admin/RegionalManager/ylou_list')}" target="rightFrame"><i class="fa fa-home"></i> <span>影楼信息</span></a></li>
+				<li>
+					<a href="{:U('Admin/RegionalManager/user_list')}" target="rightFrame"><i class="fa fa-th"></i> <span>账号信息</span></a>
+				</li>
+				<li>
+					<a href="{:U('Admin/RegionalManager/area_list')}" target="rightFrame"><i class="fa fa-th"></i> <span>责任区域</span></a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<script src="__PUBLIC__/Admin/js/excanvas.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/jquery-ui.custom.js"></script>
+    <script src="__PUBLIC__/Admin/js/bootstrap.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/jquery.flot.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/jquery.flot.resize.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/jquery.sparkline.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/fullcalendar.min.js"></script>
+    
+    <script src="__PUBLIC__/Admin/js/jquery.nicescroll.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/unicorn.js"></script>
+    <script src="__PUBLIC__/Admin/js/unicorn.dashboard.js"></script>
+</body>
+</html>

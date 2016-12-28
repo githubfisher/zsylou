@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{$title}</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="__PUBLIC__/Admin/css/font-awesome.css" />
+        <link rel="stylesheet" href="__PUBLIC__/Admin/css/unicorn-login.css" />
+    	<script type="text/javascript" src="__PUBLIC__/Admin/js/respond.min.js"></script>
+	<script>
+        function redirect(){
+            window.location.href = "{:U('Admin/login/index')}";
+        } 
+		</script>
+    </head>    
+<body >
+        <div id="container" style="padding-top:240px;">
+            <!-- <div id="logo">
+                <img src="__PUBLIC__/Admin/img/logo.png" alt="" />
+            </div> -->
+            <div id="loginbox">            
+                <p style="height:200px;line-height:200px;font-size:20px;"><b>您已成功退出！</b></p> 
+                <a href="javascript:void(0);" onclick="redirect()">重新登录</a> 
+            </div>
+        </div>
+
+    </body>
+</html>

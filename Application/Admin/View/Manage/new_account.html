@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/bootstrap-responsive.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/matrix-style.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/font-awesome/css/font-awesome.css" />
+		<style> 
+			#content{
+				margin-top: 20px;
+				margin-left: 0px;
+				border-bottom-left-radius:0;
+			}
+			#breadcrumb{
+				background-color: #ccc;
+				margin-top: -20px;
+			}
+			.container-fluid {
+			    padding-right: 20px;
+			    padding-left: 20px;
+			}
+			.meg{
+			  display: none;
+			  background: rgba(0,0,0,.35);
+			  width: 100%;
+			  height: 100%;
+			  position: fixed;
+			  top: 0;
+			  left: 0;
+			  z-index: 102;
+			}
+			.meginfo{
+			  width:15%;
+			  /*height:6%;*/
+			  margin: 0 auto;
+			  padding: 1%;
+			  background: #f8f8f8;
+			  margin-top: 16%;
+			  border-radius: 5px;
+			  text-align: center;
+			}
+			#megbtn{
+			  width: 50px;
+			  height: 50px;
+			  border: 2px solid #67c1a5;
+			  border-radius: 100%;
+			  float: left;
+			  margin-left: 5%;
+			}
+			h6{
+			  color:#67c1a5;
+			  font-size: 30px;
+			  margin-top:0.1em;
+			  margin-left: -0.06em;
+			}
+			#megmeg{
+			    line-height: 2em;
+			    font-size: 1.9em;
+			    margin-left: 15px;
+			    position:relative;
+			    right:-10px;   
+			}
+			/**/
+			label{
+				display:block;
+			}
+			.form-horizontal .control-label {
+			    float: left;
+			    text-align: right;
+			}
+			select,input[type="text"]{
+				width: 65.81196581196582%;
+				min-height: 26px;
+				float: none;
+				box-sizing: border-box;
+				box-shadow: none;
+				border-radius: 0px;
+				margin-bottom: 0;
+				vertical-align: middle;
+				background-color: #fff;
+				border: 1px solid #ccc;
+				padding: 4px 6px;
+				font-size: 14px;
+				color: #555;
+			}
+			.form-horizontal .form-actions {
+			    margin-top: 0;
+			    margin-bottom: 0;
+			}
+			.form-horizontal .form-actions {
+			    padding-left: 20px;
+			}
+			.form-actions {
+				padding: 19px 20px 20px;
+				margin-top: 20px;
+				margin-bottom: 20px;
+				background-color: #f5f5f5;
+				border-top: 1px solid #e5e5e5;
+			}
+			.form-horizontal .control-group::before, .form-horizontal .control-group::after {
+			    display: table;
+			    line-height: 0;
+			    content: "";
+			}
+			.form-horizontal .control-group::after {
+			    clear: both;
+			    display: table;
+			    line-height: 0;
+			    content: "";
+			}
+			.row-fluid [class*="span"]:first-child {
+			    margin-bottom: 10px;
+			}
+			/**/
+			#tip-for-dogid{
+				display:none;
+			}
+			#tip-for-simple{
+				display:none;
+			}
+			#tip-for-storeid{
+				display:none;
+			}
+			#tip-for-store{
+				display:none;
+			}
+		</style>
+		<script>
+			// 添加影楼
+			// 检查加密狗ID，软件版本
+			function Checkdogid(x){
+		  	if(x.value != '' || x.value != null){
+		  		var dogid = x.value;
+		  		$.post("checkdogid",{dogid:dogid},function(data){
+		  			if(data.status == 1){
+	                    document.getElementById("tip-for-dogid").innerHTML=data.content;
+	              		document.getElementById("tip-for-dogid").style.color = '#5cb85c';
+	              		document.getElementById("tip-for-dogid").style.display = 'block';
+	                    return true;
+	                }else{
+	                    document.getElementById("tip-for-dogid").innerHTML=data.content;
+	                    document.getElementById("tip-for-dogid").style.color = 'red';
+	                    document.getElementById("tip-for-dogid").style.display = 'block';
+	                    return true;
+	                }
+		  		});
+		  	}
+		  }
+		  // 检查影楼简称是否重复
+		  function Checksimplename(x){
+		  	if(x.value != '' || x.value != null){
+		  		var name = x.value;
+		  		$.post("checksimplename",{name:name},function(data){
+		  			if(data.status == 1){
+	                    document.getElementById("tip-for-simple").innerHTML="影楼简称未见重复！";
+	              		document.getElementById("tip-for-simple").style.color = '#5cb85c';
+	              		document.getElementById("tip-for-simple").style.display = 'block';
+	                    return true;
+	                }else{
+	                    document.getElementById("tip-for-simple").innerHTML="影楼简称重复！";
+	                    document.getElementById("tip-for-simple").style.color = 'red';
+	                    document.getElementById("tip-for-simple").style.display = 'block';
+	                    return false;
+	                }
+		  		});
+		  	}
+		  }
+		  function ylou_submit(){ // add_ylou
+		  	var storename = document.getElementById("storename").value;
+		  	var dogid = document.getElementById("dogid").value;
+		  	var ip = document.getElementById("ip").value;
+		  	var port = document.getElementById("port").value;
+		  	var store_simple_name = document.getElementById("store_simple_name").value;
+		  	var market_area = document.getElementById("market_area").value;
+		  	var expiring_on = document.getElementById("expiring_on").value;
+		  	$.post("add_ylou",{dogid:dogid,ip:ip,port:port,storename:storename,market_area:market_area,expiring_on:expiring_on,store_simple_name:store_simple_name},function(data){
+                if(data.status == 1){
+                    document.getElementById("megmeg").innerHTML="开通店铺成功！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       window.location.reload();
+                    },800);
+                    return true;
+                }else{
+                    document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML="开通店铺失败！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                    },1000);
+                    return false;
+                }
+            });
+		  }
+		   // 添加管理员
+		   //用户信息提交
+		  function user_submit(){ // add_user
+		  	$(".tip").fadeOut(100);
+		  	var sname = document.getElementById("simple").value;
+		  	var user = document.getElementById("username").value;
+		  	var pwd = document.getElementById("password").value;
+		  	var sid = document.getElementById("sid").value;
+		  	var type = get_radio_value("type");
+		  	$.post("add_user",{user:user,pwd:pwd,type:type,sname:sname,sid:sid},function(data){
+		  		if(data.status == 1){
+		  			document.getElementById("megmeg").innerHTML="用户添加成功!";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       window.location.reload();
+                    },800);
+                    return true;
+		  		}else{
+		  			document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML="用户添加失败!";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                    },1000);
+                    return false;
+		  		}
+		  	});
+		  }
+		  //获取radio的值
+		  function get_radio_value(name){
+		  	var obj = "";
+		  	if(obj != null){
+		  		var obj = document.getElementsByName(name);
+		  		for(var i=0;i<obj.length;i++){
+		  			if(obj[i].checked){
+		  				return obj[i].value;
+		  			}
+		  		}
+		  	}
+		  	return null;
+		  }
+		  function get_store_id(id){
+		  	if(id == 1){
+		  		var store = "sid";
+		  		var tip = "tip-for-storeid";
+		  		var simple = "simple"; 
+		  	}else{
+		  		var store = "store";
+		  		var tip = "tip-for-store";
+		  		var simple = "simple_name";
+		  	}
+		  	var simple = document.getElementById(simple).value;
+		  	$.post("get_store_id",{simple:simple},function(data){
+		  		if(data.status == 1){
+		  			document.getElementById(store).value = data.info;
+		  			return true;
+		  		}else{
+                    document.getElementById(tip).innerHTML="请手动查找店铺ID!";
+                    document.getElementById(tip).style.color = 'red';
+                    document.getElementById(tip).style.display = 'block';
+                    return false;
+		  		}
+		  	});
+		  }
+		  // 开通营销工具
+		   function tool_submit()
+		   {
+		   		var store = document.getElementById("store").value;
+		   		var tools = get_box_value('tools');
+		   		var expire_time = document.getElementById("expire_time").value;
+		   		$.post("new_tool_buy",{store:store,tools:tools,expire_time:expire_time},function(data){
+		   			if(data.status == 1){
+			  			document.getElementById("megmeg").innerHTML="服务开通成功!";
+	                    $("#tongbu").fadeIn();
+	                    setTimeout(function(){
+	                       $("#tongbu").fadeOut();
+	                       window.location.reload();
+	                    },800);
+	                    return true;
+			  		}else{
+			  			document.getElementById("megimg").innerHTML="X";
+	                    document.getElementById("megmeg").innerHTML="服务开通失败!";
+	                    $("#tongbu").fadeIn();
+	                    setTimeout(function(){
+	                       $("#tongbu").fadeOut();
+	                    },1000);
+	                    return false;
+			  		}
+		   		});		   
+		   	}
+		   	//获取radio的值
+		  function get_box_value(name){
+		  	var val = '["';
+	  		var obj = document.getElementsByName(name);
+	  		for(var i=0;i<obj.length;i++){
+	  			if(obj[i].checked){
+	  				val = val + obj[i].value + '","';
+	  			}
+	  		}
+	  		if(val == '["'){
+	  			val = '';
+	  		}else{
+	  			var length = val.length;
+	  			val = val.substring(0,length-2) + ']';
+	  		}
+	  		return val;
+		  }
+		</script>
+	</head>	
+	<body data-color="grey" class="flat">
+	  <div id="content">
+		<div id="breadcrumb">
+		  <a href="#" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> 首页</a>
+		  <a href="#" class="current">开通店铺</a>
+		</div>
+		<div class="container-fluid">
+		  <div class="row-fluid">
+			<div class="span6">
+			  <div class="widget-box">
+		        <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+		          <h5>开通店铺</h5>
+		        </div>
+		        <div class="widget-content nopadding">
+		          <form action="/index.php/Admin/manage/add_ylou" method="post" class="form-horizontal">
+		          	<div class="control-group">
+		              <label class="control-label">影楼名称 :</label>
+		              <div class="controls">
+		                <input type="text" class="span11" name="storename" id="storename" value="" />
+		              </div>
+		            </div>
+		            <div class="control-group">
+		              <label class="control-label">加密狗ID :</label>
+		              <div class="controls">
+		                <input type="text" class="span11" name="dogid" id="dogid" value="" onblur="Checkdogid(this);" />
+		                <span class="help-block blue span8" id="tip-for-dogid">提示信息 :</span>
+		              </div>
+		            </div>
+		            <div class="control-group">
+		              <label class="control-label">服务器IP :</label>
+		              <div class="controls">
+		                <input type="text" class="span11" name="ip" id="ip" value="101.200.186.72" />
+		              </div>
+		            </div>
+		            <div class="control-group">
+		              <label class="control-label">端口号 :</label>
+		              <div class="controls">
+		                <input type="text" class="span11" name="port" id="port" value="" placeholder="9000"/>
+		              </div>
+		            </div>
+		            <div class="control-group">
+		              <label class="control-label">影楼简称 :</label>
+		              <div class="controls">
+		                <input type="text" class="span11" name="store_simple_name" id="store_simple_name" value="" onblur="Checksimplename(this);" placeholder="zccp" />
+		                <span class="help-block blue span8">影楼简称用于登录时作为前缀.例如:zccp_admin  </span>
+		                <span class="help-block blue span8" id="tip-for-simple">提示信息 :</span>
+		              </div>
+		            </div>
+		            <div class="control-group">
+		              <label class="control-label">销售区域 :</label>
+		              <div class="controls">
+		                <select name="market_area" id="market_area">
+							<volist name="area" id="vo">
+								<option value="{$vo.id}">{$vo.name}</option>
+							</volist>
+						</select>
+		              </div>
+		            </div>
+		            <div class="control-group">
+		              <label class="control-label">服务期限 :</label>
+		              <div class="controls">
+		                <select name="expiring_on" id="expiring_on">
+							<volist name="expire" id="ex">
+								<option value="{$ex.time}">{$ex.name}</option>
+							</volist>
+						</select>
+		              </div>
+		            </div>
+		            <div class="form-actions">
+		              <button type="button" class="btn btn-success" onclick="ylou_submit();">提交</button>
+		            </div>
+		          </form>
+		        </div>
+		      </div>
+		      <div class="widget-box">
+		        <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+		          <h5>第一店长</h5>
+		        </div>
+		        <div class="widget-content nopadding">
+		          <form action="/index.php/Admin/manage/add_user" method="post" class="form-horizontal">
+		            <div class="control-group">
+		              <label class="control-label">会员名称 :</label>
+		              <div class="controls">
+		                <input type="text" class="span11" name="username" id="username" value="" />
+		              </div>
+		            </div>
+		            <div class="control-group">
+		              <label class="control-label">安全密钥 :</label>
+		              <div class="controls">
+		                <input type="text" class="span11" name="password" id="password" value="" />
+		              </div>
+		            </div>
+		            <div class="control-group">
+		              <label class="control-label">店内职务 :</label>
+		              <div class="controls">
+		                <label>
+		                  <input type="radio" name="type" value="1" id="ra-manager" checked />
+		                  店长</label>
+		                <label>
+		                  <input type="radio" name="type" value="0" id="ra-worker" />
+		                  店员</label>
+		              </div>
+		            </div>
+		            <div class="control-group">
+		              <label class="control-label">店铺简称 :</label>
+		              <div class="controls">
+		                <input type="text" class="span11" name="simple" type="text" id="simple" value="" onblur="get_store_id(1);" />
+		              </div>
+		            </div>
+		            <div class="control-group">
+		              <label class="control-label">店铺ID :</label>
+		              <div class="controls">
+		                <input type="text" class="span11" name="sid" id="sid" value="" />
+		                <span class="help-block blue span8" id="tip-for-storeid">提示信息 :</span>
+		              </div>
+		            </div>
+		            <div class="form-actions">
+		              <button type="button" class="btn btn-success" onclick="user_submit();">提交</button>
+		            </div>
+		          </form>
+		        </div>
+		      </div>
+			</div>
+			<div class="span6">
+			  <div class="widget-box">
+		        <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+		          <h5>营销工具【仅限第一次开通，修正请到店铺列表】</h5>
+		        </div>
+		        <div class="widget-content nopadding">
+		          <form action="#" method="post" class="form-horizontal">
+		            <div class="control-group">
+		              <label class="control-label">店铺简称 :</label>
+		              <div class="controls">
+		                <input type="text" class="span11" name="simple_name" type="text" id="simple_name" value="" onblur="get_store_id(2);" />
+		              </div>
+		            </div>
+		            <div class="control-group">
+		              <label class="control-label">店铺ID :</label>
+		              <div class="controls">
+		                <input type="text" class="span11" name="store" id="store" value="" />
+		                <span class="help-block blue span8" id="tip-for-store">提示信息 :</span>
+		              </div>
+		            </div>
+		            <div class="control-group">
+		              <label class="control-label">营销工具 :</label>
+		              <div class="controls">
+		              	<volist name="tools" id="tool">
+			                <label>
+			                  <input type="checkbox" name="tools" value="{$tool.id}"/>&nbsp;&nbsp;{$tool.name}
+			              	</label>
+			            </volist>
+		              </div>
+		            </div>
+		            <div class="control-group">
+		              <label class="control-label">服务期限 :</label>
+		              <div class="controls">
+		                <select name="expire_time" id="expire_time">
+							<volist name="expire" id="ex">
+								<option value="{$ex.time}">{$ex.name}</option>
+							</volist>
+						</select>
+		              </div>
+		            </div>
+		            <div class="form-actions">
+		              <button type="button" class="btn btn-success" onclick="tool_submit();">提交</button>
+		            </div>
+		          </form>
+		        </div>
+		      </div>
+			</div>
+		  </div>
+	    </div>
+	  </div>
+	  <section class="meg" id="tongbu">
+	    <div class="meginfo">
+	      <div id="megbtn"><h6 id="megimg">√</h6></div>
+	      <div id="megmeg">修改成功！</div>
+	    </div>
+	  </section>
+	  <script src="__PUBLIC__/Admin/js/jquery.min.js"></script>
+	</body>
+</html>

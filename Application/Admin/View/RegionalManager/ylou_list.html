@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>{$title}</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/font-awesome.css" />
+        <link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery-ui.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/icheck/flat/blue.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/select2.css" />		
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/unicorn.css" />
+		<!--[if lt IE 9]>
+		<script type="text/javascript" src="__PUBLIC__/Admin/js/respond.min.js"></script>
+		<![endif]-->
+		<style> 
+			#content{
+				margin-top: 20px;
+				border-bottom-left-radius:0;
+			}
+			#content-header .mini-stats {
+				padding-right:25px;
+				margin-top:20px;
+			}
+			td{text-align: center;} 
+			.tools{padding-left: 25px;}
+			.tip{
+				display:none;
+			}
+			.add{
+				display:block;
+				width:50px;
+				height:30px;
+				line-height: 30px;
+				text-align: center;
+				float: left;
+			}
+			.export{
+				display:block;
+				width:50px;
+				height:30px;
+				line-height: 30px;
+				text-align: center;
+				float: left;
+			}
+				/*tip*/
+  			.tip{
+  				width:485px;
+  				height:550px; 
+  				position:absolute;top:10%; 
+  				left:30%;
+  				background:#fcfdfd;
+  				box-shadow:1px 8px 10px 1px #9b9b9b;
+  				border-radius:1px;
+  				behavior:url(js/pie.htc); 
+  				display:none; z-index:111111;
+  				text-align: center;
+  				margin-top:15px;
+  				padding-top:20px;
+  				padding-bottom: 20px;
+  			}
+  			.tip b{
+  				font-size:18px;
+  			}
+  			.lip{
+  				height:25px;
+  				text-align: left;
+				padding-left:106px;
+				color: #999;
+				padding-top: 3px;
+  			}
+  			.tip input[type=text]{
+  				width:70%;
+  			}
+  			.btns{
+  				padding: 5px 50px;
+				background: #fff;
+				border: 1px solid #eee;
+				border-radius: 3px;
+  			}
+  			.btns:hover{
+  				border: 1px solid #04a1ea;
+  			}
+  			#btns-r{
+  				margin-left:5px;
+  			}
+  			.meg{
+			  display: none;
+			  background: rgba(0,0,0,.35);
+			  width: 100%;
+			  height: 100%;
+			  position: fixed;
+			  top: 0;
+			  left: 0;
+			  z-index: 102;
+			}
+			.meginfo{
+			  width:15%;
+			  /*height:6%;*/
+			  margin: 0 auto;
+			  padding: 1%;
+			  background: #f8f8f8;
+			  margin-top: 16%;
+			  border-radius: 5px;
+			  text-align: center;
+			}
+			#megbtn{
+			  width: 50px;
+			  height: 50px;
+			  border: 2px solid #67c1a5;
+			  border-radius: 100%;
+			  float: left;
+			  margin-left: 5%;
+			}
+			h6{
+			  color:#67c1a5;
+			  font-size: 30px;
+			  margin-top:0.1em;
+			  margin-left: -0.06em;
+			}
+			#megmeg{
+			    line-height: 2em;
+			    font-size: 1.9em;
+			    margin-left: 15px;
+			    position:relative;
+			    right:-10px;   
+			}
+			#tipinfo{
+				display:none;
+				/*float:right;
+				padding-right: 15px;*/
+			}
+			#fixtijiao{
+				display: none;
+			}
+			#note-bg{
+				position: fixed;
+				top:0;
+				left:0;
+				bottom:0;
+				right:0;
+				width:100%;
+				height:100%;
+				z-index: 999;
+				background:rgba(111, 102, 102, 0.4);
+				display: none;
+			}
+			#note{
+				width:60%;
+				margin-left:20%;
+				margin-top:5%;
+				height: 500px;
+				background: #f0f0f0;
+			}
+			#note-ul{
+				padding: 20px 20px;
+				margin-left: 20px;
+			}
+			.fwq{
+				color:blue;
+			}
+			#st-name{
+				color:red;
+			}
+			.red{
+				color:red;
+			}
+			.gre{
+				color:green;
+			}
+			#market_area{
+				border:1px solid #ccc;
+				border-radius: 3px;
+				width:70%;
+				height:30px;
+			}
+			#expiring_on {
+				border:1px solid #ccc;
+				border-radius: 3px;
+				width:70%;
+				height:30px;
+			}
+			#renew{
+				border:1px solid #ccc;
+				border-radius: 3px;
+				width:70%;
+				height:30px;
+			}
+			#xuqi{
+				display:none;
+			}
+		</style>
+	<script>
+		  function addshow(){
+		  	$(".tip").height(470);
+		  	$(".tip").fadeIn(200);
+		  }
+		  function show(sid,storename,dogid,ip,port,sipname,aid,ctime,expire){
+		  	document.getElementById("storename").value=storename;
+		  	document.getElementById("dogid").value=dogid;
+		  	document.getElementById("ip").value=ip;
+		  	document.getElementById("port").value=port;
+		  	document.getElementById("sid").value=sid;
+		  	document.getElementById("store_simple_name").value=sipname;
+		  	document.getElementById("atitle").innerHTML="修改影楼信息";
+		  	document.getElementById("fixtijiao").style.display="block";
+		  	document.getElementById("tijiao").style.display="none";
+		  	document.getElementById("store_simple_name").disabled="disabled";
+		  	document.getElementById("ctime").value=ctime;
+		  	document.getElementById("expire_date").value=expire;
+		  	document.getElementById("xuqi").style.display="block";
+		  	$(".tip").height(520);
+		  	if(aid != 0 && aid != null){
+		  		$("#market_area").val(aid); 
+		  	}
+		  	if(expire == 0 || expire == -1){
+		  		$("#expiring_on").val(expire);
+		  	}else{
+		  		var date = expire - ctime;
+		  		$("#expiring_on").val(date);
+		  	}
+		  	$("#renew").val(-1);
+		  	$(".tip").fadeIn(200);
+		  }
+		  function cancel(){
+		  	document.getElementById("storename").value='';
+		  	document.getElementById("dogid").value='';
+		  	document.getElementById("ip").value='';
+		  	document.getElementById("port").value='';
+		  	document.getElementById("sid").value='';
+		  	document.getElementById("store_simple_name").value='';
+		  	document.getElementById("xuqi").style.display="none";
+		  	document.getElementById("tipinfo").innerHTML='';
+		  	document.getElementById("nameinfo").innerHTML='';
+		  	$(".tip").height(500);
+		  	$(".tip").fadeOut(100);
+		  }
+		  function sumit(){
+		  	$(".tip").fadeOut(100);
+		  	var storename = document.getElementById("storename").value;
+		  	var dogid = document.getElementById("dogid").value;
+		  	var ip = document.getElementById("ip").value;
+		  	var port = document.getElementById("port").value;
+		  	var sname = document.getElementById("store_simple_name").value;
+		  	var area = document.getElementById("market_area").value;
+		  	var expire = document.getElementById("expiring_on").value;
+		  	$.post("add_ylou",{dogid:dogid,ip:ip,port:port,storename:storename,market_area:area,expiring_on:expire,store_simple_name:sname,},function(data){
+                if(data.status == 1){
+                    document.getElementById("megmeg").innerHTML="添加成功！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       window.location.reload();
+                    },800);
+                    return true;
+                }else{
+                    document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML="添加失败！";
+                    $("#tongbu").fadeIn();
+                    cancel();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       $(".back").fadeOut();
+                    },1000);
+                    return false;
+                }
+            });
+		  }
+		  function ajaxsumit(){
+		  	$(".tip").fadeOut(100);
+		  	$(".tip").height(500);
+		  	var storename = document.getElementById("storename").value;
+		  	var dogid = document.getElementById("dogid").value;
+		  	var ip = document.getElementById("ip").value;
+		  	var port = document.getElementById("port").value;
+		  	var sid = document.getElementById("sid").value;
+		  	var area = document.getElementById("market_area").value;
+		  	var expire = document.getElementById("expiring_on").value;
+		  	var renew = document.getElementById("renew").value;
+		  	var expire_date = document.getElementById("expire_date").value;
+		  	if(renew != -1){
+		  		if(expire_date == 0){
+		  			var timestamp = parseInt(new Date().getTime()/1000); 
+		  			expire = Number(timestamp) + Number(renew); 
+		  		}else if(expire_date == -1){
+		  			var ctime = document.getElementById("ctime").value;
+			  		expire = Number(ctime) + Number(renew);
+		  		}else{
+		  			expire = Number(expire_date) + Number(renew);
+		  		}
+		  	}else{
+		  		if(expire != 0 && expire != -1){
+			  		var ctime = document.getElementById("ctime").value;
+			  		expire = Number(ctime) + Number(expire);
+			  	}
+			}
+		  	$.post("update_ylou",{sid:sid,dogid:dogid,ip:ip,port:port,store:storename,area:area,expire:expire},function(data){
+                if(data.status == 1){
+                    // document.getElementById("megmeg").innerHTML="修改成功！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       window.location.reload();
+                    },800);
+                    return true;
+                }else{
+                    document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML="修改失败！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       $(".back").fadeOut();
+                    },1000);
+                    return false;
+                }
+            });
+		  }
+		  function Checkdogid(x){
+		  	if(x.value != '' || x.value != null){
+		  		var dogid = x.value;
+		  		$.post("checkdogid",{dogid:dogid},function(data){
+		  			var json = eval('('+data+')');
+		  			if(json.status == 1){
+	                    document.getElementById("tipinfo").innerHTML=json.content;
+	              		document.getElementById("tipinfo").style.color = 'green';
+	              		document.getElementById("tipinfo").style.display = 'block';
+	                    return true;
+	                }else{
+	                    document.getElementById("tipinfo").innerHTML=json.content;
+	                    document.getElementById("tipinfo").style.color = 'red';
+	                    document.getElementById("tipinfo").style.display = 'block';
+	                    return true;
+	                }
+		  		});
+		  	}
+		  }
+		  function Checksimplename(x){
+		  	if(x.value != '' || x.value != null){
+		  		var name = x.value;
+		  		$.post("checksimplename",{name:name},function(data){
+		  			if(data.status == 1){
+	                    document.getElementById("nameinfo").innerHTML="影楼简称未见重复！";
+	              		document.getElementById("nameinfo").style.color = 'green';
+	              		document.getElementById("nameinfo").style.display = 'block';
+	                    return true;
+	                }else{
+	                    document.getElementById("nameinfo").innerHTML="影楼简称重复！";
+	                    document.getElementById("nameinfo").style.color = 'red';
+	                    document.getElementById("nameinfo").style.display = 'block';
+	                    return false;
+	                }
+		  		});
+		  	}
+		  }
+		  function del(id){
+		  	if(id == '' || id == null){
+		  		alert('请重试!');
+		  	}else{
+		  		$.post("del_ylou",{id:id},function(data){
+		  			if(data.status == 1){
+		  				document.getElementById("megmeg").innerHTML="删除成功！";
+	                    $("#tongbu").fadeIn();
+	                    setTimeout(function(){
+	                       $("#tongbu").fadeOut();
+	                       window.location.reload();
+	                    },800);
+	                    return true;
+			  		}else{
+			  			document.getElementById("megimg").innerHTML="X";
+	                    document.getElementById("megmeg").innerHTML="删除失败！";
+	                    $("#tongbu").fadeIn();
+	                    setTimeout(function(){
+	                       $("#tongbu").fadeOut();
+	                       $(".back").fadeOut();
+	                    },1000);
+	                    return false;
+			  		}
+		  		});
+		  	}
+		  }
+		  function test_hide(){
+		  	document.getElementById("note-ul").innerHTML = '';
+		  	$("#note-bg").hide();
+		  }
+		  //测试连接 服务器是否工作正常
+		  function test(store,dogid,ip,port){
+		  	$("#note-bg").show();
+		  	var text = '<li class="note-li">测试[ <span class="fwq">掌上影楼APP服务器</span> ]与店铺[ <span id="st-name"></span> ]的影楼服务器通信情况</li><li>请不要尝试关闭此页面,该页面会在测试结束后自动关闭! 大概需要10-20秒时间!</li><li class="red">提示: 如果测试未全部通过,请联系管理员调试后再正常使用!</li>';
+		  	$("#note-ul").append(text);
+		  	$("#st-name").append(store);
+		  	// $("#note-ul").append("<li>这时测试加入li</li>");
+		  	// var result = true;
+		  	setTimeout(function(){
+				$("#note-ul").append('<li class="note-li">测试开始.............!</li>');
+				ajax(dogid,ip,port,"9","员工通讯录");
+		  		ajax(dogid,ip,port,"14","套系列表");
+		  		ajax(dogid,ip,port,"15","产品列表");
+		  		ajax(dogid,ip,port,"18","景点列表");
+		  	},3000);
+		  }
+		  //测试连接 的ajax函数
+		  function ajax(dogid,ip,port,type,detail){
+		  	$.post("test",{dogid:dogid,ip:ip,port:port,type:type},function(data){
+		  		if(data.status == 1){
+		  			if(type == 18){
+		  				$("#note-ul").append('<li class="red">尝试读取远程PC服务器 '+detail+' .............成功!</li><br/>');
+		  				var filling = "<li>..............</li><br/>";
+					  	setTimeout(function(){
+					  		$("#note-ul").append(filling);
+					  		$("#note-ul").append(filling);
+						  	$("#note-ul").append(filling);
+						  	$("#note-ul").append(filling);
+						  	$("#note-ul").append('<li class="red">通信连接测试结束,3秒后窗口自动关闭!</li>');
+						  	setTimeout(function(){test_hide();},3000);
+					  	},1000);
+		  			}else{
+		  				$("#note-ul").append('<li class="red">尝试读取远程PC服务器 '+detail+' .............成功!</li><br/>');
+		  			}
+		  		}else{
+		  			if(type == 18){
+		  				$("#note-ul").append('<li class="gre">尝试读取远程PC服务器 '+detail+' .............失败!</li><br/>');
+		  				var filling = "<li>..............</li><br/>";
+					  	setTimeout(function(){
+					  		$("#note-ul").append(filling);
+					  		$("#note-ul").append(filling);
+						  	$("#note-ul").append(filling);
+						  	$("#note-ul").append(filling);
+						  	$("#note-ul").append('<li class="red">通信连接测试结束,3秒后窗口自动关闭!</li>');
+						  	setTimeout(function(){test_hide();},3000);
+					  	},1000);
+		  			}else{
+		  				$("#note-ul").append('<li class="gre">尝试读取远程PC服务器 '+detail+' .............失败!</li><br/>');
+		  			}
+		  		}
+		  	});
+		  }
+		  //同步员工账号
+		  function syncuser(dogid,ip,port,sid,simple){
+		  	// alert('hello');
+		  	$.post("sync_users",{dogid:dogid,ip:ip,port:port,sid:sid,simple:simple},function(sync){
+		  		var json = eval('('+sync+')');
+                if(json.status == 1){
+                    document.getElementById("megmeg").innerHTML=json.info;
+                    $(".meg").fadeIn();
+                    setTimeout(function(){
+                       $(".meg").fadeOut();
+                       window.location.reload();
+                    },800);
+                    return true;
+                }else{
+                    document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML=json.info;
+                    $(".meg").fadeIn();
+                    setTimeout(function(){
+                       $(".meg").fadeOut();
+                       $(".back").fadeOut();
+                    },1000);
+                    return false;
+                }
+            });
+		  }
+		  //重新注册环信用户
+		  function register(sid){
+		  	$.post("register_easemob_users",{sid:sid},function(data){
+                if(data.status == 1){
+                    document.getElementById("megmeg").innerHTML="完成！";
+                    $(".meg").fadeIn();
+                    setTimeout(function(){
+                       $(".meg").fadeOut();
+                       window.location.reload();
+                    },800);
+                    return true;
+                }else{
+                    document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML="重新注册失败！";
+                    $(".meg").fadeIn();
+                    setTimeout(function(){
+                       $(".meg").fadeOut();
+                       $(".back").fadeOut();
+                    },1000);
+                    return false;
+                }
+            });
+		  }
+		//change pad is open or close
+		function chenge_pad(id,pad){
+		  	// alert('da');
+		  	$.post("update_pad_status",{sid:id,pad:pad},function(data){
+		  		if(data.status == 1){
+		  			document.getElementById("megmeg").innerHTML="修改成功！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       window.location.reload();
+                    },800);
+                    return true;
+                }else{
+                    document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML="修改失败！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       $(".back").fadeOut();
+                    },1000);
+                    return false;
+                }
+		  	});
+		  }
+		function remove_users(sid){
+			$.post("del_store_users",{sid:sid},function(data){
+		  		if(data.status == 1){
+		  			document.getElementById("megmeg").innerHTML="清空成功！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       window.location.reload();
+                    },800);
+                    return true;
+                }else{
+                    document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML=data.content;
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       $(".back").fadeOut();
+                    },1000);
+                    return false;
+                }
+		  	});
+		}
+	</script>
+	</head>	
+	<body data-color="grey" class="flat">
+	<div id="wrapper">
+       <div id="switcher">
+            <div id="switcher-inner">
+                <h3>Theme Options</h3>
+                <h4>Colors</h4>
+                <p id="color-style">
+                    <a data-color="orange" title="Orange" class="button-square orange-switcher" href="#"></a>
+                    <a data-color="turquoise" title="Turquoise" class="button-square turquoise-switcher" href="#"></a>
+                    <a data-color="blue" title="Blue" class="button-square blue-switcher" href="#"></a>
+                    <a data-color="green" title="Green" class="button-square green-switcher" href="#"></a>
+                    <a data-color="red" title="Red" class="button-square red-switcher" href="#"></a>
+                    <a data-color="purple" title="Purple" class="button-square purple-switcher" href="#"></a>
+                    <a href="#" data-color="grey" title="Grey" class="button-square grey-switcher"></a>
+                </p>
+                <h4 class="visible-lg">Layout Type</h4>
+                <p id="layout-type">
+                	<a data-option="flat" class="button" href="#">Flat</a>
+                    <a data-option="old" class="button" href="#">Old</a>                    
+                </p>
+            </div>
+            <div id="switcher-button">
+                <i class="fa fa-cogs"></i>
+            </div>
+        </div>
+
+		<div id="content">
+			<!-- <div id="content-header">
+				<h1>统计数据</h1>
+				<ul class="mini-stats box-3">
+						<li>
+							<div class="left sparkline_bar_good">
+								<span>
+									<img src="/Public/Admin/img/icons/32/cabinet.png">
+								</span>+{$count['niper']}%
+							</div>
+							<div class="right">
+								<strong>{$count['allinstall']}</strong>
+								总装机量
+							</div>
+						</li>
+						<li>
+							<div class="left sparkline_bar_neutral">
+								<span>
+									<img src="/Public/Admin/img/icons/32/shopping-bag.png">
+								</span>
+								+{$count['nsper']}%
+							</div>
+							<div class="right">
+								<strong>{$count['allstore']}</strong>
+								总店铺数
+							</div>
+						</li>
+						<li>
+							<div class="left sparkline_bar_bad">
+								<span>
+									<img src="/Public/Admin/img/icons/32/people.png">
+								</span>
+								+{$count['nuper']}%
+							</div>
+							<div class="right">
+								<strong>{$count['allusers']}</strong>
+								总用户数
+							</div>
+						</li>
+						<li>
+							<div class="left sparkline_bar_good">
+								<span>
+									<img src="/Public/Admin/img/icons/32/tag.png">
+								</span>
+								+{$count['niper']}%
+							</div>
+							<div class="right">
+								<strong>{$count['newinstall']}</strong>
+								今日装机
+							</div>
+						</li>
+						<li>
+							<div class="left sparkline_bar_neutral">
+								<span>
+									<img src="/Public/Admin/img/icons/32/wallet.png">
+								</span>
+								+{$count['nsper']}%</div>
+							<div class="right">
+								<strong>{$count['newstore']}</strong>
+								今日店铺
+							</div>
+						</li>
+						<li>
+							<div class="left sparkline_bar_bad">
+								<span>
+									<img src="/Public/Admin/img/icons/32/user.png">
+								</span>
+								+{$count['nuper']}%
+							</div>
+							<div class="right">
+								<strong>{$count['newusers']}</strong>
+								今日用户
+							</div>
+						</li>
+					</ul>
+			</div> -->
+			<div id="breadcrumb">
+				<a href="#" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> 首页</a>
+				<a href="#" class="current">影楼信息</a>
+			</div>
+			<div class="tools">
+				<ul>
+					<!-- <li class="add"><a href="javascript:void(0);" onclick="addshow();">添加</a></li>
+					<li class="export"><a href="{:U('Admin/Manage/export_ylou')}">导出</a></li> -->
+				</ul>
+			</div>
+				<div class="row">
+					<div class="col-xs-12">
+						
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="fa fa-th"></i>
+								</span>
+								<h5>影楼信息表</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<table class="table table-bordered table-striped table-hover data-table">
+									<thead>
+									<tr>
+									<th>ID</th>
+									<th>影楼名称</th>
+									<th>加密狗ID</th>
+									<th>服务器IP</th>
+									<th>端口</th>
+									<th>影楼简称</th>
+									<th>所属区域</th>
+									<th>开通时间</th>
+									<th>服务截止日期</th>
+									<th>PAD端状态</th>
+									<!-- <th>操作</th>
+									<th>测试</th>
+									<th>账号同步</th> -->
+									<!-- <th>环信账号</th> -->
+									<!-- <th>清空用户</th> -->
+									</tr>
+									</thead>
+									<tbody>
+										<!-- 循环输出  -->
+								        <foreach name="ylou" item="vo">
+								           <tr>								        
+								              <td>{$vo.id}</td>
+								              <td>{$vo.storename}</td>
+								              <td>{$vo.dogid}</td>
+								              <td>{$vo.ip}</td>
+								              <td>{$vo.port}</td>
+								              <td>{$vo.store_simple_name}</td>
+								              <td>{$vo.name}</td>
+								              <td>{$vo.createtime|date='Y-m-d',###}</td>
+								              <if condition="$vo.expiring_on eq 0"><td>无限期</td>
+								              	<elseif condition="$vo.expiring_on eq -1" /><td>未设置服务期</td>
+								              	<else /><td>{$vo.expiring_on|date='Y-m-d',###}</td>
+								              </if>
+								              <if condition="$vo.pad eq '1'"><td>开通</td>
+								              <else /><td>未开通</td>
+								              </if>            
+								              <!-- <td><a href="#" onclick="show('{$vo.id}','{$vo.storename}','{$vo.dogid}','{$vo.ip}','{$vo.port}','{$vo.store_simple_name}','{$vo.aid}','{$vo.createtime}','{$vo.expiring_on}');">编辑</a> / <a href="#" onclick="del('{$vo.id}')">删除</a></td>
+								              <td><a href="javascript:void(0);" onclick="test('{$vo.storename}','{$vo.dogid}','{$vo.ip}','{$vo.port}')">测试</a></td>
+								              <td><a href="javascript:void(0);" onclick="syncuser('{$vo.dogid}','{$vo.ip}','{$vo.port}','{$vo.id}','{$vo.store_simple_name}');">账号同步</a></td> -->
+								              <!-- <td><a href="javascript:void(0);" onclick="register({$vo.id})">重新注册</a></td> -->
+								              <!-- <td><a href="javascript:void(0);" onclick="remove_users('{$vo.id}')">清空用户</td> -->
+								           </tr>  
+								        </foreach>
+									</tbody>
+									</table>  
+							</div>
+						</div>
+					</div>
+				</div>
+		</div>
+
+		<form id="exportform" action="{:U('Admin/manage/add_ylou')}" method="post">
+		<div class="tip">
+			<p><b id="atitle">添加影楼信息</b></p>
+			影楼名称：<input name="storename" id="storename" type="text" value="">
+			<div class="lip"></div>
+			加密狗ID：<input name="dogid" id="dogid" type="text" value="" onblur="Checkdogid(this);">
+			<div class="lip"><span id="tipinfo"></span></div>
+			服务器IP：<input name="ip" id="ip" type="text" value="203.195.198.141">
+			<div class="lip"></div>
+			端&nbsp;口&nbsp;号：<input name="port" id="port" type="text" value="">
+			<div class="lip"></div>
+			影楼简称：<input name="store_simple_name" id="store_simple_name" type="text" value="" onblur="Checksimplename(this);" placeholder="zccp">
+			<div class="lip">影楼简称用于登录时作为前缀.例如:zccp_admin</div>
+			<div class="lip"><span id="nameinfo"></span></div>
+			地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区：
+			<select name="market_area" id="market_area">
+				<volist name="area" id="vo">
+					<option value="{$vo.id}">{$vo.name}</option>
+				</volist>
+			</select>
+			<div class="lip"></div>
+			服&nbsp;务&nbsp;期：
+			<select name="expiring_on" id="expiring_on">
+				<volist name="expire" id="ex">
+					<option value="{$ex.time}">{$ex.name}</option>
+				</volist>
+			</select>
+			<div class="lip"><span id="expiring_date"></span></div>
+			<div id="xuqi">
+				续&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;期：
+				<select name="renew" id="renew">
+					<volist name="renew" id="ex">
+						<option value="{$ex.time}">{$ex.name}</option>
+					</volist>
+				</select>
+				<div class="lip"><span id="renew_date"></span></div>
+			</div>
+			<input name="sid" id="sid" type="hidden" value="">
+			<input name="ctime" id="ctime" type="hidden" value="">
+			<input name="expire_date" id="expire_date" type="hidden" value="">
+			<div id="tijiao">
+				<input class="btns" name="tijiao" type="button"  onclick="sumit();" value="确定" />&nbsp;
+	        	<input class="btns" id="btns-r" name="quxiao" type="button"  onclick="cancel();" value="取消" />
+        	</div>
+       		<div id="fixtijiao">
+				<input class="btns" name="fixtijiao" type="button"  onclick="ajaxsumit();" value="确定" />&nbsp;
+	        	<input class="btns" id="btns-r" name="quxiao" type="button"  onclick="cancel();" value="取消" />
+			</div>	
+		</div>
+		</form>
+</div> 
+<section class="meg" id="tongbu">
+    <div class="meginfo">
+      <div id="megbtn"><h6 id="megimg">√</h6></div>
+      <div id="megmeg">修改成功！</div>
+   </div>
+</section> 
+<section> <!--测试连接 输出结果-->
+	<div id="note-bg" onclick="test_hide()">
+		<div id="note">
+			<ul id="note-ul">
+				
+			</ul>
+		</div>
+	</div>
+</section>            
+            <script src="__PUBLIC__/Admin/js/jquery.min.js"></script>
+            <script src="__PUBLIC__/Admin/js/jquery-ui.custom.js"></script>
+            <script src="__PUBLIC__/Admin/js/bootstrap.min.js"></script>
+            <script src="__PUBLIC__/Admin/js/jquery.icheck.min.js"></script>
+            <script src="__PUBLIC__/Admin/js/select2.min.js"></script>
+            <script src="__PUBLIC__/Admin/js/jquery.dataTables.min.js"></script>
+            
+            <script src="__PUBLIC__/Admin/js/jquery.nicescroll.min.js"></script>
+            <script src="__PUBLIC__/Admin/js/unicorn.js"></script>
+            <script src="__PUBLIC__/Admin/js/unicorn.tables.js"></script>
+	</body>
+</html>

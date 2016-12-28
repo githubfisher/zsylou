@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>{$title}</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/font-awesome.css" />
+        <link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery-ui.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/icheck/flat/blue.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/select2.css" />		
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/unicorn.css" />
+		<!--[if lt IE 9]>
+		<script type="text/javascript" src="__PUBLIC__/Admin/js/respond.min.js"></script>
+		<![endif]-->
+		<style> 
+		#content{
+			border-bottom-left-radius:0;
+		}
+			td{text-align: center;} 
+			.tools{padding-left: 25px;}
+			.tip{
+				display:none;
+			}
+			.add{
+				display:block;
+				width:50px;
+				height:30px;
+				line-height: 30px;
+				text-align: center;
+				float: left;
+			}
+			.export{
+				display:block;
+				width:50px;
+				height:30px;
+				line-height: 30px;
+				text-align: center;
+				float: left;
+			}
+			/*tip*/
+  			.tip{
+  				width:485px;
+  				height:300px; 
+  				position:absolute;top:10%; 
+  				left:30%;
+  				background:#fcfdfd;
+  				box-shadow:1px 8px 10px 1px #9b9b9b;
+  				border-radius:1px;
+  				behavior:url(js/pie.htc); 
+  				display:none; z-index:111111;
+  				text-align: center;
+  				margin-top:15px;
+  				padding-top:20px;
+  			}
+  			.tip b{
+  				font-size:18px;
+  			}
+  			.lip{
+  				height:10px;
+  			}
+
+		</style>
+			
+	<script>
+		  // (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  // (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  // m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  // })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		  // ga('create', 'UA-44987299-1', 'bootstrap-hunter.com');
+		  // ga('send', 'pageview');
+
+		  function show(){
+		  	$(".tip").fadeIn(200);
+		  }
+		  function cancel(){
+		  	$(".tip").fadeOut(100);
+		  }
+		  function sumit(){
+		  	$(".tip").fadeOut(100);
+		  	$("#exportform").submit();
+		  }
+		   function del(id){
+		  	$.post("del_group",{id:id},function(data){
+		  		if(data.status == 1){
+		  			alert('删除成功!');
+		  			window.location.reload();
+		  		}else{
+		  			alert('删除失败!');
+		  		}	
+		  	});
+		  }
+	</script>
+	</head>	
+	<body data-color="grey" class="flat">
+	<div id="wrapper">
+       <div id="switcher">
+            <div id="switcher-inner">
+                <h3>Theme Options</h3>
+                <h4>Colors</h4>
+                <p id="color-style">
+                    <a data-color="orange" title="Orange" class="button-square orange-switcher" href="#"></a>
+                    <a data-color="turquoise" title="Turquoise" class="button-square turquoise-switcher" href="#"></a>
+                    <a data-color="blue" title="Blue" class="button-square blue-switcher" href="#"></a>
+                    <a data-color="green" title="Green" class="button-square green-switcher" href="#"></a>
+                    <a data-color="red" title="Red" class="button-square red-switcher" href="#"></a>
+                    <a data-color="purple" title="Purple" class="button-square purple-switcher" href="#"></a>
+                    <a href="#" data-color="grey" title="Grey" class="button-square grey-switcher"></a>
+                </p>
+                <h4 class="visible-lg">Layout Type</h4>
+                <p id="layout-type">
+                	<a data-option="flat" class="button" href="#">Flat</a>
+                    <a data-option="old" class="button" href="#">Old</a>                    
+                </p>
+            </div>
+            <div id="switcher-button">
+                <i class="fa fa-cogs"></i>
+            </div>
+        </div>
+		
+		<div id="content">
+			<div id="content-header">
+				<h1>考勤组管理</h1>
+				<div class="btn-group">
+					<a class="btn btn-large" title="Manage Files"><i class="fa fa-file"></i></a>
+					<a class="btn btn-large" title="Manage Users"><i class="fa fa-user"></i></a>
+					<a class="btn btn-large" title="Manage Comments"><i class="fa fa-comment"></i><span class="label label-danger">5</span></a>
+					<a class="btn btn-large" title="Manage Orders"><i class="fa fa-shopping-cart"></i></a>
+				</div>
+			</div>
+			<div id="breadcrumb">
+				<a href="#" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> 首页</a>
+				<a href="#" class="current">考勤组管理</a>
+			</div>
+			
+				<div class="row">
+					<div class="col-xs-12">
+						
+						<div class="widget-box">
+							<div class="widget-title">
+								<span class="icon">
+									<i class="fa fa-th"></i>
+								</span>
+								<h5>考勤组列表</h5>
+							</div>
+							<div class="widget-content nopadding">
+								<table class="table table-bordered table-striped table-hover data-table">
+									<thead>
+									<tr>
+									<th>序号</th>
+									<th>考勤组名称</th>
+									<th>人数</th>
+									<th>考勤类型</th>
+									<th>考勤时间</th>
+									<th>操作</th>
+									</tr>
+									</thead>
+									<tbody>
+										<!-- 循环输出  -->
+								        <foreach name="group" item="g">
+								           <tr>								        
+								              <td>{$g.id}</td>
+								              <td>{$g.name}</td>
+								              <td>{$g.num}</td>
+								              <if condition="$g.type eq 1">
+								              	<td>固定班制</td>
+								              	<td><if condition="$g.relax eq '每周'"><else />{$g.relax|rtrim='、'} 休息<br /></if>
+								              		<volist name="g['work']" id="w">
+								              			 {$w.mark} {$w.name} <br/>
+								              		</volist>
+								              	</td>
+								               <else /><td>排班制</td><td>{$g.class|rtrim='、'}</td>
+								              </if>				              
+								              <td><a href="{:U('Admin/mylou/update_rules',array('id'=>$g['id']))}">编辑排班</a> / <a href="javascript:void(0)" onclick="del('{$g.id}');">删除</a></td>
+								           </tr>  
+								        </foreach>
+									</tbody>
+									</table>  
+							</div>
+						</div>
+						<p style="color:#666;">注:新增考勤组请去掌上影楼手机的完成</p>
+					</div>
+				</div>
+		</div>
+
+		<form id="exportform" action="{:U('Admin/manage/add_storeadmin')}" method="post">
+		<div class="tip">
+			<p><b>添加工作人员</b></p>
+			会员名：<input name="username" type="text" value="">
+			<div class="lip"></div>
+			昵&nbsp;&nbsp;&nbsp;称：<input name="nickname" type="text" value="">
+			<div class="lip"></div>
+			密&nbsp;&nbsp;&nbsp;码：<input name="password" type="password" value="">
+			<div class="lip"></div>
+			影楼ID：<input name="sid" type="text" value="">
+			<div class="lip"></div>
+			职&nbsp;&nbsp;&nbsp;务：<input type="radio" name="type" value="0" checked>店员  <input type="radio" name="type" value="1">店长&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<!-- <select name="type">
+				<option value="0">店员</option>
+				<option value="1">店长</option>
+			</select> -->
+			<div class="lip"></div>
+			<input name="tijiao" type="button"  onclick="sumit();" value="确定" />&nbsp;
+        	<input name="quxiao" type="button"  onclick="cancel();" value="取消" />
+		</div>
+		</form>
+            
+            <script src="__PUBLIC__/Admin/js/jquery.min.js"></script>
+            <script src="__PUBLIC__/Admin/js/jquery-ui.custom.js"></script>
+            <script src="__PUBLIC__/Admin/js/bootstrap.min.js"></script>
+            <script src="__PUBLIC__/Admin/js/jquery.icheck.min.js"></script>
+            <script src="__PUBLIC__/Admin/js/select2.min.js"></script>
+            <script src="__PUBLIC__/Admin/js/jquery.dataTables.min.js"></script>
+            
+            <script src="__PUBLIC__/Admin/js/jquery.nicescroll.min.js"></script>
+            <script src="__PUBLIC__/Admin/js/unicorn.js"></script>
+            <script src="__PUBLIC__/Admin/js/unicorn.tables.js"></script>
+	</body>
+</html>
+

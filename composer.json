@@ -1,0 +1,22 @@
+{
+    "name": "githubfisher/zsylou",
+    "description": "manage tools for Ying Lou store",
+    "type": "library",
+    "keywords": [
+        "website",
+        "thinkphp",
+        "YingLou",
+        "manage"
+        ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "githubfisher",
+            "email": "gooodfisher@126.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "minimum-stability": "dev"
+}

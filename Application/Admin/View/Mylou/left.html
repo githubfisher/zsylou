@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Unicorn Admin</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/font-awesome.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/fullcalendar.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery.jscrollpane.css" />	
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/unicorn.css" />
+		<!--[if lt IE 9]>
+		<script type="text/javascript" src="__PUBLIC__/Admin/js/respond.min.js"></script>
+		<![endif]-->
+	<style>
+		.active{
+			background-color: #434343;
+		}
+	</style>		
+	<script>
+		  // (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  // (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  // m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  // })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		  // ga('create', 'UA-44987299-1', 'bootstrap-hunter.com');
+		  // ga('send', 'pageview');
+
+		</script></head>	
+<body data-color="grey" class="flat" style="background:#3c3c3c;">
+	<div id="wrapper">
+		<div id="sidebar">
+			<div id="search">
+				<input type="text" placeholder="搜索..." readOnly="ture"/><button type="submit" class="tip-right" title="Search"><i class="fa fa-search"></i></button>
+			</div>	
+			<ul>
+				<li class="active"><a href="{:U('Admin/mylou/manage')}" target="rightFrame"><i class="fa fa-home"></i> <span>影楼管理</span></a></li>
+				<li>
+					<a href="{:U('Admin/mylou/users')}" target="rightFrame"><i class="fa fa-th"></i> <span>账号管理</span></a>
+				</li>
+				<li><a href="{:U('Admin/mylou/pay_code')}" target="rightFrame"><i class="fa fa-flask"></i> <span>收款二维码</span></a></li>
+				<li class="submenu">
+					<a href="#"><i class="fa fa-th-list"></i> <span>考勤管理</span> <i class="arrow fa fa-chevron-right"></i></a>
+					<ul>
+						<li><a href="{:U('Admin/mylou/group_list')}" target="rightFrame">考勤组管理</a></li>
+						<li><a href="{:U('Admin/mylou/class_list')}" target="rightFrame">班次管理</a></li>
+						<li><a href="{:U('Admin/mylou/sheet_exp')}" target="rightFrame">考勤报表</a></li>
+					</ul>
+				</li>
+				<li class="submenu">
+					<a href="#"><i class="fa fa-inbox"></i> <span>我的影楼</span> <i class="arrow fa fa-chevron-right"></i></a>
+					<ul>
+						<li><a href="{:U('Admin/mylou/my_ylou_list')}" target="rightFrame">H5页面管理</a></li>
+						<li><a href="{:U('Admin/mylou/new_redius')}" target="rightFrame">新建H5页面</a></li>
+					</ul>
+				</li>
+				<li><a href="{:U('Admin/mylou/my_coverimg_list')}" target="rightFrame"><i class="fa fa-signal"></i> <span>开场画面</span></a></li>
+				<li class="submenu">
+					<a href="#"><i class="fa fa-file"></i> <span>意见反馈</span><i class="arrow fa fa-chevron-right"></i></a>
+					<ul>
+						<li><a href="{:U('Admin/mylou/feedback_show')}" target="rightFrame">意见反馈</a></li>
+						<li><a href="{:U('Admin/mylou/my_opini')}" target="rightFrame">我的意见</a></li>
+						</li>
+					</ul>
+				</li>
+				<!-- //是否开启pad端 -->
+				<if condition="$pad eq '1'"><li class="submenu">
+					<a href="#"><i class="fa fa-th-list"></i> <span>平板端管理</span><i class="arrow fa fa-chevron-right"></i></a>
+					<ul>
+						
+						<li><a href="{:U('Admin/pad/list_ct','type=theme')}" target="rightFrame">主题管理</a></li>
+						<li><a href="{:U('Admin/pad/list_sps','type=set')}" target="rightFrame">套系图片管理</a></li>
+						<li><a href="{:U('Admin/pad/list_sps','type=product')}" target="rightFrame">产品图片管理</a></li>
+						<li><a href="{:U('Admin/pad/list_sps','type=spot')}" target="rightFrame">景点图片管理</a></li>
+						<li><a href="{:U('Admin/pad/list_ct','type=clothes')}" target="rightFrame">服装管理</a></li>
+						<li><a href="{:U('Admin/pad/list_picture')}" target="rightFrame">图片管理</a></li>
+						<li><a href="{:U('Admin/pad/list_logo')}" target="rightFrame">店铺LOGO</a></li>
+						</li>
+					</ul>
+				</li>
+				<else />
+				</if>
+			</ul>
+		</div>
+	</div>
+	<script src="__PUBLIC__/Admin/js/excanvas.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/jquery-ui.custom.js"></script>
+    <script src="__PUBLIC__/Admin/js/bootstrap.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/jquery.flot.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/jquery.flot.resize.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/jquery.sparkline.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/fullcalendar.min.js"></script>
+    
+    <script src="__PUBLIC__/Admin/js/jquery.nicescroll.min.js"></script>
+    <script src="__PUBLIC__/Admin/js/unicorn.js"></script>
+    <script src="__PUBLIC__/Admin/js/unicorn.dashboard.js"></script>
+</body>
+</html>

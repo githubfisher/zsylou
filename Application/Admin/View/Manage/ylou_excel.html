@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/bootstrap-responsive.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/matrix-style.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/font-awesome/css/font-awesome.css" />
+		<style> 
+			#content{
+				margin-top: 20px;
+				margin-left: 0px;
+				border-bottom-left-radius:0;
+			}
+			#breadcrumb{
+				background-color: #ccc;
+				margin-top: -20px;
+			}
+			.container-fluid {
+			    padding-right: 20px;
+			    padding-left: 20px;
+			}
+			/**/
+			label{
+				display:block;
+			}
+			.form-horizontal .control-label {
+			    float: left;
+			    text-align: right;
+			}
+			select,input[type="text"]{
+				width: 65.81196581196582%;
+				min-height: 26px;
+				float: none;
+				box-sizing: border-box;
+				box-shadow: none;
+				border-radius: 0px;
+				margin-bottom: 0;
+				vertical-align: middle;
+				background-color: #fff;
+				border: 1px solid #ccc;
+				padding: 4px 6px;
+				font-size: 14px;
+				color: #555;
+			}
+			.form-horizontal .form-actions {
+			    margin-top: 0;
+			    margin-bottom: 0;
+			}
+			.form-horizontal .form-actions {
+			    padding-left: 20px;
+			}
+			.form-actions {
+				padding: 19px 20px 20px;
+				margin-top: 20px;
+				margin-bottom: 20px;
+				background-color: #f5f5f5;
+				border-top: 1px solid #e5e5e5;
+			}
+			.form-horizontal .control-group::before, .form-horizontal .control-group::after {
+			    display: table;
+			    line-height: 0;
+			    content: "";
+			}
+			.form-horizontal .control-group::after {
+			    clear: both;
+			    display: table;
+			    line-height: 0;
+			    content: "";
+			}
+			.row-fluid [class*="span"]:first-child {
+			    margin-bottom: 10px;
+			}
+			/**/
+			.meg{
+			  display: none;
+			  background: rgba(0,0,0,.35);
+			  width: 100%;
+			  height: 100%;
+			  position: fixed;
+			  top: 0;
+			  left: 0;
+			  z-index: 102;
+			}
+			.meginfo{
+			  width:24%;
+			  /*height:6%;*/
+			  margin: 0 auto;
+			  padding: 1%;
+			  background: #f8f8f8;
+			  margin-top: 16%;
+			  border-radius: 5px;
+			  text-align: center;
+			}
+			#megbtn{
+			  width: 50px;
+			  height: 50px;
+			  border: 2px solid #67c1a5;
+			  border-radius: 100%;
+			  float: left;
+			  margin-left: 5%;
+			}
+			h6{
+			  color:#67c1a5;
+			  font-size: 30px;
+			  margin-top:0.1em;
+			  margin-left: -0.06em;
+			}
+			#megmeg{
+			    line-height: 2em;
+			    font-size: 1.9em;
+			    margin-left: 15px;
+			    position:relative;
+			    right:-10px;   
+			}
+			/**/
+			#export-date-3{
+				display:none;
+			}
+			#export-date-1{
+				display:none;
+			}
+		</style>
+		<script>
+			function check_method_1(value){
+				if(value == 'gt,lt' || value == 'gt,elt' || value == 'egt,lt' || value == 'egt,elt'){
+					$("#export-date-1").show();
+				}else{
+					$("#export-date-1").hide();
+				}
+			}
+			function check_method_2(value){
+				if(value == 'gt,lt' || value == 'gt,elt' || value == 'egt,lt' || value == 'egt,elt'){
+					$("#export-date-3").show();
+				}else{
+					$("#export-date-3").hide();
+				}
+			}
+			function export_submit(){
+				var area = document.getElementById("export-area").value;
+				var method1 = document.getElementById("export-method-1").value;
+				var method2 = document.getElementById("export-method-2").value;
+				var date1 = document.getElementById("export-date-1").value;
+				var date2 = document.getElementById("export-date-2").value;
+				var date3 = document.getElementById("export-date-3").value;
+				var date4 = document.getElementById("export-date-4").value;
+				$("#export-bg").fadeOut();
+				$.post('/index.php/Admin/Manage/export_ylou',{area:area,method1:method1,method2:method2,date1:date1,date2:date2,date3:date3,date4:date4},function(data){
+					var json = eval('('+data+')');
+					if(json.status == 1){
+			  			document.getElementById("megmeg").innerHTML="导出成功！&nbsp;&nbsp;<a href='"+json.content+"' onclick='close_tip();'>报表下载！</a>";
+	                    $("#tongbu").fadeIn();
+	                    return true;
+	                }else{
+	                    document.getElementById("megimg").innerHTML="X";
+	                    document.getElementById("megmeg").innerHTML="导出失败！";
+	                    $("#tongbu").fadeIn();
+	                    setTimeout(function(){
+	                       $("#tongbu").fadeOut();
+	                    },800);
+	                    return false;
+	                }
+				});
+			}
+			function close_tip(){
+				$("#tongbu").fadeOut();
+	            $(".back").fadeOut();
+			}
+		</script>
+	</head>	
+	<body data-color="grey" class="flat">
+	  <div id="content">
+		<div id="breadcrumb">
+		  <a href="#" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> 首页</a>
+		  <a href="#" class="current">导出报表</a>
+		</div>
+		<div class="container-fluid">
+		  <div class="row-fluid">
+			<div class="span6">
+			  <div class="widget-box">
+		        <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+		          <h5>报表选项</h5>
+		        </div>
+		        <div class="widget-content nopadding">
+		          <form action="/index.php/Admin/manage/add_ylou" method="post" class="form-horizontal">
+		            <div class="control-group">
+		              <label class="control-label">销售区域 :</label>
+		              <div class="controls">
+		                <select name="export-area" id="export-area">
+							<volist name="area" id="vo">
+								<option value="{$vo.id}">{$vo.name}</option>
+							</volist>
+						</select>
+		              </div>
+		            </div>
+		            <div class="control-group">
+		              <label class="control-label">开通日期 :</label>
+		              <div class="controls">
+		                <input type="text" class="span4 m-wrap" name="export-date-1" id="export-date-1" value="{$date}" />
+		                <select name="export-method-1" id="export-method-1" class="span2 m-wrap" onchange="check_method_1(this.value);">
+							<option value="no">未选择</option>
+							<option value="gt"> > </option>
+							<option value="egt"> >= </option>
+							<option value="eq"> = </option>
+							<option value="lt"> < </option>
+							<option value="elt"> <= </option>
+							<option value="gt,lt"> <,< </option>
+							<option value="egt,lt"> <=,< </option>
+							<option value="gt,elt"> <,<= </option>
+							<option value="egt,elt"> <=,<= </option>
+						</select>
+		                <input type="text" class="span4 m-wrap" name="export-date-2" id="export-date-2" value="{$date}" />
+		              </div>
+		            </div>
+		            <div class="control-group">
+		              <label class="control-label">截止日期 :</label>
+		              <div class="controls">
+		              	<input type="text" class="span4 m-wrap" name="export-date-3" id="export-date-3" value="{$date}" />
+		                <select name="export-method-2" id="export-method-2" class="span2 m-wrap" onchange="check_method_2(this.value);">
+							<option value="no">未选择</option>
+							<option value="gt"> > </option>
+							<option value="egt"> >= </option>
+							<option value="eq"> = </option>
+							<option value="lt"> < </option>
+							<option value="elt"> <= </option>
+							<option value="gt,lt"> <,< </option>
+							<option value="egt,lt"> <=,< </option>
+							<option value="gt,elt"> <,<= </option>
+							<option value="egt,elt"> <=,<= </option>
+						</select>
+		                <input type="text" class="span4 m-wrap" name="export-date-4" id="export-date-4" value="{$date}" />
+		              </div>
+		            </div>
+		            <div class="form-actions">
+		              <button type="button" class="btn btn-success" onclick="export_submit();">提交</button>
+		            </div>
+		          </form>
+		        </div>
+		      </div>
+			</div>
+		  </div>
+	    </div>
+	  </div>
+	  <section class="meg" id="tongbu"  onclick="close_tip();">
+	    <div class="meginfo">
+	      <div id="megbtn"><h6 id="megimg">√</h6></div>
+	      <div id="megmeg">修改成功！</div>
+	    </div>
+	  </section>
+	  <script src="__PUBLIC__/Admin/js/jquery.min.js"></script>
+	</body>
+</html>

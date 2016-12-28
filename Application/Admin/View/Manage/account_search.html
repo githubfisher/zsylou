@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>{$title}</title>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/font-awesome.css" />
+        <link rel="stylesheet" href="__PUBLIC__/Admin/css/jquery-ui.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/icheck/flat/blue.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/select2.css" />		
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/unicorn.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/page.css" />
+		<!--[if lt IE 9]>
+		<script type="text/javascript" src="__PUBLIC__/Admin/js/respond.min.js"></script>
+		<![endif]-->
+		<style> 
+			#content{
+				margin-top: 20px;
+				border-bottom-left-radius:0;
+			}
+			#content-header .mini-stats {
+				padding-right:25px;
+				margin-top:20px;
+			}
+			td{text-align: center;} 
+			.tools{padding-left: 25px;}
+			.tools li{padding-left: 10px;}
+			.tip{
+				display:none;
+			}
+			.add{
+				display:block;
+				width:50px;
+				height:30px;
+				line-height: 30px;
+				text-align: center;
+				float: left;
+			}
+			.export{
+				display:block;
+				/*width:50px;*/
+				height:30px;
+				line-height: 30px;
+				text-align: center;
+				float: left;
+			}
+				/*tip*/
+  			.tip{
+  				width:485px;
+  				height:500px; 
+  				position:absolute;top:10%; 
+  				left:30%;
+  				background:#fcfdfd;
+  				box-shadow:1px 8px 10px 1px #9b9b9b;
+  				border-radius:1px;
+  				behavior:url(js/pie.htc); 
+  				display:none; z-index:111111;
+  				text-align: center;
+  				margin-top:15px;
+  				padding-top:20px;
+  				padding-bottom: 20px;
+  			}
+  			.tip b{
+  				font-size:18px;
+  			}
+  			.lip{
+  				height:25px;
+  				text-align: left;
+				padding-left:106px;
+				color: #999;
+				padding-top: 3px;
+  			}
+  			.tip input[type=text]{
+  				width:70%;
+  			}
+  			.btns{
+  				padding: 5px 50px;
+				background: #fff;
+				border: 1px solid #eee;
+				border-radius: 3px;
+  			}
+  			.btns:hover{
+  				border: 1px solid #04a1ea;
+  			}
+  			#btns-r{
+  				margin-left:5px;
+  			}
+  			.meg{
+			  display: none;
+			  background: rgba(0,0,0,.35);
+			  width: 100%;
+			  height: 100%;
+			  position: fixed;
+			  top: 0;
+			  left: 0;
+			  z-index: 102;
+			}
+			.meginfo{
+			  width:24%;
+			  /*height:6%;*/
+			  margin: 0 auto;
+			  padding: 1%;
+			  background: #f8f8f8;
+			  margin-top: 16%;
+			  border-radius: 5px;
+			  text-align: center;
+			}
+			#megbtn{
+			  width: 50px;
+			  height: 50px;
+			  border: 2px solid #67c1a5;
+			  border-radius: 100%;
+			  float: left;
+			  margin-left: 5%;
+			}
+			h6{
+			  color:#67c1a5;
+			  font-size: 30px;
+			  margin-top:0.1em;
+			  margin-left: -0.06em;
+			}
+			#megmeg{
+			    line-height: 2em;
+			    font-size: 1.9em;
+			    margin-left: 15px;
+			    position:relative;
+			    right:-10px;   
+			}
+			#tipinfo{
+				display:none;
+				/*float:right;
+				padding-right: 15px;*/
+			}
+			#fixtijiao{
+				display: none;
+			}
+			#note-bg{
+				position: fixed;
+				top:0;
+				left:0;
+				bottom:0;
+				right:0;
+				width:100%;
+				height:100%;
+				z-index: 999;
+				background:rgba(111, 102, 102, 0.4);
+				display: none;
+			}
+			#note{
+				width:60%;
+				margin-left:20%;
+				margin-top:5%;
+				height: 500px;
+				background: #f0f0f0;
+			}
+			#note-ul{
+				padding: 20px 20px;
+				margin-left: 20px;
+			}
+			.fwq{
+				color:blue;
+			}
+			#st-name{
+				color:red;
+			}
+			.red{
+				color:red;
+			}
+			.gre{
+				color:green;
+			}
+			#market_area{
+				border:1px solid #ccc;
+				border-radius: 3px;
+				width:70%;
+				height:30px;
+			}
+			#expiring_on {
+				border:1px solid #ccc;
+				border-radius: 3px;
+				width:70%;
+				height:30px;
+			}
+			#renew{
+				border:1px solid #ccc;
+				border-radius: 3px;
+				width:70%;
+				height:30px;
+			}
+			#xuqi{
+				display:none;
+			}
+			#export-bg{
+				display:none;
+				width:100%;
+				height:100%;
+				position:fixed;
+				top:0;
+				left:0;
+				right:0;
+				bottom:0;
+				background-color:rgba(125,125,125,0.2);
+				z-index:100;
+			}
+			#export-window{
+				width:400px;
+				height:220px;
+				margin:0 auto;
+				margin-top:200px;
+				background:white;
+			}
+			#export-table{
+				width:100%;
+				text-align: center;
+			}
+			#export-table th{
+				text-align:center;
+				padding:16px 5px 8px 5px;
+				font-size:18px;
+				font-weight:bold;
+			}
+			#export-table td{
+				padding:5px 6px;
+			}
+			.export-method{
+				border:1px solid #ccc;
+				border-radius: 3px;
+				width:100%;
+				height:24px;
+				text-align: center;
+			}
+			.export-btn{
+				padding:5px 20px;
+				background-color: #3287e4;
+				border:1px solid #3287e4;
+				border-radius:3px;
+				color:white;
+			}
+			#export-date-3{
+				display:none;
+			}
+			#export-date-1{
+				display:none;
+			}
+			.method-disable{
+				display:none;
+			}
+			/**/
+			.wd-container{
+				width:600px;
+				margin:0 auto;
+				margin-top:100px;
+				background:white;
+				padding-top: 20px;
+				border-radius: 5px;
+			}
+			.wd-table{
+				width:94%;
+				margin: 0 auto;
+				text-align: center;
+			}
+			.wd-table th{
+				text-align: center;
+				padding:16px 5px 8px 5px;
+				font-size:18px;
+				font-weight:bold;
+				border:1px solid #ccc;
+			}
+			.wd-table td{
+				padding:5px 6px;
+				border:1px solid #ccc;
+			}
+			.form-actions{
+				width: 100%;
+				text-align: center;
+				padding: 20px;
+			}
+			.form-actions select{
+				border: 1px solid #ccc;
+				padding: 4px;
+				width: 50%;
+			}
+			#cancel-all{
+				display: none;
+			}		
+		</style>
+		<script>
+		  	function addshow(){
+		  	$(".tip").height(470);
+		  	$(".tip").fadeIn(200);
+		  }
+		  function show(sid,storename,dogid,ip,port,sipname,aid,ctime,expire){
+		  	document.getElementById("storename").value=storename;
+		  	document.getElementById("dogid").value=dogid;
+		  	document.getElementById("ip").value=ip;
+		  	document.getElementById("port").value=port;
+		  	document.getElementById("sid").value=sid;
+		  	document.getElementById("store_simple_name").value=sipname;
+		  	document.getElementById("atitle").innerHTML="修改影楼信息";
+		  	document.getElementById("fixtijiao").style.display="block";
+		  	document.getElementById("tijiao").style.display="none";
+		  	document.getElementById("store_simple_name").disabled="disabled";
+		  	document.getElementById("ctime").value=ctime;
+		  	document.getElementById("expire_date").value=expire;
+		  	document.getElementById("xuqi").style.display="block";
+		  	$(".tip").height(520);
+		  	if(aid != 0 && aid != null){
+		  		$("#market_area").val(aid); 
+		  	}
+		  	if(expire == 0 || expire == -1){
+		  		$("#expiring_on").val(expire);
+		  	}else{
+		  		var date = expire - ctime;
+		  		$("#expiring_on").val(date);
+		  	}
+		  	$("#renew").val(-1);
+		  	$(".tip").fadeIn(200);
+		  }
+		  function cancel(){
+		  	document.getElementById("storename").value='';
+		  	document.getElementById("dogid").value='';
+		  	document.getElementById("ip").value='';
+		  	document.getElementById("port").value='';
+		  	document.getElementById("sid").value='';
+		  	document.getElementById("store_simple_name").value='';
+		  	document.getElementById("xuqi").style.display="none";
+		  	document.getElementById("tipinfo").innerHTML='';
+		  	document.getElementById("nameinfo").innerHTML='';
+		  	$(".tip").fadeOut(100);
+		  }
+		  function sumit(){
+		  	$(".tip").fadeOut(100);
+		  	var storename = document.getElementById("storename").value;
+		  	var dogid = document.getElementById("dogid").value;
+		  	var ip = document.getElementById("ip").value;
+		  	var port = document.getElementById("port").value;
+		  	var sname = document.getElementById("store_simple_name").value;
+		  	var area = document.getElementById("market_area").value;
+		  	var expire = document.getElementById("expiring_on").value;
+		  	$.post("add_ylou",{dogid:dogid,ip:ip,port:port,storename:storename,market_area:area,expiring_on:expire,store_simple_name:sname,},function(data){
+                if(data.status == 1){
+                    document.getElementById("megmeg").innerHTML="添加成功！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       window.location.reload();
+                    },800);
+                    return true;
+                }else{
+                    document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML="添加失败！";
+                    $("#tongbu").fadeIn();
+                    cancel();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       // $(".back").fadeOut();
+                    },1000);
+                    return false;
+                }
+            });
+		  }
+		  function ajaxsumit(){
+		  	$(".tip").fadeOut(100);
+		  	var storename = document.getElementById("storename").value;
+		  	var dogid = document.getElementById("dogid").value;
+		  	var ip = document.getElementById("ip").value;
+		  	var port = document.getElementById("port").value;
+		  	var sid = document.getElementById("sid").value;
+		  	var area = document.getElementById("market_area").value;
+		  	var expire = document.getElementById("expiring_on").value;
+		  	var renew = document.getElementById("renew").value;
+		  	var expire_date = document.getElementById("expire_date").value;
+		  	if(renew != -1){
+		  		if(expire_date == 0){
+		  			var timestamp = parseInt(new Date().getTime()/1000); 
+		  			expire = Number(timestamp) + Number(renew); 
+		  		}else if(expire_date == -1){
+		  			var ctime = document.getElementById("ctime").value;
+			  		expire = Number(ctime) + Number(renew);
+		  		}else{
+		  			expire = Number(expire_date) + Number(renew);
+		  		}
+		  	}else{
+		  		if(expire != 0 && expire != -1){
+			  		var ctime = document.getElementById("ctime").value;
+			  		expire = Number(ctime) + Number(expire);
+			  	}
+			}
+		  	$.post("update_ylou",{sid:sid,dogid:dogid,ip:ip,port:port,store:storename,area:area,expire:expire},function(data){
+                if(data.status == 1){
+                    // document.getElementById("megmeg").innerHTML="修改成功！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       window.location.reload();
+                    },800);
+                    return true;
+                }else{
+                    document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML="修改失败！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       // $(".back").fadeOut();
+                    },1000);
+                    return false;
+                }
+            });
+		  }
+		  function Checkdogid(x){
+		  	if(x.value != '' || x.value != null){
+		  		var dogid = x.value;
+		  		$.post("checkdogid",{dogid:dogid},function(json){
+		  			// var json = eval('('+data+')');
+		  			if(json.status == 1){
+	                    document.getElementById("tipinfo").innerHTML=json.content;
+	              		document.getElementById("tipinfo").style.color = 'green';
+	              		document.getElementById("tipinfo").style.display = 'block';
+	                    return true;
+	                }else{
+	                    document.getElementById("tipinfo").innerHTML=json.content;
+	                    document.getElementById("tipinfo").style.color = 'red';
+	                    document.getElementById("tipinfo").style.display = 'block';
+	                    return true;
+	                }
+		  		});
+		  	}
+		  }
+		  function Checksimplename(x){
+		  	if(x.value != '' || x.value != null){
+		  		var name = x.value;
+		  		$.post("checksimplename",{name:name},function(data){
+		  			if(data.status == 1){
+	                    document.getElementById("nameinfo").innerHTML="影楼简称未见重复！";
+	              		document.getElementById("nameinfo").style.color = 'green';
+	              		document.getElementById("nameinfo").style.display = 'block';
+	                    return true;
+	                }else{
+	                    document.getElementById("nameinfo").innerHTML="影楼简称重复！";
+	                    document.getElementById("nameinfo").style.color = 'red';
+	                    document.getElementById("nameinfo").style.display = 'block';
+	                    return false;
+	                }
+		  		});
+		  	}
+		  }
+		  function del(id){
+		  	if(id == '' || id == null){
+		  		alert('请重试!');
+		  	}else{
+		  		$.post("del_ylou",{id:id},function(data){
+		  			if(data.status == 1){
+		  				document.getElementById("megmeg").innerHTML="删除成功！";
+	                    $("#tongbu").fadeIn();
+	                    setTimeout(function(){
+	                       $("#tongbu").fadeOut();
+	                       window.location.reload();
+	                    },800);
+	                    return true;
+			  		}else{
+			  			document.getElementById("megimg").innerHTML="X";
+	                    document.getElementById("megmeg").innerHTML="删除失败！";
+	                    $("#tongbu").fadeIn();
+	                    setTimeout(function(){
+	                       $("#tongbu").fadeOut();
+	                       // $(".back").fadeOut();
+	                    },1000);
+	                    return false;
+			  		}
+		  		});
+		  	}
+		  }
+		  function test_hide(){
+		  	document.getElementById("note-ul").innerHTML = '';
+		  	$("#note-bg").hide();
+		  }
+		  //测试连接 服务器是否工作正常
+		  function test(store,dogid,ip,port){
+		  	$("#note-bg").show();
+		  	var text = '<li class="note-li">测试[ <span class="fwq">掌上影楼APP服务器</span> ]与店铺[ <span id="st-name"></span> ]的影楼服务器通信情况</li><li>请不要尝试关闭此页面,该页面会在测试结束后自动关闭! 大概需要10-20秒时间!</li><li class="red">提示: 如果测试未全部通过,请联系管理员调试后再正常使用!</li>';
+		  	$("#note-ul").append(text);
+		  	$("#st-name").append(store);
+		  	// $("#note-ul").append("<li>这时测试加入li</li>");
+		  	// var result = true;
+		  	setTimeout(function(){
+				$("#note-ul").append('<li class="note-li">测试开始.............!</li>');
+				ajax(dogid,ip,port,"9","员工通讯录");
+		  		ajax(dogid,ip,port,"14","套系列表");
+		  		ajax(dogid,ip,port,"15","产品列表");
+		  		ajax(dogid,ip,port,"18","景点列表");
+		  	},3000);
+		  }
+		  //测试连接 的ajax函数
+		  function ajax(dogid,ip,port,type,detail){
+		  	$.post("test",{dogid:dogid,ip:ip,port:port,type:type},function(data){
+		  		if(data.status == 1){
+		  			if(type == 18){
+		  				$("#note-ul").append('<li class="red">尝试读取远程PC服务器 '+detail+' .............成功!</li><br/>');
+		  				var filling = "<li>..............</li><br/>";
+					  	setTimeout(function(){
+					  		$("#note-ul").append(filling);
+					  		$("#note-ul").append(filling);
+						  	$("#note-ul").append(filling);
+						  	$("#note-ul").append(filling);
+						  	$("#note-ul").append('<li class="red">通信连接测试结束,3秒后窗口自动关闭!</li>');
+						  	setTimeout(function(){test_hide();},3000);
+					  	},1000);
+		  			}else{
+		  				$("#note-ul").append('<li class="red">尝试读取远程PC服务器 '+detail+' .............成功!</li><br/>');
+		  			}
+		  		}else{
+		  			if(type == 18){
+		  				$("#note-ul").append('<li class="gre">尝试读取远程PC服务器 '+detail+' .............失败!</li><br/>');
+		  				var filling = "<li>..............</li><br/>";
+					  	setTimeout(function(){
+					  		$("#note-ul").append(filling);
+					  		$("#note-ul").append(filling);
+						  	$("#note-ul").append(filling);
+						  	$("#note-ul").append(filling);
+						  	$("#note-ul").append('<li class="red">通信连接测试结束,3秒后窗口自动关闭!</li>');
+						  	setTimeout(function(){test_hide();},3000);
+					  	},1000);
+		  			}else{
+		  				$("#note-ul").append('<li class="gre">尝试读取远程PC服务器 '+detail+' .............失败!</li><br/>');
+		  			}
+		  		}
+		  	});
+		  }
+		  //同步员工账号
+		  function syncuser(dogid,ip,port,sid,simple){
+		  	// alert('hello');
+		  	$.post("sync_users",{dogid:dogid,ip:ip,port:port,sid:sid,simple:simple},function(json){
+		  		// var json = eval('('+sync+')');
+                if(json.status == 1){
+                    document.getElementById("megmeg").innerHTML=json.info;
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                    },800);
+                    return true;
+                }else{
+                    document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML=json.info;
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       // $(".back").fadeOut();
+                    },1000);
+                    return false;
+                }
+            });
+		  }
+		  //重新注册环信用户
+		  function register(sid){
+		  	$.post("register_easemob_users",{sid:sid},function(data){
+                if(data.status == 1){
+                    document.getElementById("megmeg").innerHTML="完成！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                    },800);
+                    return true;
+                }else{
+                    document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML="重新注册失败！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       // $(".back").fadeOut();
+                    },1000);
+                    return false;
+                }
+            });
+		  }
+		//change pad is open or close
+		function chenge_pad(id,pad){
+		  	// alert('da');
+		  	$.post("update_pad_status",{sid:id,pad:pad},function(data){
+		  		if(data.status == 1){
+		  			document.getElementById("megmeg").innerHTML="修改成功！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       window.location.reload();
+                    },800);
+                    return true;
+                }else{
+                    document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML="修改失败！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       // $(".back").fadeOut();
+                    },1000);
+                    return false;
+                }
+		  	});
+		  }
+		function remove_users(sid){
+			$.post("del_store_users",{sid:sid},function(data){
+		  		if(data.status == 1){
+		  			document.getElementById("megmeg").innerHTML="清空成功！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                    },800);
+                    return true;
+                }else{
+                    document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML=data.content;
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       // $(".back").fadeOut();
+                    },1000);
+                    return false;
+                }
+		  	});
+		}
+		function export_show(){
+			$("#export-bg").fadeIn();
+		}
+		function export_submit(){
+			// $("#exportallform").submit();
+			var area = document.getElementById("export-area").value;
+			var method1 = document.getElementById("export-method-1").value;
+			var method2 = document.getElementById("export-method-2").value;
+			var date1 = document.getElementById("export-date-1").value;
+			var date2 = document.getElementById("export-date-2").value;
+			var date3 = document.getElementById("export-date-3").value;
+			var date4 = document.getElementById("export-date-4").value;
+			$("#export-bg").fadeOut();
+			$.post('/index.php/Admin/Manage/export_ylou',{area:area,method1:method1,method2:method2,date1:date1,date2:date2,date3:date3,date4:date4},function(data){
+				var json = eval('('+data+')');
+				if(json.status == 1){
+		  			document.getElementById("megmeg").innerHTML="导出成功！<br><a href='"+json.content+"' onclick='close_tip();'>报表下载！</a>";
+                    $("#tongbu").fadeIn();
+                    // setTimeout(function(){
+                    //    $("#tongbu").fadeOut();
+                    //    window.location.reload();
+                    // },800);
+                    return true;
+                }else{
+                    document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML="导出失败！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                    },800);
+                    return false;
+                }
+			});
+		}
+		function close_tip(){
+			$("#tongbu").fadeOut();
+            $(".back").fadeOut();
+		}
+		function export_cancel(){
+			$("#export-method-1").val('no');
+			$("#export-method-2").val('no');
+			$(".method-disable").hide();
+			$("#export-window").width(400);
+			$("#export-window").height(220);
+			$("#export-bg").fadeOut();
+		}
+		function check_method_1(value){
+			if(value == 'gt,lt' || value == 'gt,elt' || value == 'egt,lt' || value == 'egt,elt'){
+				$(".method-disable").show();
+				$("#export-date-1").show();
+				$("#export-window").width(520);
+				$("#export-window").height(215);
+			}else{
+				var display = document.getElementById("export-date-3").style.display;
+				if(display == 'none'){
+					// $(".method-disable").hide();
+					$("#method-1").hide();
+					$("#method-3").hide();
+					$("#export-date-1").hide();
+					$("#export-window").width(400);
+					$("#export-window").height(220);
+				}else{
+					$("#export-date-1").hide();
+				}
+			}
+		}
+		function check_method_2(value){
+			if(value == 'gt,lt' || value == 'gt,elt' || value == 'egt,lt' || value == 'egt,elt'){
+				$(".method-disable").show();
+				$("#export-date-3").show();
+				$("#export-window").width(520);
+				$("#export-window").height(215);
+			}else{
+				var display = document.getElementById("export-date-1").style.display;
+				if(display == 'none'){
+					// $(".method-disable").hide();
+					$("#method-1").hide();
+					$("#method-3").hide();
+					$("#export-date-3").hide();
+					$("#export-window").width(400);
+					$("#export-window").height(220);
+				}else{
+					$("#export-date-3").hide();
+				}
+			}
+		}
+		/**/
+		function buy(id){
+			$.post("buy",{id},function(data){
+				// var data = eval('('+json+')');
+				if(data.status == 1){
+					$(".new-tool-add").empty();
+					$("#wd-submit").empty();
+					var tool = data.data;
+					var len = tool.length;
+					for(var i=0;i<len;i++){
+						var uncheck = '<tr class="new-tool-add"><td><input type="checkbox" name="tools" value="'+tool[i].id+'"></td>';
+						var td = '<td>'+tool[i].name+'</td><td>'+tool[i].create_at+'</td><td>'+tool[i].expire+'</td><td>'+tool[i].end+'</td>';
+						var tr = uncheck + td;
+						$("#wd-service").append(tr);
+						if(tool[i].check == 1){
+							var input = '<input type="hidden" value="'+tool[i].id+'">';
+							$("#wd-submit").append(input);
+						}
+					}
+					document.getElementById("storeid").value = id;
+					$("#wd-bg").fadeIn(100);
+					return true;
+				}else{
+					document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML="获取服务信息失败！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                    },800);
+                    return false;
+				}
+			});
+		}
+		function close(id){
+			$("#"+id).fadeOut(100);
+		}
+		function buy_cancel(){
+			close('wd-bg');
+		}
+		function select_all(){
+			var obj = $("#wd-service").find('input');
+			var len = obj.length;
+			for(var i=0;i<len;i++){
+				if(!obj[i].checked){
+					obj[i].checked = true;
+				}
+			}
+			document.getElementById("cancel-all").style.display='block';
+			document.getElementById("select-all").style.display='none';
+		}
+		function cancel_all(){
+			var obj = $("#wd-service").find('input');
+			var len = obj.length;
+			for(var i=0;i<len;i++){
+				if(obj[i].checked){
+					obj[i].checked = false;
+				}
+			}
+			document.getElementById("cancel-all").style.display='none';
+			document.getElementById("select-all").style.display='block';
+		}
+		function buy_submit(){
+			var tools = get_box_value('tools');
+			var add = tools.join('_');
+			var old = get_old_service();
+			var del = get_del_service(tools,old);
+			del = del.join(',');
+			var expire = document.getElementById("expire").value;
+			var sid = document.getElementById("storeid").value;
+			// alert(add+'|'+expire+'|'+sid+'|'+del);
+			$.post("tool_buy",{add,expire,del,sid},function(data){
+				$("#wd-bg").fadeOut();
+				if(data.status == 1){
+                    document.getElementById("megmeg").innerHTML="服务开通成功！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                    },800);
+                    return true;
+				}else{
+					document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML="服务开通失败！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                    },800);
+                    return false;
+				}
+			});
+		}
+		function get_box_value(name)
+		{
+			var obj = '';
+		  	var add = new Array();
+	  		var obj = document.getElementsByName(name);
+	  		for(var i=0;i<obj.length;i++){
+	  			if(obj[i].checked){
+	  				add.push(obj[i].value);
+	  			}
+	  		}
+		  	return add;
+		}
+		function get_old_service(){
+			var old = new Array();
+			var tools = $("#wd-submit").find('input');
+			for(var i=0;i<tools.length;i++){
+				old.push(tools[i].value);
+			}
+			return old;
+		}
+		function get_del_service(add,old){
+			var del = new Array();
+			for(var m=0;m<add.length;m++){
+				for(var n=0;n<old.length;n++){
+					if(add[m] == old[n]){
+						del.push(old[n]);
+					}else{
+						continue;
+					}
+				}
+			}
+			return del;
+		}
+		/**/
+		function empty_users(id){
+			$.post("empty_users",{id},function(data){
+				if(data.status == 1){
+					document.getElementById("megmeg").innerHTML=data.info;
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                    },800);
+                    return true;
+				}else{
+					document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML=data.info;
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                    },800);
+                    return false;
+				}
+			});
+		}
+		  	function account_search(){
+			  	var name = document.getElementById("name").value;
+			  	var simple = document.getElementById("simple").value;
+			  	var dogid = document.getElementById("did").value;
+			  	if(name == '' && simple == '' && dogid == ''){
+			  		document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML="必须输入其中一项";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                    },800);
+                    $("#simple").focus();
+                    return false;
+			  	}
+			  	$.post("search_accounts",{name,simple,dogid},function(data){
+			  		if(data.status == 1){
+			  			var users = data.data;
+			  			$(".new-add").empty();
+			  			for(var i=0;i<users.length;i++){
+			  				var tr = '<tr class="new-add"><td>'+users[i].id+'</td><td>';
+			  				tr = tr+users[i].storename+'</td><td>'+users[i].dogid+'</td><td>';
+			  				tr = tr+users[i].ip+'</td><td>'+users[i].port+'</td><td>';
+			  				tr = tr+users[i].store_simple_name+'</td><td>'+users[i].name+'</td><td>'+users[i].createtime+'</td><td>';
+			  				tr = tr+users[i].expiring_on+'</td>';
+			  				if(users[i].pad == 0){
+			  					tr = tr+'<td><input type="checkbox" name="checkboxes" onclick="chenge_pad(\''+users[i].id+'\',\''+users[i].pad+'\')"/></td>';
+			  				}else{
+			  					tr = tr+'<td><input type="checkbox" name="checkboxes" onclick="chenge_pad(\''+users[i].id+'\',\''+users[i].pad+'\')" checked/></td>';
+			  				}
+			  				tr = tr+'<td><button type="button" class="btn btn-warning" onclick="show(\'';
+			  				tr = tr+users[i].id+'\',\''+users[i].storename+'\',\''+users[i].dogid+'\',\''+users[i].ip+'\',\'';
+			  				tr = tr+users[i].port+'\',\''+users[i].store_simple_name+'\',\''+users[i].aid+'\',\''+users[i].createtime+'\',\''+users[i].expiring_on+'\');">编辑</button>\n<button type="button" class="btn btn-danger" onclick="del(\'';
+			  				tr = tr+users[i].id+'\');">删除</button></td>';
+							tr = tr+'<td><button type="button" class="btn btn-info" onclick="test(\'';
+							tr = tr+users[i].storename+'\',\''+users[i].dogid+'\',\''+users[i].ip+'\',\''+users[i].port+'\');">测试</button></td>';
+							tr = tr+'<td><button type="button" class="btn btn-primary" onclick="syncuser(\'';
+							tr = tr+users[i].dogid+'\',\''+users[i].ip+'\',\''+users[i].port+'\',\''+users[i].id+'\',\''+users[i].store_simple_name+'\');">账号同步</button></td>';
+							tr = tr+'<td><button type="button" class="btn btn-success" onclick="buy(\'';
+							tr = tr+users[i].id+'\');">开通</button></td>';
+							tr = tr+'<td><button type="button" class="btn btn-danger" onclick="empty_users(\'';
+							tr = tr+users[i].id+'\');">清空用户</button></td>';
+			  				$("#tbd").append(tr);
+			  			}
+	                    return true;
+			  		}else{
+			  			document.getElementById("megimg").innerHTML="X";
+	                    document.getElementById("megmeg").innerHTML='搜索无结果!';
+	                    $("#tongbu").fadeIn();
+	                    setTimeout(function(){
+	                       $("#tongbu").fadeOut();
+	                       $(".back").fadeOut();
+	                    },1000);
+	                    return false;
+			  		}
+			  	});
+		 	}
+		</script>
+	</head>	
+	<body data-color="grey" class="flat">
+		<div id="content">
+			<div id="content-header">
+				<h1>APP账号</h1>
+				<div class="btn-group">
+					<a class="btn btn-large" title="Manage Files"><i class="fa fa-file"></i></a>
+					<a class="btn btn-large" title="Manage Users"><i class="fa fa-user"></i></a>
+					<a class="btn btn-large" title="Manage Comments"><i class="fa fa-comment"></i><span class="label label-danger">5</span></a>
+					<a class="btn btn-large" title="Manage Orders"><i class="fa fa-shopping-cart"></i></a>
+				</div>
+			</div>
+			<div id="breadcrumb">
+				<a href="#" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> 首页</a>
+				<a href="#" class="current">影楼资料</a>
+			</div>
+			<div class="tools">
+				<ul>
+					<li class="export"><input type="text" id="name" placeholder="店铺名称"></li>
+					<li class="export"><input type="text" id="simple" placeholder="店铺简称"></li>
+					<li class="export"><input type="text" id="did" placeholder="加密狗ID"></li>
+					<li class="add"><a href="javascript:void(0);" onclick="account_search();">搜索</a></li>
+				</ul>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					
+					<div class="widget-box">
+						<div class="widget-title">
+							<span class="icon">
+								<i class="fa fa-th"></i>
+							</span>
+							<h5>影楼信息表</h5>
+						</div>
+						<div class="widget-content nopadding">
+							<table class="table table-bordered table-striped table-hover data-table">
+								<thead>
+								<tr>
+								<th>ID</th>
+								<th>影楼名称</th>
+								<th>加密狗ID</th>
+								<th>服务器IP</th>
+								<th>端口</th>
+								<th>影楼简称</th>
+								<th>所属区域</th>
+								<th>开通时间</th>
+								<th>服务截止日期</th>
+								<th>PAD端</th>
+								<th>操作</th>
+								<th>测试</th>
+								<th>账号同步</th>
+								<th>营销服务</th>
+								<th>清空用户</th>
+								<!-- <th>环信账号</th> -->
+								<!-- <th>清空用户</th> -->
+								</tr>
+								</thead>
+								<tbody id="tbd">
+										
+								</tbody>
+							</table>
+							<div class="b-page">{$page}</div> 
+						</div>
+					</div>
+				</div>
+			</div>	
+		</div>
+		<form id="exportform" action="{:U('Admin/manage/add_ylou')}" method="post">
+		<div class="tip">
+			<p><b id="atitle">添加影楼信息</b></p>
+			影楼名称：<input name="storename" id="storename" type="text" value="">
+			<div class="lip"></div>
+			加密狗ID：<input name="dogid" id="dogid" type="text" value="" onblur="Checkdogid(this);">
+			<div class="lip"><span id="tipinfo"></span></div>
+			服务器IP：<input name="ip" id="ip" type="text" value="101.200.186.72">
+			<div class="lip"></div>
+			端&nbsp;口&nbsp;号：<input name="port" id="port" type="text" value="">
+			<div class="lip"></div>
+			影楼简称：<input name="store_simple_name" id="store_simple_name" type="text" value="" onblur="Checksimplename(this);" placeholder="zccp">
+			<div class="lip">影楼简称用于登录时作为前缀.例如:zccp_admin</div>
+			<div class="lip"><span id="nameinfo"></span></div>
+			地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;区：
+			<select name="market_area" id="market_area">
+				<volist name="area" id="vo">
+					<option value="{$vo.id}">{$vo.name}</option>
+				</volist>
+			</select>
+			<div class="lip"></div>
+			服&nbsp;务&nbsp;期：
+			<select name="expiring_on" id="expiring_on">
+				<volist name="expire" id="ex">
+					<option value="{$ex.time}">{$ex.name}</option>
+				</volist>
+			</select>
+			<div class="lip"><span id="expiring_date"></span></div>
+			<div id="xuqi">
+				续&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;期：
+				<select name="renew" id="renew">
+					<volist name="renew" id="ex">
+						<option value="{$ex.time}">{$ex.name}</option>
+					</volist>
+				</select>
+				<div class="lip"><span id="renew_date"></span></div>
+			</div>
+			<input name="sid" id="sid" type="hidden" value="">
+			<input name="ctime" id="ctime" type="hidden" value="">
+			<input name="expire_date" id="expire_date" type="hidden" value="">
+			<div id="tijiao">
+				<input class="btns" name="tijiao" type="button"  onclick="sumit();" value="确定" />&nbsp;
+	        	<input class="btns" id="btns-r" name="quxiao" type="button"  onclick="cancel();" value="取消" />
+        	</div>
+       		<div id="fixtijiao">
+				<input class="btns" name="fixtijiao" type="button"  onclick="ajaxsumit();" value="确定" />&nbsp;
+	        	<input class="btns" id="btns-r" name="quxiao" type="button"  onclick="cancel();" value="取消" />
+			</div>	
+		</div>
+		</form>
+		<div id="export-bg">
+	<form id="exportallform" action="{:U('Admin/Manage/export_ylou')}" method="post" >
+		<div id="export-window">
+			<table id="export-table">
+				<tr>
+					<th colspan="4">导出选项</th>
+				</tr>
+				<tr>
+					<td>区域<td>
+					<td >
+						<select name="export-area" id="export-area" class="export-method">
+							<option value="no">未选择</option>
+							<volist name="area" id="a">
+								<option value="{$a.id}">{$a.name}</option>
+							</volist>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>开通日期<td>
+					<td class="method-disable" id="method-1"><input type="text" name="export-date-1" id="export-date-1" value="{$date}"/></td>
+					<td>
+						<select name="export-method-1" id="export-method-1" class="export-method" onchange="check_method_1(this.value);">
+							<option value="no">未选择</option>
+							<option value="gt"> > </option>
+							<option value="egt"> >= </option>
+							<option value="eq"> = </option>
+							<option value="lt"> < </option>
+							<option value="elt"> <= </option>
+							<option value="gt,lt"> <,< </option>
+							<option value="egt,lt"> <=,< </option>
+							<option value="gt,elt"> <,<= </option>
+							<option value="egt,elt"> <=,<= </option>
+						</select>
+					</td>
+					<td><input type="text" name="export-date-2" id="export-date-2" value="{$date}" /></td>
+				</tr>
+				<tr>
+					<td>到期日期<td>
+					<td class="method-disable" id="method-3"><input type="text" name="export-date-3" id="export-date-3" value="{$date}"/></td>
+					<td>
+						<select name="export-method-2" id="export-method-2" class="export-method" onchange="check_method_2(this.value);">
+							<option value="no">未选择</option>
+							<option value="gt"> > </option>
+							<option value="egt"> >= </option>
+							<option value="eq"> = </option>
+							<option value="lt"> < </option>
+							<option value="elt"> <= </option>
+							<option value="gt,lt"> <,< </option>
+							<option value="egt,lt"> <=,< </option>
+							<option value="gt,elt"> <,<= </option>
+							<option value="egt,elt"> <=,<= </option>
+						</select>
+					</td>
+					<td><input type="text" name="export-date-4" id="export-date-4" value="{$date}" /></td>
+				</tr>
+				<tr>
+					<td colspan="3" style="padding: 15px 18px;text-align: right;"><a href="javascript:void(0);" onclick="export_submit();" class="export-btn" id="export-submit">确定</a></td>
+					<td colspan="2" style="text-align:left;"><a href="javascript:void(0);" onclick="export_cancel();" class="export-btn" id="export-cancel">取消</a></td>
+				</tr>
+			</table>
+		</div>
+	</form>
+</div>
+<section class="meg" id="tongbu" onclick="close_tip();">
+    <div class="meginfo">
+      <div id="megbtn"><h6 id="megimg">√</h6></div>
+      <div id="megmeg">修改成功！</div>
+   </div>
+</section> 
+<section> <!--测试连接 输出结果-->
+	<div id="note-bg" onclick="test_hide()">
+		<div id="note">
+			<ul id="note-ul">
+				
+			</ul>
+		</div>
+	</div>
+</section>
+<section class="meg" id="wd-bg" onclick="close('wd-bg');">
+	<div class="wd-container">
+		<form action="#" method="post">
+			<table class="wd-table" id="wd-service">
+				<tr>
+					<th colspan="5"><span>营销服务</span></th>
+				</tr>
+				<tr>
+					<td colspan="2">店铺</td>
+					<td colspan="3">店铺名称</td>
+				</tr>
+				<tr>
+					<td colspan="5">服务列表</td>
+				</tr>
+				<tr>
+					<td>
+						<a href="javascript:void(0)" onclick="select_all();" id="select-all">全选</a>
+						<a href="javascript:void(0)" onclick="cancel_all();" id="cancel-all">取消</a>
+					</td>
+					<td>营销工具</td>
+					<td>开通日期</td>
+					<td>服务期</td>
+					<td>截止日期</td>
+				</tr>
+			</table>
+			<div class="form-actions">
+				<select name="expire" id="expire">
+					<volist name="expire" id="ex">
+						<option value="{$ex.time}">{$ex.name}</option>
+					</volist>
+				</select>
+			</div>
+			<div class="form-actions">
+              <button type="button" class="btn btn-success" onclick="buy_submit();">提交</button>
+              <button type="button" class="btn btn-info" onclick="buy_cancel();">取消</button>
+            </div>
+            <div id="wd-submit">
+            </div>
+            <input type="hidden" name="storeid" id="storeid" value="">
+		</form>
+	</div>
+</section> 
+    <section class="meg" id="tongbu">
+	    <div class="meginfo">
+	      <div id="megbtn"><h6 id="megimg">√</h6></div>
+	      <div id="megmeg">修改成功！</div>
+	   </div>
+	</section> 
+            <script src="__PUBLIC__/Admin/js/jquery.min.js"></script>
+            <script src="__PUBLIC__/Admin/js/jquery-ui.custom.js"></script>
+            <script src="__PUBLIC__/Admin/js/bootstrap.min.js"></script>
+    		<!-- // <script src="__PUBLIC__/Admin/js/jquery.icheck.min.js"></script> -->
+            <script src="__PUBLIC__/Admin/js/select2.min.js"></script>
+            <!-- // <script src="__PUBLIC__/Admin/js/jquery.dataTables.min.js"></script> -->
+
+            <script src="__PUBLIC__/Admin/js/jquery.nicescroll.min.js"></script>
+            <script src="__PUBLIC__/Admin/js/unicorn.js"></script>
+            <!-- // <script src="__PUBLIC__/Admin/js/unicorn.tables.js"></script> -->
+	</body>
+</html>

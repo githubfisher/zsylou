@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/bootstrap-responsive.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Admin/css/matrix-style.css" />
+		<style> 
+			#content{
+				margin-top: 20px;
+				margin-left: 0px;
+				border-bottom-left-radius:0;
+			}
+			#breadcrumb{
+				background-color: #ccc;
+				margin-top: -20px;
+			}
+			.container-fluid {
+			    padding-right: 20px;
+			    padding-left: 20px;
+			    *zoom: 1;
+			}
+			.meg{
+			  display: none;
+			  background: rgba(0,0,0,.35);
+			  width: 100%;
+			  height: 100%;
+			  position: fixed;
+			  top: 0;
+			  left: 0;
+			  z-index: 102;
+			}
+			.meginfo{
+			  width:15%;
+			  /*height:6%;*/
+			  margin: 0 auto;
+			  padding: 1%;
+			  background: #f8f8f8;
+			  margin-top: 16%;
+			  border-radius: 5px;
+			  text-align: center;
+			}
+			#megbtn{
+			  width: 50px;
+			  height: 50px;
+			  border: 2px solid #67c1a5;
+			  border-radius: 100%;
+			  float: left;
+			  margin-left: 5%;
+			}
+			h6{
+			  color:#67c1a5;
+			  font-size: 30px;
+			  margin-top:0.1em;
+			  margin-left: -0.06em;
+			}
+			#megmeg{
+			    line-height: 2em;
+			    font-size: 1.9em;
+			    margin-left: 15px;
+			    position:relative;
+			    right:-10px;   
+			}
+		</style>
+	</head>	
+	<body data-color="grey" class="flat">
+		<div id="content">
+			<div id="breadcrumb">
+				<a href="#" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> 首页</a>
+				<a href="#" class="current">统计数据</a>
+			</div>
+			<div class="container-fluid">
+			    <div class="row-fluid">
+			      <div class="widget-box">
+			      	<div class="widget-title bg_lg"><span class="icon"><i class="icon-signal"></i></span>
+			          <h5>统计详情</h5>
+			        </div>
+			        <div class="widget-content" >
+			          <div class="row-fluid">
+			            <div class="span3">
+			              <ul class="site-stats">
+			                <li class="bg_lh"><i class="icon-user"></i> <strong>{$count['allusers']}</strong> <small>总用户数</small></li>
+			                <li class="bg_lh"><i class="icon-plus"></i> <strong>{$count['newusers']} , +{$count['nuper']}%</strong> <small>今日用户 </small></li>
+			                <li class="bg_lh"><i class="icon-tags"></i> <strong>{$count['allinstall']}</strong> <small>总装机量</small></li>
+			                <li class="bg_lh"><i class="icon-tag"></i> <strong>{$count['newinstall']} , +{$count['niper']}%</strong> <small>今日装机</small></li>
+			                <li class="bg_lh"><i class="icon-globe"></i> <strong>{$count['allstore']}</strong> <small>总店铺数</small></li>
+			                <li class="bg_lh"><i class="icon-shopping-cart"></i> <strong>{$count['newstore']} , +{$count['nsper']}%</strong> <small>今日店铺</small></li>
+			              </ul>
+			            </div>
+						<div class="span9">
+			              <div class="chart"></div>
+			            </div>
+			          </div>
+			        </div>
+			      </div>
+			    </div>
+			</div>
+		</div>
+		<section class="meg" id="tongbu" onclick="close_tip();">
+		    <div class="meginfo">
+		      <div id="megbtn"><h6 id="megimg">√</h6></div>
+		      <div id="megmeg">修改成功！</div>
+		   </div>
+		</section>
+	</body>
+</html>

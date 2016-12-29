@@ -17,31 +17,47 @@ class DynamicController extends Controller
 	{
 		$get = I();
 		$date = $get['date']; // 不传或为空表示今天起
+		$isEnd = 0;
 		if($date){
-			$time = strtotime($date)-C('dynamic_time');
-			if(!$time || ($time < (time()-864000))){
+			$now = strtotime($date);
+			if(!$now){
 				$data = array(
 					'code' => 0,
 					'message' => '日期错误，请重试！'
 				);
 				exit(json_encode($data));
 			}
+			$time = $now-C('dynamic_time');
+			$where = array('cid'=>session('uid'),'time'=>array(array('egt',$time),array("lt",$now),"AND"));
+			if($time < C('taskStartTime')){
+				$isEnd = 1;
+			}
 		}else{
-			$time = strtotime(date('Y-m-d',time()-C('dynamic_time')));
+			$now = time();
+			$time = strtotime(date('Y-m-d',$now-C('dynamic_time')));
+			$where = array('cid'=>session('uid'),'time'=>array(array('egt',$time),array("lt",$now),"AND"));
+			if($time < C('taskStartTime')){
+				$isEnd = 1;
+			}
 		}
 		// 任务动态
 		$DTL = D('DynamicTaskList');
-		$task_dynamic = $DTL->where(array('cid'=>session('uid'),'time'=>array('egt',$time)))->cache(true,60)->select();
+		$task_dynamic = $DTL->where($where)->cache(true,60)->select();
 		// 文件动态
 		$DFL = D('DynamicFileList');
-		$file_dynamic = $DFL->where(array('cid'=>session('uid'),'time'=>array('egt',$time)))->cache(true,60)->select();
+		$file_dynamic = $DFL->where($where)->cache(true,60)->select();
 		// 合并动态
 		$dynamic = array_merge($task_dynamic,$file_dynamic);
-		
+		if(count($dynamic) < 1){
+			$dynamic = $this->sort_by_project($this->sort_by_date($dynamic));
+		}else{
+			$dynamic = array();
+		}
 		$data = array(
 			'code' => 1,
 			'message' => '动态返回成功！',
-			'result' => $this->sort_by_project($this->sort_by_date($dynamic)) // 数组分组并排序
+			'result' => $dynamic, // 数组分组并排序
+			'isEnd' => $isEnd
 		);
 		exit(json_encode($data));
 	}

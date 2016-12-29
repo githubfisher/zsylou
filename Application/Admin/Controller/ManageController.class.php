@@ -9,6 +9,10 @@ class ManageController extends Controller{
 	public function index(){
 		$this->display('templet_show');
 	}
+	public function top(){
+		$this->assign('user',session('name'));
+        $this->display();
+	}
 	public function ylou(){
 		$yllist = D('store');
 		$page = $post['page'];
@@ -26,24 +30,6 @@ class ManageController extends Controller{
 		$market_area = D('market_area');
 		$areas = $market_area->field('id,name')->select();
 		$this->assign('title','影楼资料--掌上影楼管理后台');
-		// $count = array();
-		// $dtime = strtotime(date('Y-m-d',time()));
-		// $count['allstore'] = count($ylinfo);
-		// $newstore = $yllist->where('createtime >='.$dtime)->field('id')->cache(true,30)->count();
-		// $count['newstore'] = $newstore;
-		// $count['nsper'] = ceil($newstore/($count['allstore'] - $newstore)*100);
-		// $userlist = D('app_user');
-		// $allusers = $userlist->where('username != '."''")->field('uid')->cache(true,30)->count();
-		// $count['allusers'] = $allusers;
-		// $newusers = $userlist->where('createtime > '.$dtime)->field('uid')->cache(true,30)->count(); //'username != '.$none.
-		// $count['newusers'] = $newusers;
-		// $count['nuper'] = ceil($newusers/($allusers - $newusers)*100);
-		// $allinstall = $userlist->where('logintime > 0')->field('uid')->cache(true,30)->count();
-		// $count['allinstall'] = $allinstall;
-		// $mau = $userlist->where('logintime >= '.$dtime)->field('uid')->cache(true,30)->count();
-		// $count['mau'] = $mau;
-		// $count['niper'] = ceil($mau/($count['allusers'])*100);
-		// $this->assign('count',$count);
 		$this->assign('ylou',$ylinfo);
 		$this->assign('area',$areas);
 		$expire_date = array(
@@ -74,11 +60,7 @@ class ManageController extends Controller{
 			6 => array(
 				'time' => 0,
 				'name' => '无限期'
-			),
-			// 7 => array(
-			// 	'time' => -94708000,
-			// 	'name' => '立即过期'
-			// )
+			)
 		);
 		$this->assign('expire',$expire_date);
 		$renew = array(
@@ -122,8 +104,6 @@ class ManageController extends Controller{
 	public function add_ylou(){
 		logger('超级管理员:添加影楼 ... ');
 		$forminfo = I();
-		// logger('添加店铺参数:'.var_export($forminfo,true)); // debug
-		// die;
 		if($forminfo){
 			if($forminfo['storename'] && $forminfo['ip'] && $forminfo['dogid'] && $forminfo['port']&& $forminfo['store_simple_name']){
 				$ylou = D('store');
@@ -131,8 +111,6 @@ class ManageController extends Controller{
 				if($_POST['expiring_on'] != 0 && $_POST['expiring_on'] != -1){
 					$_POST['expiring_on'] += time();
 				}
-				// logger('超级管理员:添加影楼,信息: '.var_export($_POST,true));//debug
-				// die;
 				$ylou->create();
 				$result = $ylou->add();
 				if($result){

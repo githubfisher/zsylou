@@ -25,4 +25,6 @@ return array(
 	'groupCategory' => 1, // 团队模板类ID
 	'startTime' => 1481558400, // 2016-12-13
 	'queryDay' => 7,
+	'dynamic_time' => 259200,
+	'taskStartTime' => 1483200000
 );

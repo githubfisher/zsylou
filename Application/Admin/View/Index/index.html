@@ -14,7 +14,7 @@
 		<![endif]-->
 	</head>	
 	<frameset rows="60,*,40" cols="*" frameborder="no" border="0" framespacing="0">
-		<frame style="z-index:1;" src="__URL__/top.html" name="topFrame" scrolling="No" noresize="noresize" id="topFrame" title="topFrame" />
+		<frame style="z-index:1;" src="{:U('Admin/manage/top')}" name="topFrame" scrolling="No" noresize="noresize" id="topFrame" title="topFrame" />
 	  	<frameset cols="200,*" frameborder="no" border="0" framespacing="0">
 		    <if condition="$admin eq 'r00t'"><frame style="z-index:1;" src="__URL__/left_r00t.html" name="leftFrame" scrolling="No" noresize="noresize" id="leftFrame" title="leftFrame" />
 		    <else /><frame style="z-index:1;" src="__URL__/left.html" name="leftFrame" scrolling="No" noresize="noresize" id="leftFrame" title="leftFrame" />

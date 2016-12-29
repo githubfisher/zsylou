@@ -57,9 +57,8 @@ class DiscussController extends Controller
 		$type = $get['type'];
 		$item = $get['item'];
 		$content = $get['content'];
-
 		if($pid && $type && $item && $content){
-			$info = array(
+			$disc = array(
 				'pid' => $pid,
 				'uid' => session('uid'),
 				'type' => $type,
@@ -67,16 +66,42 @@ class DiscussController extends Controller
 				'create_at' => time(),
 				'content' => $content
 			);
+			M()->startTrans();
 			$discuss = D('discuss');
-			if($discuss->add($info)){
-				logger('发布文字评论成功！'."\n");
-				$data = array(
-					'code' => 1,
-					'message' => '评论成功！',
-				);
-				// 处理评论中的@
+			if($discuss->add($disc)){
+				logger('发布文字评论成功！');
+				$info = array(
+	        		'pid' => $pid,
+					'sid' => session('sid'),
+					'type' => $type,
+					'item' => $item,
+					'uid' => session('uid'),
+					'time' => time()
+	        	);
+	        	if($type == 1){
+	        		$info['content'] = session('admin_nickname').' 回复了任务';
+	        	}else{
+	        		$info['content'] = session('admin_nickname').' 回复了文件';
+	        	}
+	        	$dynamic = D('dynamic');
+				if($dynamic->add($info)){
+					logger('写入文字评论动态记录成功！'."\n");
+					M()->commit();
+					$data = array(
+						'code' => 1,
+						'message' => '评论成功！',
+					);
+				}else{
+					logger('写入文字评论动态记录失败失败！'."\n");
+					M()->rollback();
+					$data = array(
+						'code' => 3,
+						'message' => '评论失败！',
+					);
+				}
 			}else{
 				logger('发布文字评论失败失败！'."\n");
+				M()->rollback();
 				$data = array(
 					'code' => 0,
 					'message' => '评论失败！',
@@ -103,7 +128,7 @@ class DiscussController extends Controller
 		$at = $get['at']; // json 
 
 		if($pid && $type && $item && $content){
-			$info = array(
+			$disc = array(
 				'pid' => $pid,
 				'uid' => session('uid'),
 				'type' => $type,
@@ -113,8 +138,33 @@ class DiscussController extends Controller
 			);
 			$discuss = D('discuss');
 			M()->startTrans();
-			if($discuss->add($info)){
+			if($discuss->add($disc)){
 				logger('写入文字评论记录成功！');
+				// 写入评论动态
+				$info = array(
+	        		'pid' => $pid,
+					'sid' => session('sid'),
+					'type' => $type,
+					'item' => $item,
+					'uid' => session('uid'),
+					'time' => time()
+	        	);
+	        	if($type == 1){
+	        		$info['content'] = session('admin_nickname').' 回复了任务';
+	        	}else{
+	        		$info['content'] = session('admin_nickname').' 回复了文件';
+	        	}
+	        	$dynamic = D('dynamic');
+				if($dynamic->add($info)){
+					logger('写入文字评论动态记录成功！');
+				}else{
+					logger('写入文字评论动态记录失败失败！'."\n");
+					M()->rollback();
+					$data = array(
+						'code' => 4,
+						'message' => '评论失败！',
+					);
+				}
 				// 处理评论中的@
 				$at = chanslate_json_to_array($at);
 				if(count($at) >= 1){
@@ -240,7 +290,7 @@ class DiscussController extends Controller
         			$thumbPath = '/Uploads/icon/pdf.png';
         			break;
         		case 'doc':
-        			$thumbPath = '/Uploads/icon/word.png';
+        			$thumbPath = '/Uploads/icon/doc.png';
         			break;
         		case 'xls':
         			$thumbPath = '/Uploads/icon/execl.png';
@@ -265,20 +315,48 @@ class DiscussController extends Controller
             'type' => $type,
             'item' => $item
         );
+        M()->startTrans();
         $discuss = D('discuss');
         if($discuss->add($file)){
         	logger('评论上传文件记录写入成功！'."\n");
-				logger('写入上传文件动态记录成功！');
+        	$info = array(
+        		'pid' => $pid,
+				'sid' => session('sid'),
+				'type' => $type,
+				'item' => $item,
+				'uid' => session('uid'),
+				'time' => time()
+        	);
+        	if($type == 1){
+        		$info['content'] = session('admin_nickname').' 回复了任务';
+        	}else{
+        		$info['content'] = session('admin_nickname').' 回复了文件';
+        	}
+        	$dynamic = D('dynamic');
+			if($dynamic->add($info)){
+				logger('写入文件评论动态记录成功！'."\n");
+				M()->commit();
 				$data = array(
 	                'code' => 1,
 	                'message' => '评论成功！',
 	                'result' => $file
 	            );
+			}else{
+				logger('写入文字评论动态记录失败失败！'."\n");
+				M()->rollback();
+				$data = array(
+					'code' => 4,
+					'message' => '评论失败！',
+				);
+			}
         }else{
         	logger('评论上传文件记录写入失败失败！'."\n");
+        	M()->rollback();
             // 删除文件
             @unlink($filePath);
-            @unlink($thumbPath);
+            if($fileType == 1){
+            	@unlink($thumbPath);
+            }
         	$data = array(
                 'code' => 3,
                 'message' => '评论失败，请重试！'

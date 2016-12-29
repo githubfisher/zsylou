@@ -397,9 +397,8 @@ class FileController extends Controller
         $FD = D('FileDetail');
         $detail = $FD->where(array('id'=>$id))->cache(true,60)->find();
         if(strpos($detail['head'],'/Uploads/avatar/') === 0){
-            $detail[$k]['head'] = C('base_url').$detail[$k]['head'];
+            $detail['head'] = C('base_url').$detail['head'];
         }
-
         return $detail;
     }
 

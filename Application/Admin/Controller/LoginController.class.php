@@ -18,10 +18,18 @@ class LoginController extends Controller{
 			logger("APP会员--".$name."--请求登录管理后台-->");
 			$user = D('app_user');
 			$where = array(
-				'username' => $name,
 				'password' => $pwd,
 				'type' => array(array('eq',1),array('eq',3),'OR')  //限制普通用户登录
 			);
+			if(strpos($name,"_")){
+				//分离店铺标识和用户名 2016-5-23
+				$username = ltrim(strchr($post['username'],'_'),'_');
+				$store_simple_name = strchr($post['username'],'_',TRUE);
+				$where['username'] = $username;
+				$where['store_simple_name'] = $store_simple_name;
+			}else{
+				$where['username'] = $name;
+			}
 			$result = $user->where($where)->find();
 			if($result){
 				session('name',$name);

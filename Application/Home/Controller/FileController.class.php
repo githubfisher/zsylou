@@ -41,17 +41,19 @@ class FileController extends Controller
         // $upload->saveName = ''; // 保存原文件名不变
         $info = $upload->upload();
         // logger('任务-上传文件,文件信息:'.var_export($info,TRUE)); //debug
-		  // array (
-		  //   'name' => 'header.jpg',
-		  //   'type' => 'image/png',
-		  //   'size' => 152119,
-		  //   'key' => 'file',
-		  //   'ext' => 'jpg',
-		  //   'md5' => 'f1d15aa781c34b6e4c87b34f6f6f8c3d',
-		  //   'sha1' => '650785bc22450c60adf9a42d2502c1e4cc4bd1e9',
-		  //   'savename' => '582b10730bf2a.jpg',
-		  //   'savepath' => 'avatar/',
-		  // )
+          // array(
+		  //    'file' => array (
+		  //              'name' => 'header.jpg',
+		  //              'type' => 'image/png',
+		  //              'size' => 152119,
+		  //              'key' => 'file',
+		  //              'ext' => 'jpg',
+		  //              'md5' => 'f1d15aa781c34b6e4c87b34f6f6f8c3d',
+		  //              'sha1' => '650785bc22450c60adf9a42d2502c1e4cc4bd1e9',
+		  //              'savename' => '582b10730bf2a.jpg',
+		  //              'savepath' => 'avatar/',
+		  //          )
+          // )
         if(!$info){
             $data = array(
                 'status' => 0,
@@ -296,20 +298,19 @@ class FileController extends Controller
 
 	// 上传文件处理
 	private function fileHandler($info,$pid){
-		$savePath = $info['savepath'];
-        $saveName = $info['savename'];
-        $fileName = $info['name'];
-        $fileType = $info['type'];
-        $fileExt = $info['ext'];
+		$savePath = $info['file']['savepath'];
+        $saveName = $info['file']['savename'];
+        $fileName = $info['file']['name'];
+        $fileType = $info['file']['type'];
+        $fileExt = $info['file']['ext'];
         $filePath = '/Uploads/'.$savePath.$saveName;
 
         if(strpos($fileType,'image') >= 0){
         	//生成图片文件缩略图
             $img= new \Think\Image();
-            $img->open('./Uploads/'.$savePath.$saveName);
-            $img->thumb(58,58)->save('./Uploads/'.$savePath.'S'.$saveName);
-
+            $img->open('.'.$filePath);
             $thumbPath = '/Uploads/'.$savePath.'S'.$saveName;
+            $img->thumb(58,58)->save('.'.$thumbPath);
             $fileType = 1;
         }else{
         	$fileType = 2;
@@ -330,7 +331,7 @@ class FileController extends Controller
         			$thumbPath = '/Uploads/icon/pdf.png';
         			break;
         		case 'doc':
-        			$thumbPath = '/Uploads/icon/word.png';
+        			$thumbPath = '/Uploads/icon/doc.png';
         			break;
         		case 'xls':
         			$thumbPath = '/Uploads/icon/execl.png';

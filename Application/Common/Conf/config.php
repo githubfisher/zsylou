@@ -12,7 +12,7 @@ return array(
 	"DB_HOST"=>"localhost",
 	"DB_NAME"=>"ylou",
 	"DB_USER"=>"root",
-	"DB_PWD"=>"root",
+	"DB_PWD"=>"root9527",
 	"DB_PORT"=>"3306",
 	"DB_PREFIX"=>"",
 	'DB_CHARSET'=>'utf8',

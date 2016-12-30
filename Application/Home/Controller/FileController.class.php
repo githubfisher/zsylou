@@ -247,7 +247,7 @@ class FileController extends Controller
         $toproject = $get['toproject'];
         logger(session('uid').'移动文件'.$get['id'].'....');
 
-        if($id && $pid && $name){
+        if($id && $pid && $toproject){
             $file = D('file');
             $theFile = $this->get_detail($id);
             M()->startTrans();

@@ -128,6 +128,16 @@ class DiscussController extends Controller
 		$at = $get['at']; // json 
 
 		if($pid && $type && $item && $content){
+			Vendor('Jpush2.Client');
+			Vendor('Jpush2.core.Config');
+			Vendor('Jpush2.core.JPushException');
+			Vendor('Jpush2.core.APIConnectionException');
+			Vendor('Jpush2.core.APIRequestException');
+			Vendor('Jpush2.core.Http');
+			Vendor('Jpush2.core.DevicePayload');
+			Vendor('Jpush2.core.PushPayload');
+			Vendor('Jpush2.core.ReportPayload');
+			Vendor('Jpush2.core.SchedulePayload');
 			$disc = array(
 				'pid' => $pid,
 				'uid' => session('uid'),
@@ -241,7 +251,7 @@ class DiscussController extends Controller
 				'title' => $item['name'].' 有人@你',
 				'category' => '',
 				'message' => array(
-					'action' => 5,
+					'action' => 7,
 					'type' => 1,
 					'details' => array(
 						'item' => $item,

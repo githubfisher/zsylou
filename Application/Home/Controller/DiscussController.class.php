@@ -263,7 +263,7 @@ class DiscussController extends Controller
         $fileExt = $info['ext'];
         $filePath = '/Uploads/'.$savePath.$saveName;
 
-        if(strpos($fileType,'image') >= 0){
+        if(strpos($fileType,'mage')){
         	//生成图片文件缩略图
             $img= new \Think\Image();
             $img->open('./Uploads/'.$savePath.$saveName);

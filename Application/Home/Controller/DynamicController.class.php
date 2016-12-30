@@ -42,10 +42,10 @@ class DynamicController extends Controller
 		}
 		// 任务动态
 		$DTL = D('DynamicTaskList');
-		$task_dynamic = $DTL->where($where)->cache(true,60)->select();
+		$task_dynamic = $DTL->where($where)->select();
 		// 文件动态
 		$DFL = D('DynamicFileList');
-		$file_dynamic = $DFL->where($where)->cache(true,60)->select();
+		$file_dynamic = $DFL->where($where)->select();
 		// 合并动态
 		$dynamic = array_merge($task_dynamic,$file_dynamic);
 		if(count($dynamic) < 1){

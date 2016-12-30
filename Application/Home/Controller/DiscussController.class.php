@@ -369,10 +369,10 @@ class DiscussController extends Controller
 	{
 		if($type == 1){
 			$task = D('task');
-			return $task->where(array('id'=>$id))->field('name')->cache(true,60)->find();
+			return $task->where(array('id'=>$id))->field('name')->find();
 		}else{
 			$file = D('file');
-			return $file->where(array('id'=>$id))->field('name')->cache(true,60)->find();
+			return $file->where(array('id'=>$id))->field('name')->find();
 		}
 	}
 }

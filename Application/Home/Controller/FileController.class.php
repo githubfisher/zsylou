@@ -395,7 +395,7 @@ class FileController extends Controller
     private function get_detail($id)
     {
         $FD = D('FileDetail');
-        $detail = $FD->where(array('id'=>$id))->cache(true,60)->find();
+        $detail = $FD->where(array('id'=>$id))->find();
         if(strpos($detail['head'],'/Uploads/avatar/') === 0){
             $detail['head'] = C('base_url').$detail['head'];
         }
@@ -406,7 +406,7 @@ class FileController extends Controller
     private function get_discuss($id)
     {
         $FD = D('FileDiscuss');
-        $discusses = $FD->where(array('item'=>$id,'type'=>2))->order('create_at asc')->cache(true,60)->select();
+        $discusses = $FD->where(array('item'=>$id,'type'=>2))->order('create_at asc')->select();
         // 处理头像
         if(count($discusses) >= 1){
             foreach($discusses as $k => $v){
@@ -423,7 +423,7 @@ class FileController extends Controller
     private function get_dynamic($id)
     {
         $FD = D('FileDynamic');
-        $disc = $FD->where(array('id'=>$id,'type'=>2))->order('time asc')->cache(true,60)->select();
+        $disc = $FD->where(array('id'=>$id,'type'=>2))->order('time asc')->select();
         // 处理头像
         if(count($disc) >= 1){
             foreach($disc as $k => $v){

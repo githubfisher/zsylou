@@ -21,7 +21,7 @@ class ProjectController extends Controller
 		if($this->check_default_project($sid)){
 			logger('店铺'.$sid.'已存在默认项目，继续....');
 			$PL = D('ProjectList');
-			$project = $PL->where(array('uid' => session('uid')))->order('create_at asc')->cache(true,60)->select();
+			$project = $PL->where(array('uid' => session('uid')))->order('create_at asc')->select();
 
 			$data = array(
 				'code' => 1,
@@ -149,7 +149,7 @@ class ProjectController extends Controller
 		if($id && ($name || $members)){
 			logger('更新项目设置，项目ID：'.$id);
 			$project = D('project');
-			$pro = $project->where(array('id'=>$id))->field('name,create_user,sid')->cache(true,60)->find();
+			$pro = $project->where(array('id'=>$id))->field('name,create_user,sid')->find();
 			if($pro['create_user'] == 0){
 				logger('默认项目不可修改名称或组成员！'."\n");
 				$data = array(
@@ -189,7 +189,7 @@ class ProjectController extends Controller
 		if($id){
 			logger('删除项目：'.$id.'....');
 			$project = D('project');
-			$pro = $project->where(array('id'=>$id))->field('name,create_user,sid')->cache(true,60)->find();
+			$pro = $project->where(array('id'=>$id))->field('name,create_user,sid')->find();
 			if($pro['create_user'] == 0){
 				logger('默认项目不可删除！'."\n");
 				$data = array(
@@ -239,7 +239,7 @@ class ProjectController extends Controller
 		);
 		$project = D('project');
 
-		$result = $project->where($where)->cache(true,60)->find();
+		$result = $project->where($where)->find();
 
 		if(!$result){
 			$data = array(
@@ -262,7 +262,7 @@ class ProjectController extends Controller
 	private function get_detail($id)
 	{
 		$project = D('project');
-		$pro = $project->where(array('id'=>$id))->field('id,name,create_user,sid')->cache(true,60)->find();
+		$pro = $project->where(array('id'=>$id))->field('id,name,create_user,sid')->find();
 
 		return $pro;
 	}
@@ -273,10 +273,10 @@ class ProjectController extends Controller
 		$project = $this->get_detail($id);
 		if(($project['create_user'] == 0) && ($project['name'] == '默认项目')){
 			$user = D('app_user');
-			$mbs = $user->where(array('sid'=>session('sid'),'username'=>array('neq','')))->field('nickname,uid,head')->cache(true,60)->select();
+			$mbs = $user->where(array('sid'=>session('sid'),'username'=>array('neq','')))->field('nickname,uid,head')->select();
 		}else{
 			$PM = D('ProjectMember');
-			$mbs = $PM->where(array('pid'=>$id))->cache(true,60)->select();
+			$mbs = $PM->where(array('pid'=>$id))->select();
 		}
 		// 处理头像
 		if(count($mbs) >= 1){
@@ -294,7 +294,7 @@ class ProjectController extends Controller
 	private function get_task($id)
 	{
 		$taskList = D('TaskList');
-		$tasks = $taskList->where(array('pid'=>$id,'delete_at'=>0,'status'=>0))->order('create_at desc')->cache(true,60)->select();
+		$tasks = $taskList->where(array('pid'=>$id,'delete_at'=>0,'status'=>0))->order('create_at desc')->select();
 		// 处理头像
 		if(count($tasks) >= 1){
 			foreach($tasks as $k => $v){
@@ -311,7 +311,7 @@ class ProjectController extends Controller
 	private function get_file($id)
 	{
 		$FL = D('FileList');
-		$files = $FL->where(array('pid'=>$id,'delete_at'=>0))->order('upload_at desc')->cache(true,60)->select();
+		$files = $FL->where(array('pid'=>$id,'delete_at'=>0))->order('upload_at desc')->select();
 		// 处理头像
 		if(count($files) >= 1){
 			foreach($files as $k => $v){
@@ -328,7 +328,7 @@ class ProjectController extends Controller
 	{
 		$time = strtotime(date('Y-m-d',time()-C('dynamic_time'))); // 取近3天的评论
 		$DL = D('DiscussList');
-		$disc = $DL->where(array('pid'=>$id,'create_at'=>array('egt',$time)))->order('create_at desc')->cache(true,60)->select();
+		$disc = $DL->where(array('pid'=>$id,'create_at'=>array('egt',$time)))->order('create_at desc')->select();
 		// 处理头像
 		if(count($disc) >= 1){
 			foreach($disc as $k => $v){
@@ -367,7 +367,7 @@ class ProjectController extends Controller
 	{
 		logger('更新项目成员，项目ID：'.$id);
 		$project_user = D('project_user');
-		$oldmbs = $project_user->where(array('pid'=>$id))->field('id,uid')->cache(true,60)->select();
+		$oldmbs = $project_user->where(array('pid'=>$id))->field('id,uid')->select();
 		// logger('原有成员：'.var_export($oldmbs,true)); // debug
 		$members = chanslate_json_to_array($members);
 

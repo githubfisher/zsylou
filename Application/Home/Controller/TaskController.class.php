@@ -323,7 +323,7 @@ class TaskController extends Controller
 	private function manage_task_handler()
 	{
 		$taskList = D('TaskList');
-		$task = $taskList->where(array('uid'=>session('uid'),'delete_at'=>0,'status'=>0))->order('deadline asc')->cache(true,10)->select();
+		$task = $taskList->where(array('uid'=>session('uid'),'delete_at'=>0,'status'=>0))->order('deadline asc')->select();
 		// logger('查询的SQL语句：'.$taskList->getLastsql()); // debug
 
 		return $task;
@@ -333,7 +333,7 @@ class TaskController extends Controller
 	private function get_create_task()
 	{
 		$taskList = D('TaskList');
-		$task = $taskList->where(array('create_user'=>session('uid'),'delete_at'=>0,'status'=>0))->order('create_at desc')->cache(true,10)->select();
+		$task = $taskList->where(array('create_user'=>session('uid'),'delete_at'=>0,'status'=>0))->order('create_at desc')->select();
 		// logger('查询的SQL语句：'.$taskList->getLastsql()); // debug
 		// 处理头像
 		if(count($task) >= 1){
@@ -351,7 +351,7 @@ class TaskController extends Controller
 	private function get_care_task()
 	{
 		$taskCare = D('TaskCare');
-		$task = $taskCare->where(array('careuid'=>session('uid'),'delete_at'=>0,'status'=>0))->order('create_at desc')->cache(true,10)->select();
+		$task = $taskCare->where(array('careuid'=>session('uid'),'delete_at'=>0,'status'=>0))->order('create_at desc')->select();
 		// logger('查询的SQL语句：'.$taskCare->getLastsql()); // debug
 		// 处理头像
 		if(count($task) >= 1){
@@ -369,7 +369,7 @@ class TaskController extends Controller
 	private function get_detail($id)
 	{
 		$detail = D('TaskDetail');
-		$details = $detail->where(array('id'=>$id))->cache(true,1)->find();
+		$details = $detail->where(array('id'=>$id))->find();
 		// 处理头像
 		if(strpos($details['head'],'/Uploads/avatar/') === 0){
 			$details['head'] = C('base_url').$details['head'];
@@ -382,7 +382,7 @@ class TaskController extends Controller
 	private function get_check($id)
 	{
 		$check = D('TaskCheck');
-		$checks = $check->where(array('tid'=>$id))->order('create_at asc')->cache(true,1)->select();
+		$checks = $check->where(array('tid'=>$id))->order('create_at asc')->select();
 		// logger('查询检查项的SQL语句：'.$check->getLastsql()); // debug
 
 		return $checks;
@@ -392,7 +392,7 @@ class TaskController extends Controller
 	private function get_dynamic($id)
 	{
 		$dynamic = D('TaskDynamic');
-		$dynamics = $dynamic->where(array('id'=>$id,'type'=>1))->order('time asc')->cache(true,1)->select();
+		$dynamics = $dynamic->where(array('id'=>$id,'type'=>1))->order('time asc')->select();
 		// logger('查询动态历史的SQL语句：'.$dynamic->getLastsql()); // debug
 
 		return $dynamics;
@@ -402,7 +402,7 @@ class TaskController extends Controller
 	private function get_careuser($id)
 	{
 		$careuser = D('TaskCareUser');
-		$careusers = $careuser->where(array('id'=>$id))->cache(true,1)->select();
+		$careusers = $careuser->where(array('id'=>$id))->select();
 		// logger('查询动态历史的SQL语句：'.$careuser->getLastsql()); // debug
 		if(count($careusers) >= 1){
 			foreach($careusers as $k => $v){
@@ -417,7 +417,7 @@ class TaskController extends Controller
 	private function get_discuss($id)
 	{
 		$discuss = D('TaskDiscuss');
-		$discusses = $discuss->where(array('item'=>$id,'type'=>1))->order('create_at asc')->cache(true,1)->select();
+		$discusses = $discuss->where(array('item'=>$id,'type'=>1))->order('create_at asc')->select();
 		// 处理头像
 		if(count($discusses) >= 1){
 			foreach($discusses as $k => $v){
@@ -1011,7 +1011,7 @@ class TaskController extends Controller
 			$task = array_slice($tasks,$start,$num);
 		}else{
 			$taskList = D('TaskList');
-			$tasks = $taskList->where(array('uid'=>session('uid'),'delete_at'=>0,'status'=>1))->order('done_at desc')->cache(true,60)->cache(session('uid').'manageDone')->select(); // 默认每页10条
+			$tasks = $taskList->where(array('uid'=>session('uid'),'delete_at'=>0,'status'=>1))->order('done_at desc')->cache(session('uid').'manageDone')->select(); // 默认每页10条
 			$start = ($page-1)*$num;
 			$task = array_slice($tasks,$start,$num);
 		}
@@ -1025,7 +1025,7 @@ class TaskController extends Controller
 			$task = array_slice($tasks,$start,$num);
 		}else{
 			$taskList = D('TaskList');
-			$tasks = $taskList->where(array('create_user'=>session('uid'),'delete_at'=>0,'status'=>1))->order('done_at desc')->cache(true,60)->cache(session('uid').'createDone')->select();
+			$tasks = $taskList->where(array('create_user'=>session('uid'),'delete_at'=>0,'status'=>1))->order('done_at desc')->cache(session('uid').'createDone')->select();
 			$start = ($page-1)*$num;
 			$task = array_slice($tasks,$start,$num);
 		}
@@ -1039,7 +1039,7 @@ class TaskController extends Controller
 			$task = array_slice($tasks,$start,$num);
 		}else{
 			$taskCare = D('TaskCare');
-			$tasks = $taskCare->where(array('careuid'=>session('uid'),'delete_at'=>0,'status'=>1))->order('done_at desc')->cache(true,60)->cache(session('uid').'careDone')->select();
+			$tasks = $taskCare->where(array('careuid'=>session('uid'),'delete_at'=>0,'status'=>1))->order('done_at desc')->cache(session('uid').'careDone')->select();
 			$start = ($page-1)*$num;
 			$task = array_slice($tasks,$start,$num); 
 		}

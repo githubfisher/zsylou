@@ -48,7 +48,7 @@ class DynamicController extends Controller
 		$file_dynamic = $DFL->where($where)->select();
 		// 合并动态
 		$dynamic = array_merge($task_dynamic,$file_dynamic);
-		if(count($dynamic) < 1){
+		if(count($dynamic) >= 1){
 			$dynamic = $this->sort_by_project($this->sort_by_date($dynamic));
 		}else{
 			$dynamic = array();
@@ -91,32 +91,40 @@ class DynamicController extends Controller
 
 	private function sort_by_project($d)
 	{
+		$new = array();
+		$o = 0;
 		foreach($d as $k => $v){
 			foreach($v['lists'] as $m => $n){
-				if($m == 0){
-					$d[$k]['dynamics'][0]['project'] = $n['project'];
-					$d[$k]['dynamics'][0]['pid'] = $n['pid'];
-					$d[$k]['dynamics'][0]['lists'][] = $n;
+				if($o == 0){
+					$new[] = array(
+						'date' => $v['date'],
+						'project' => $n['project'],
+						'pid' => $n['pid'],
+						'lists' => array($n)
+					);
+					$o++;
 				}else{
-					$max = count($d[$k]['dynamics']);
+					$max = count($new);
 					$i = 1;
-					foreach($d[$k]['dynamics'] as $x => $y){
+					foreach($new as $x => $y){
 						if($n['pid'] == $y['pid']){
-							$d[$k]['dynamics'][$x]['lists'][] = $n;
+							$new[$x]['lists'][] = $n;
 							break;
 						}else{
 							if($i == $max){
-								$d[$k]['dynamics'][$max]['pid'] = $n['pid'];
-								$d[$k]['dynamics'][$max]['project'] = $n['project'];
-								$d[$k]['dynamics'][$max]['lists'][] = $n;
+								$new[] = array(
+									'date' => $v['date'],
+									'project' => $n['project'],
+									'pid' => $n['pid'],
+									'lists' => array($n)
+								);
 							}
 							$i++;
 						}
 					}
 				}
 			}
-			unset($d[$k]['lists']);
 		}
-		return $d;
+		return $new;
 	}
 }

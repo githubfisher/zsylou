@@ -261,7 +261,8 @@ class TaskController extends Controller
 					break;
 			}
 			// 处理头像
-			if(count($task) >= 1){
+			$num = count($task);
+			if($num >= 1){
 				foreach($task as $k => $v){
 					if(strpos($v['head'],'/Uploads/avatar/') === 0){
 						$task[$k]['head'] = C('base_url').$task[$k]['head'];
@@ -271,7 +272,8 @@ class TaskController extends Controller
 			$data = array(
 				'code' => 1,
 				'message' => '已完成任务返回成功！',
-				'result' => $task
+				'result' => $task,
+				'num' => $num
 			);
 			logger('已完成任务返回成功！'."\n");
 		}else{

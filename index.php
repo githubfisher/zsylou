@@ -21,7 +21,7 @@ define('APP_DEBUG',True);
 define('APP_PATH','./Application/');
 
 // 生成新的Admin模块，生成完就注释掉
-// define('BIND_MODULE','Wei');
+// define('BIND_MODULE','Manager');
 
 // 引入ThinkPHP入口文件
 require './ThinkPHP/ThinkPHP.php';

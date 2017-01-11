@@ -19,9 +19,9 @@ class MsgController extends Controller {
 		$uids = $request['customer'];
 		$type = $request['type'];
 		if($title && $content && $uids){
+			$uids = chanslate_json_to_array($uids);
 			if(empty($type) || $type == 1){
 				$msgId = $this->saveMsg($title,$content,$uids,1);
-				$uids = explode(',',$uids);
 				if($this->sendPush($title,$content,$uids)){
 					$this->updateMsg($msgId);
 					logger("附近客户 -- 发送消息 --发送成功\n");
@@ -37,6 +37,7 @@ class MsgController extends Controller {
 					);
 				}
 			}else{
+				$uids = implode(',',$uids);
 				$msgId = $this->saveMsg($title,$content,$uids,2);
 				if($this->sendMessage($title,$content,$uids)){
 					$this->updateMsg($msgId);

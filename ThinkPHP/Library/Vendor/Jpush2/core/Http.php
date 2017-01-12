@@ -120,7 +120,8 @@ final class Http {
             }
             return $result;
         } else {
-            throw new APIRequestException($response);
+            // throw new APIRequestException($response);
+            return false;
         }
     }
 

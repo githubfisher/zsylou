@@ -42,31 +42,37 @@ class NearbyController extends Controller {
     	$condition = array();
     	$condition['hash'] = array('like',$this->getNeighbor($east,$north,$area),'OR');
     	$condition['login_at'] = $this->getDate($date);
-    	if(empty($condition['login_at']))
-    		unset($condition['login_at']);
     	return $condition;
     }
     private function getDate($day)
     {
     	if($day >= 1){
-    		$now = time();
-    		$last = strtotime(date('Y-m-d',$now));
-    		return array(array('lt',$now),array('egt',$last));
+    		return $this->getHistoryDate(true);
     	}else if((int)$day === 0){
-    		return array();
+    		return $this->getHistoryDate(false);
     	}else{
     		if(!isset($this->rule['area'])){
 				$this->getSearchRule();
 			}
 			$date = $this->rule['date'];
 			if($date == 0){
-				return array();
+				return $this->getHistoryDate(false);
 			}else{
-				$now = time();
-	    		$last = strtotime(date('Y-m-d',$now));
-	    		return array(array('lt',$now),array('egt',$last));
+				return $this->getHistoryDate(true);
 			}
     	}
+    }
+    private function getHistoryDate($isToday=true,$days=7)
+    {
+        if($isToday){
+            $now = time();
+            $last = strtotime(date('Y-m-d',$now));
+            return array(array('lt',$now),array('egt',$last));
+        }else{
+            $now = time();
+            $last = strtotime(date('Y-m-d',$now-86400*$days));
+            return array(array('lt',$now),array('egt',$last));
+        }
     }
     private function getNeighbor($east,$north,$area)
     {

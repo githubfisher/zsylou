@@ -7,10 +7,6 @@ class NewtradeController extends Controller{
 		$scheck->index();
 		header("content-type:text/html; charset=utf-8;");
 	}
-	//预留
-	public function index(){
-
-	}
 	//开单 //http://119.29.6.140:8808/<aa>12</aa><yy>20150101080101888888</yy><n>柯涛</n><p1>张三</p1><p2>18666532220</p2><p3>699宝宝照</p3><p4>699</p4><p5>备注</p5>
 	public function newtrade(){
 		logger('PAD端--@@@@@@@@@@@@@@@@@@@@@-----开单----开始-----@@@@@@@@@@@@@@@@@@@@@@');

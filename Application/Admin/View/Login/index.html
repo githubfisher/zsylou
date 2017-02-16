@@ -43,7 +43,6 @@
             </div>
             <div id="loginbox">            
                 <form id="loginform" action="#">
-    				<!-- <p>Enter username and password to continue.</p> -->
                     <p style="height:50px;line-height:50px;font-size:25px;"><b>掌上影楼</b></p>
                     <div class="input-group input-sm">
                         <span class="input-group-addon"><i class="fa fa-user"></i></span><input class="form-control" type="text" id="username" placeholder="用户名" />
@@ -52,38 +51,24 @@
                         <span class="input-group-addon"><i class="fa fa-lock"></i></span><input class="form-control" type="password" id="password" placeholder="密码" />
                     </div>
                     <div class="form-actions clearfix">
-                        <!-- <div class="pull-left">
-                            <a href="#" class="flip-link to-register blue">Create new account</a>
-                        </div> -->
                         <div class="pull-right">
                             <a href="#" class="flip-link to-recover grey">忘记密码？</a>
                         </div>
                         <input type="submit" class="btn btn-block btn-primary btn-default" id="loginbtn" value="登录" />
                     </div>
-                   <!--  <div class="footer-login">
-                        <div class="pull-left text">
-                            第三方账号登录
-                        </div>
-                        <div class="pull-right btn-social">
-                            <a class="btn btn-facebook" href="#"><i class="fa fa-facebook"></i></a>
-                            <a class="btn btn-twitter" href="#"><i class="fa fa-twitter"></i></a>
-                            <a class="btn btn-google-plus" href="#"><i class="fa fa-google-plus"></i></a>
-                        </div>
-                    </div> -->
-
                 </form>
                 <form id="recoverform" action="#">
-    				<p>请提供一个电子邮箱地址</p>
+    				<p>找回账号密码</p>
+                    <p>请输入账号绑定的手机号码</p>
     				<div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-envelope"></i></span><input class="form-control" type="text" placeholder="电子邮箱地址" disabled=""/>
+                        <span class="input-group-addon"><i class="fa fa-mobile"></i></span><input class="form-control" type="text" id="mobile" placeholder="{$mobile}"/>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-info"></i></span><input class="form-control" type="text" id="code" placeholder="验证码"/>
                     </div>
                     <div class="form-actions clearfix">
-                        <div class="pull-left">
-                            <span>联系管理员修改账号密码</span>
-                        </div>
                         <div class="pull-right">
-                            <a href="#" class="grey flip-link to-login">点击登录</a>
-                            <!-- <a href="#" class="blue flip-link to-register">注册新账号</a> -->
+                            <a href="#" class="grey flip-link to-login">去登录</a>
                         </div>
                         <input type="submit" class="btn btn-block btn-inverse" value="提交" />
                     </div>

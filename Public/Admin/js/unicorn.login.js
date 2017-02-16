@@ -30,7 +30,7 @@ $(document).ready(function(){
     }
 
 	$('.flip-link.to-recover').click(function(){
-        switch_container(recover,login_register,183);
+        switch_container(recover,login_register,255);//183
 	});
 	$('.flip-link.to-login').click(function(){
         switch_container(login,recover_register,255);

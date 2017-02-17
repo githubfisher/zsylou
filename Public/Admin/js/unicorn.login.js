@@ -30,10 +30,10 @@ $(document).ready(function(){
     }
 
 	$('.flip-link.to-recover').click(function(){
-        switch_container(recover,login_register,255);//183
+        switch_container(recover,login_register,215);//183
 	});
 	$('.flip-link.to-login').click(function(){
-        switch_container(login,recover_register,255);
+        switch_container(login,recover_register,215);
 	});
     $('.flip-link.to-register').click(function(){
         switch_container(register,login_recover,280);
@@ -76,13 +76,63 @@ $(document).ready(function(){
             });
         }       
     });
-
-    $('#username, #password').on('keyup',function(){
-        highlight_error($(this));
-    }).focus(function(){
-        highlight_error($(this));
-    }).blur(function(){
-        highlight_error($(this));
+    $("#forgotbtn").click(function(e){
+        var thisForm = $(this);
+        var mobileinput = $('#mobile');
+        var codeinput = $('#code');
+        if(mobileinput.val() == '' || codeinput.val() == ''){
+            highlight_error(mobileinput);
+            highlight_error(codeinput);
+            loginbox.effect('shake');
+            return false;
+        }else if(!(/^1(3|4|5|7|8)\d{9}$/.test(mobileinput.val()))){
+            msg('请输入正确的手机号！',"tip","red");
+            return false;
+        }else{
+            $.post("/index.php/admin/ForgotPassword/checkCode",{mobile:mobileinput.val(),code:codeinput.val()},function(data){
+                if(data.status == 1){
+                    switch_container(register,login_recover,215);
+                    return true;
+                }else{
+                    msg(data.info,"tip","red");
+                    loginbox.effect('shake');
+                    return false;
+                }
+            });
+        }
+    });
+    $("#registerbtn").click(function(e){
+        var thisForm = $(this);
+        var pwd = $('#pwd');
+        var pwd2 = $('#pwd2');
+        var uid = $('#uid');
+        var mobile = $('#mobile');
+        var regex = new RegExp('[0-9 | A-Z | a-z]{6,16}');
+        if(!regex.test(pwd.val())){
+            highlight_error(pwd);
+            highlight_error(pwd2)
+            loginbox.effect('shake');
+            msg('密码须由数字或英文字符组成,6位-16位',"reset-tip","red");
+            return false;
+        }else if(pwd.val() != pwd2.val()){
+            msg('两次输入不一致！',"reset-tip","red");
+            return false;
+        }else{
+            $.post("/index.php/admin/ForgotPassword/reset",{pwd:pwd.val(),uid:uid.val(),mobile:mobile.val()},function(data){
+                if(data.status == 1){
+                    msg(data.info,"reset-tip","#428bca");
+                    setTimeout(function(){
+                        clearInput();
+                        switch_container(login,recover_register,215);
+                        msg("","reset-tip","red");
+                    },1000);
+                    return true;
+                }else{
+                    msg(data.info,"reset-tip","red");
+                    return false;
+                }
+            });
+        }
     });
 });
 

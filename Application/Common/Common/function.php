@@ -570,4 +570,18 @@ function get_time_length($time){
 	}
 	return $str;
 }
+function getRand($num,$type = true)
+{
+	$string = '';
+	if($type){
+		$source = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_';
+	}else{
+		$source = '01234567890';
+	}
+	$length = strlen($source);
+	while(strlen($string) < $num){
+		$string .= substr($source,rand(0,$num),1);
+	}
+	return $string;
+}
 ?>

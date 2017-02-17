@@ -9,29 +9,102 @@
         <link rel="stylesheet" href="__PUBLIC__/Admin/css/unicorn-login.css" />
     	<script type="text/javascript" src="__PUBLIC__/Admin/js/respond.min.js"></script>
         <script type="text/javascript" src="__PUBLIC__/Admin/js/analytics.js"></script>
-	<script>
-		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-		  ga('create', 'UA-44987299-1', 'bootstrap-hunter.com');
-		  ga('send', 'pageview');
-          var url = "{:U('Admin/index/index')}";
-          var uurl = "{:U('Admin/mylou/index')}";
-          var weitrans = "{:U('Admin/weitrans/index')}";
-            document.onkeydown = function (e) {
-                var theEvent = window.event || e;
-                var code = theEvent.keyCode || theEvent.which;
-                if (code == 13) {
-                $("#loginbtn").click();
+        <style type="text/css">
+            .secbtn{
+                border-left:0;
+            }
+        </style>
+	    <script>
+	        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		    ga('create', 'UA-44987299-1', 'bootstrap-hunter.com');
+		    ga('send', 'pageview');
+            var url = "{:U('Admin/index/index')}";
+            var uurl = "{:U('Admin/mylou/index')}";
+            var weitrans = "{:U('Admin/weitrans/index')}";
+            // 发送
+            function send(){
+                var mobile = document.getElementById("mobile").value;
+                if(!checkMobile(mobile)){
+                    return false;
                 }
-            } 
-		</script></head>    <body>
+                if(!check_send(mobile)){
+                    return false;
+                }
+            }
+            // js校验手机号
+            function checkMobile(mobile){
+                if(mobile == ''){
+                    msg('手机号不能为空！',"tip","red");
+                    return false;
+                }else if(!(/^1(3|4|5|7|8)\d{9}$/.test(mobile))){
+                    msg('请填写正确的手机号！',"tip","red");
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+            // ajax验证手机号和发送
+            function check_send(mobile){
+                var type = "forgotPwd";
+                $.post("/index.php/admin/ForgotPassword/mobile_exists",{mobile:mobile,type:type},function(data){
+                    if(data.status == 1){
+                        // UID
+                        document.getElementById("uid").value = data.data;
+                        msg("","tip","red");
+                        timer = setInterval(clock,1000);
+                        return true;
+                    }else{
+                        msg(data.info,"tip","red");
+                        return false
+                    }
+                });
+            }
+            // 全局变量
+            var timer;
+            var sec = 60;
+            var low = 59;
+            // 倒计时器
+            function clock(){
+                sec--;
+                if(sec>low){
+                    document.getElementById("re-send").innerText = '发送成功';
+                    $("#get-code").hide();
+                    $("#re-send").show();
+                }else if(sec > 0){
+                    document.getElementById("re-send").innerText = sec+"秒后重新发送";
+                    $("#get-code").hide();
+                    $("#re-send").show();
+                }else{
+                    clearInterval(timer);
+                    sec = 60;
+                    $("#re-send").hide();
+                    $("#get-code").show();
+                }
+            }
+            // 提示
+            function msg(tip,id,color){
+                document.getElementById(id).innerText = tip;
+                document.getElementById(id).style.color = color;
+            }
+            function clearInput()
+            {
+                $("#mobile").val("");
+                $("#code").val("");
+                $("#pwd").val("");
+                $("#pwd2").val("");
+                $("#uid").val("");
+                $("#tip").val("");
+            }
+		</script>
+    </head>    
+    <body>
         <div id="container">
-            <!-- <div id="logo">
+            <div id="logo">
                 <img src="__PUBLIC__/Admin/img/logo.png" alt="" />
-            </div> -->
+            </div>
             <div id="user">
                 <div class="avatar">
                     <div class="inner"></div>
@@ -43,7 +116,7 @@
             </div>
             <div id="loginbox">            
                 <form id="loginform" action="#">
-                    <p style="height:50px;line-height:50px;font-size:25px;"><b>掌上影楼</b></p>
+                    <p>请输入管理员账号和密码</p>
                     <div class="input-group input-sm">
                         <span class="input-group-addon"><i class="fa fa-user"></i></span><input class="form-control" type="text" id="username" placeholder="用户名" />
                     </div>
@@ -58,44 +131,43 @@
                     </div>
                 </form>
                 <form id="recoverform" action="#">
-    				<p>找回账号密码</p>
-                    <p>请输入账号绑定的手机号码</p>
+                    <p>请输入与管理员账号绑定的手机号，并点击发送验证码</p>
     				<div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-mobile"></i></span><input class="form-control" type="text" id="mobile" placeholder="{$mobile}"/>
+                        <span class="input-group-addon"><i class="fa fa-mobile"></i></span><input class="form-control" type="text" id="mobile" placeholder="手机号码"/>
+                        <span class="input-group-addon secbtn" id="get-code"><a href="javascript:void(0);" onclick="send();">发送验证码</a></span>
+                        <span class="input-group-addon secbtn" id="re-send" style="display:none;"></span>
                     </div>
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-info"></i></span><input class="form-control" type="text" id="code" placeholder="验证码"/>
                     </div>
                     <div class="form-actions clearfix">
+                        <div class="pull-left">
+                            <span style="color:red" id="tip"></span>
+                        </div>
                         <div class="pull-right">
                             <a href="#" class="grey flip-link to-login">去登录</a>
                         </div>
-                        <input type="submit" class="btn btn-block btn-inverse" value="提交" />
+                        <input type="submit" class="btn btn-block btn-inverse" id="forgotbtn" value="提交" />
                     </div>
                 </form>
                 <form id="registerform" action="#">
-                    <p>登记注册</p>
+                    <p>设置新的管理员密码</p>
                     <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-user"></i></span><input class="form-control" type="text" placeholder="用户名" />
+                        <span class="input-group-addon"><i class="fa fa-lock"></i></span><input class="form-control" type="password" id="pwd" placeholder="新密码"/>
                     </div>
                     <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-lock"></i></span><input class="form-control" type="password" placeholder="密码" />
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-lock"></i></span><input class="form-control" type="password" placeholder="确认密码" />
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-envelope"></i></span><input class="form-control" type="text" placeholder="电子邮箱" />
+                        <span class="input-group-addon"><i class="fa fa-lock"></i></span><input class="form-control" type="password" id="pwd2" placeholder="确认密码"/>
                     </div>
                     <div class="form-actions clearfix">
                         <div class="pull-left">
-                            <a href="#" class="grey flip-link to-login">点击登录</a>
+                            <span id="reset-tip"></span>
                         </div>
                         <div class="pull-right">
-                            <a href="#" class="grey flip-link to-recover">新账号新开始</a>
+                            <a href="#" class="grey flip-link to-login">去登录</a>
                         </div>
-                        <input type="submit" class="btn btn-block btn-success" value="注册" />
+                        <input type="submit" class="btn btn-block btn-inverse" id="registerbtn" value="提交" />
                     </div>
+                    <input type="hidden" id="uid" value="1">
                 </form>
             </div>
         </div>

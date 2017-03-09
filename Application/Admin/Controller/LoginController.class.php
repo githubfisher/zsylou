@@ -20,7 +20,6 @@ class LoginController extends Controller{
 			$where = array(
 				'password' => $pwd,
 				'type' => array(array('eq',1),array('eq',3),'OR'),  //限制普通用户登录
-				'status' => 1 // 状态为启用的账号
 			);
 			if(strpos($name,"_")){
 				//分离店铺标识和用户名 2016-5-23
@@ -32,8 +31,13 @@ class LoginController extends Controller{
 				$where['username'] = $name;
 			}
 			$result = $user->where($where)->find();
-			logger('yuju:'.$user->getLastsql()); //debug
 			if($result){
+				if($result['status'] != 1){
+					$data['status'] = 0;
+					$data['info'] = '账号未启用！';
+					logger("账号未启用，登录失败！\n");
+					$this->ajaxReturn($data);
+				}
 				session('name',$name);
 				session('uid',$result['uid']); //用户ID
 				session('sid',$result['sid']); //店铺ID

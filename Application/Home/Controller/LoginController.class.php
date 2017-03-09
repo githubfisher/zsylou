@@ -24,17 +24,17 @@ class LoginController extends Controller{
 			$where = array(
 				'username' => $username,
 				'password' => $post['password'],  
-				'store_simple_name' => $store_simple_name
+				'store_simple_name' => $store_simple_name,
 			);
 			// logger('查询用户条件：'.var_export($where,TRUE)); //debug
 			$result = $appuser->field('password,modify_time',TRUE)->where($where)->find();
 			// logger('用户信息数组：'.var_export($result,TRUE)); //debug
 			if($result){
-				// 将生日时间戳转换成年月日形式返回
-				foreach($result as $k => $v){
-					if($k == 'birth'){
-						$result[$k] = date('Y-m-d',$v); 
-					}
+				if($result['status'] != 1){
+					$data['status'] = 0;
+					$data['info'] = '账号未启用！';
+					logger("账号未启用，登录失败！\n");
+					$this->ajaxReturn($data);
 				}
 				$uid = $result['uid'];
 				session('uid',$uid); //APP用户uid写入session
@@ -63,10 +63,7 @@ class LoginController extends Controller{
 				}else{
 					logger('登录信息，写入失败！');
 				}
-				// $userstr = var_export($result,TRUE);  //debug
-				// logger('用户信息：'.$userstr); //debug
-				// 登录影楼服务器
-				// 查询对应服务器地址
+				// 登录影楼服务器 // 查询对应服务器地址
 				$store = D('store');
 				$where = array(
 					'id' => $result['sid'],
@@ -109,40 +106,6 @@ class LoginController extends Controller{
 		        	);
 		        	logger("ONLY-USER-登录成功\n");
 				}
-				// if($instore){
-				// 	$url = 'http://' . $instore['ip'] . ':' . $instore['port'] . '/';
-				// 	// logger('URL:'.$url); //debug
-				// 	session('url',$url); //将对应远程影楼服务器地址，保存至session
-				// 	$xml = $this->transXML($result);
-				// 	$getxml = getXML($url,$xml);
-				// 	//将获取的XML数据转换为对象
-		  //       	$obj = simplexml_load_string($getxml,'SimpleXMLElement',LIBXML_NOCDATA);
-		  //       	if($obj->r == 'loginfailed'){
-			 //        	$arr = array(
-			 //        		'code' => '3',
-			 //        		'message' => '远程影楼服务器登录失败！',
-			 //        		'result' => $result
-			 //        	);
-			 //        	logger("远程影楼服务器--登录失败\n");
-			 //        	exit(json_encode($arr));
-			 //        }else{
-			 //        	$arr = array(
-			 //        		'code' => '1',
-			 //        		'message' => '登录成功！',
-			 //        		'result' => $result
-			 //        	);
-			 //        	logger("ALL-登录成功\n");
-			 //        	exit(json_encode($arr));
-			 //        }
-				// }else{
-				// 	$arr = array(
-		  //       		'code' => '4',
-		  //       		'message' => '未查找到对应远程服务器!',
-		  //       		'result' => $result
-		  //       	);
-		  //       	logger("未查找到对应远程影楼服务器\n");
-		  //       	exit(json_encode($arr));
-				// }
 			}else{
 				//如果查询错误，则返回用户名或密码错误，登录失败
 				$arr = array(

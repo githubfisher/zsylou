@@ -21,7 +21,8 @@ class Contactscontroller extends Controller{
 		$user = D('app_user');
 		$where = array(
 			'sid' => $sid,
-			'username' => array('neq','')
+			'username' => array('neq',''),
+			'status' => 1 // 账号状态为启用
 		);
 		$result = $user->where($where)->order('uid asc')->select();
 		if($result){

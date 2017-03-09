@@ -24,9 +24,7 @@ $(document).ready(function(){
         $('#loginform, #registerform').css({'z-index':'100','opacity':'0.01'});
         $('#recoverform').css({'z-index':'200','opacity':'1','display':'block'});
     } else if(ee[1] = 'registerform' && ee[1] != undefined) {
-        loginbox.css({'height':'280px'});
-        login_recover.css({'z-index':'100','opacity':'0.01'});
-        register.css({'z-index':'200','opacity':'1','display':'block'});
+        loginbox.css({'z-index':'200','opacity':'1','display':'block'});
     }
 
 	$('.flip-link.to-recover').click(function(){
@@ -43,6 +41,10 @@ $(document).ready(function(){
         var thisForm = $(this); 
         var userinput = $('#username');
         var passinput = $('#password');
+        if(!(/\S+\S*_\S+\S*/.test(userinput.val()))){
+            msg('正确登录名格式：店铺简称_用户名',"login-tip","red");
+            return false;
+        }
         if(userinput.val() == '' || passinput.val() == '') {
             highlight_error(userinput);
             highlight_error(passinput);
@@ -70,8 +72,8 @@ $(document).ready(function(){
                     });
                     return true;
                 }else{
-                    alert(data.info);
-                    window.location.reload();
+                    msg(data.info,"login-tip","red");
+                    return false;
                 }
             });
         }       

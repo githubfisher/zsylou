@@ -57,7 +57,8 @@ class EasemobController extends Controller{
 		$sid = session('sid');
 		$where = array(
 			'sid' => $sid,
-			'username' => array('neq','')
+			'username' => array('neq',''),
+			'status' => 1 // 账号状态为启用
 		);
 		$colleagues = $app_user->where($where)->field('uid,sid,username,store_simple_name,head,mobile,birth,realname,nickname,gender,qq,location,dept')->select(); //同事关系
 		$cols = array();

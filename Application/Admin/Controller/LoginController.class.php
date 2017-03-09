@@ -19,18 +19,20 @@ class LoginController extends Controller{
 			$user = D('app_user');
 			$where = array(
 				'password' => $pwd,
-				'type' => array(array('eq',1),array('eq',3),'OR')  //限制普通用户登录
+				'type' => array(array('eq',1),array('eq',3),'OR'),  //限制普通用户登录
+				'status' => 1 // 状态为启用的账号
 			);
 			if(strpos($name,"_")){
 				//分离店铺标识和用户名 2016-5-23
-				$username = ltrim(strchr($post['username'],'_'),'_');
-				$store_simple_name = strchr($post['username'],'_',TRUE);
+				$username = ltrim(strchr($name,'_'),'_');
+				$store_simple_name = strchr($name,'_',TRUE);
 				$where['username'] = $username;
 				$where['store_simple_name'] = $store_simple_name;
 			}else{
 				$where['username'] = $name;
 			}
 			$result = $user->where($where)->find();
+			logger('yuju:'.$user->getLastsql()); //debug
 			if($result){
 				session('name',$name);
 				session('uid',$result['uid']); //用户ID

@@ -261,7 +261,12 @@
 			  				tr = tr+'<td><button type="button" class="btn btn-warning" onclick="show(\'';
 			  				tr = tr+users[i].uid+'\',\''+users[i].username+'\',\''+users[i].type+'\',\''+users[i].sid+'\',\'pwd\',\'';
 			  				tr = tr+users[i].simple+'\');">编辑</button>\n<button type="button" class="btn btn-danger" onclick="remove_user(\'';
-			  				tr = tr+users[i].uid+'\');">删除</button></td></tr>';
+			  				tr = tr+users[i].uid+'\');">删除</button>\n';
+			  				if(users[i].sta == 1){
+			  					tr = tr + '<button type="button" class="btn btn-primary" onclick="lock(\'' + users[i].uid+'\');">禁用</button></td></tr>';
+			  				} else {
+			  					tr = tr + '<button type="button" class="btn btn-info" onclick="unlock(\'' + users[i].uid+'\');">启用</button></td></tr>';
+			  				}
 			  				$("#tbd").append(tr);
 			  			}
 	                    return true;
@@ -277,6 +282,52 @@
 			  		}
 			  	});
 		 	}
+		 	function lock (uid) {
+		  	var status = 0;
+		  	$.post("/index.php/Admin/Mylou/update_status",{uid:uid,status:status},function(data){
+		  		if(data.status == 1){
+		  			document.getElementById("megmeg").innerHTML="禁用成功！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       window.location.reload();
+                    },800);
+                    return true;
+                }else{
+                    document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML="禁用失败，请重试！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       $(".back").fadeOut();
+                    },1000);
+                    return false;
+                }
+		  	});
+		  }
+		  function unlock (uid) {
+		  	var status = 1;
+		  	$.post("/index.php/Admin/Mylou/update_status",{uid:uid,status:status},function(data){
+		  		if(data.status == 1){
+		  			document.getElementById("megmeg").innerHTML="启用成功！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       window.location.reload();
+                    },800);
+                    return true;
+                }else{
+                    document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML="启用失败，请重试！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       $(".back").fadeOut();
+                    },1000);
+                    return false;
+                }
+		  	});
+		  }
 		</script>
 	</head>	
 	<body data-color="grey" class="flat">

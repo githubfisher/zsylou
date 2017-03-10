@@ -3581,5 +3581,32 @@ class MylouController extends Controller {
         }
         $this->ajaxReturn($return_data);
     }
+    public function update_status ()
+    {
+        logger('普通管理员:修改员工账号状态！');
+        $post = I();
+        if ($post['uid'] && isset($post['status'])){
+            if (D('app_user')->where(array('uid' => $post['uid']))->save(array('status' => $post['status']))){
+                logger('普通管理员:修改员工账号状态,成功！'."\n");
+                $data = array(
+                    'status' => 1,
+                    'content' => '成功！'
+                );
+            }else{
+                logger('普通管理员:修改员工账号状态,失败！'."\n");
+                $data = array(
+                    'status' => 0,
+                    'content' => '失败！'
+                );
+            }
+        } else {
+            logger('普通管理员:修改员工账号状态,参数不全！'."\n");
+            $data = array(
+                'status' => 2,
+                'content' => '参数不全！'
+            );
+        }
+        $this->ajaxReturn($data);
+    }
 }
 ?>

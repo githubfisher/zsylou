@@ -31,8 +31,8 @@ class LoginController extends Controller{
 			// logger('用户信息数组：'.var_export($result,TRUE)); //debug
 			if($result){
 				if($result['status'] != 1){
-					$data['status'] = 0;
-					$data['info'] = '账号未启用！';
+					$data['code'] = 0;
+					$data['message'] = '账号未启用！';
 					logger("账号未启用，登录失败！\n");
 					$this->ajaxReturn($data);
 				}

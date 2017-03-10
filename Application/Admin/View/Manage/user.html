@@ -246,6 +246,52 @@
 		  		}
 		  	});
 		  }
+		  function lock (uid) {
+		  	var status = 0;
+		  	$.post("/index.php/Admin/Mylou/update_status",{uid:uid,status:status},function(data){
+		  		if(data.status == 1){
+		  			document.getElementById("megmeg").innerHTML="禁用成功！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       window.location.reload();
+                    },800);
+                    return true;
+                }else{
+                    document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML="禁用失败，请重试！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       $(".back").fadeOut();
+                    },1000);
+                    return false;
+                }
+		  	});
+		  }
+		  function unlock (uid) {
+		  	var status = 1;
+		  	$.post("/index.php/Admin/Mylou/update_status",{uid:uid,status:status},function(data){
+		  		if(data.status == 1){
+		  			document.getElementById("megmeg").innerHTML="启用成功！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       window.location.reload();
+                    },800);
+                    return true;
+                }else{
+                    document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML="启用失败，请重试！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       $(".back").fadeOut();
+                    },1000);
+                    return false;
+                }
+		  	});
+		  }
 	</script>
 	</head>	
 	<body data-color="grey" class="flat">
@@ -339,7 +385,11 @@
 								              <td>{$vo.store_simple_name}</td>							              
 								              <td>
 								              	<button type="button" class="btn btn-warning" onclick="show('{$vo.uid}','{$vo.username}','{$vo.type}','{$vo.sid}','pwd','{$vo.store_simple_name}');">编辑</button>
-								              	<button type="button" class="btn btn-danger" onclick="remove_user('{$vo.uid}',)">删除</button></td>
+								              	<button type="button" class="btn btn-danger" onclick="remove_user('{$vo.uid}')">删除</button>
+								              	<if condition="$vo.sta eq 1"><button type="button" class="btn btn-primary" onclick="lock('{$vo.uid}')">禁用</button>
+								              		<else /><button type="button" class="btn btn-info" onclick="unlock('{$vo.uid}')">启用</button>
+								              	</if>
+								              </td>
 								           </tr>
 								           </if>  
 								        </foreach>

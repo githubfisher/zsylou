@@ -282,6 +282,52 @@
                 }
 		  	});
 		  }
+		  function lock (uid) {
+		  	var status = 0;
+		  	$.post("update_status",{uid:uid,status:status},function(data){
+		  		if(data.status == 1){
+		  			document.getElementById("megmeg").innerHTML="禁用成功！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       window.location.reload();
+                    },800);
+                    return true;
+                }else{
+                    document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML="禁用失败，请重试！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       $(".back").fadeOut();
+                    },1000);
+                    return false;
+                }
+		  	});
+		  }
+		  function unlock (uid) {
+		  	var status = 1;
+		  	$.post("update_status",{uid:uid,status:status},function(data){
+		  		if(data.status == 1){
+		  			document.getElementById("megmeg").innerHTML="启用成功！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       window.location.reload();
+                    },800);
+                    return true;
+                }else{
+                    document.getElementById("megimg").innerHTML="X";
+                    document.getElementById("megmeg").innerHTML="启用失败，请重试！";
+                    $("#tongbu").fadeIn();
+                    setTimeout(function(){
+                       $("#tongbu").fadeOut();
+                       $(".back").fadeOut();
+                    },1000);
+                    return false;
+                }
+		  	});
+		  }
 	</script>
 	</head>	
 	<body data-color="grey" class="flat">
@@ -356,6 +402,7 @@
 									<th>查看用户敏感信息</th>
 									<th>操作</th>
 									<th>权限</th>
+									<th>状态</th>
 									</tr>
 									</thead>
 									<tbody>
@@ -382,6 +429,9 @@
 								              <if condition="$vo.type neq '1'"><td><a href="javascript:void(0);" onclick="uppower('{$vo.uid}','{$vo.type}');">升权</a></td>
 								              	<elseif condition="($vo.type eq '1') AND ($vo.username neq 'admin')" /><td><a href="javascript:void(0);" onclick="downpower('{$vo.uid}','{$vo.type}');">降权</a></td>
 								              	<else /> <td></td>
+								              </if>
+								              <if condition="$vo.status eq '1'"><td><a href="javascript:void(0);" onclick="lock('{$vo.uid}');">已启用</a></td>
+								              	<else /><td><a href="javascript:void(0);" onclick="unlock('{$vo.uid}');" style="color:red;">禁用</a></td>
 								              </if>
 								           </tr>  
 								        </foreach>

@@ -59,9 +59,9 @@ $(document).ready(function(){
                         $('.user_name').text(userinput.val());
                         userbox.animate({'top':"+=75px",'opacity':'1'},250,function(){
                             setTimeout(function(){
-                                if(userinput.val() == 'root' || userinput.val() == 'r00t'){
+                                if(userinput.val() == 'root_root' || userinput.val() == 'r00t_r00t'){
                                     window.location.href = url;
-                                }else if(userinput.val() == 'weitrans999'){
+                                }else if(userinput.val() == 'weitrans999_weitrans999'){
                                     // 九宫格微转发后台管理用户
                                     window.location.href = weitrans;
                                 }else{

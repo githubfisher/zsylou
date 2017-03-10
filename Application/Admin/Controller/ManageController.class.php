@@ -618,7 +618,7 @@ class ManageController extends Controller{
 		$user = D('app_user');
 		$limit = 15;
 		$join = 'LEFT JOIN store ON app_user.sid = store.id';
-		$field = 'app_user.uid,app_user.type,app_user.username,app_user.nickname,app_user.createtime,app_user.logintime,app_user.loginip,app_user.store_simple_name,store.storename as store';
+		$field = 'app_user.uid,app_user.type,app_user.username,app_user.nickname,app_user.createtime,app_user.logintime,app_user.loginip,app_user.store_simple_name,app_user.status as sta,store.storename as store';
 		$count = $user->join($join)->field($field)->cache(true,60)->count();
         $page = new \Page($count,$limit);
         $userinfo = $user->join($join)->order('id desc,createtime desc')->field($field)->limit($page->firstRow.','.$page->listRows)->cache(true,60)->select();
@@ -4291,7 +4291,7 @@ class ManageController extends Controller{
 			$user = D('Users');
 			$where['username'] = array('neq','');
 			$where['_string'] = "username ='".$name."' OR u.store_simple_name='".$name."' OR nickname='".$name."'";
-			$field = 'uid,sid,username,nickname,type,loginip,logintime,store,simple,createtime';
+			$field = 'uid,sid,username,nickname,type,loginip,logintime,store,simple,createtime,status as sta';
 			$order = 'createtime desc,uid asc';
 			$users = $user->where($where)->field($field)->order($order)->select();
 			if($users){
